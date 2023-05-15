@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -122,6 +123,13 @@ namespace SealFisher
 
 		//-- Custom Methods --//
 
+		public void AddMoney(double money)
+		{
+			//Add money and round to 0 decimals
+			publicVariables.money = Math.Round(publicVariables.money + money, 0);
+			tblMoney.Text = string.Format("Money: {0}", publicVariables.money.ToString());
+		}
+
 		private void SetRodState(string state)
 		{
 			if (state == "idle")
@@ -151,6 +159,7 @@ namespace SealFisher
 		{
 			//Generate fish based on a certain number
 			int fishNumber = random.Next(1, 676 - (rodpower * 15));
+			rodpower = 1;
 
 			if (fishNumber >= 1 && fishNumber <= (500 - (rodpower * 10)))
 			{
@@ -168,11 +177,11 @@ namespace SealFisher
 			{
 				CatchFish("Super rare");
 			}
-			else if (fishNumber == (666 - (rodpower * 15)) && fishNumber <= (670 - (rodpower * 15)))
+			else if (fishNumber >= (666 - (rodpower * 15)) && fishNumber <= (670 - (rodpower * 15)))
 			{
 				CatchFish("Legendary");
 			}
-			else if (fishNumber == (671 - (rodpower * 15)) && fishNumber <= (675 - (rodpower * 15)))
+			else if (fishNumber >= (671 - (rodpower * 15)) && fishNumber <= (675 - (rodpower * 15)))
 			{
 				CatchFish("Special");
 			}
@@ -182,7 +191,7 @@ namespace SealFisher
 		private void CatchFish(string rarity)
 		{
 			//Common fish
-			int fishNum = 1;
+			int fishNum = 0;
 			string fishName = "";
 
 			if (rarity == "Common")
@@ -349,7 +358,7 @@ namespace SealFisher
 					fishName = "Bomb";
 				}
 			}
-			
+
 			//Set weight based on fish rarity
 			int weight = 0;
 			if (rarity == "Common")

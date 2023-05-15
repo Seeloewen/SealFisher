@@ -1,6 +1,7 @@
 ﻿using SealFisher;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.IO.Packaging;
 using System.Linq;
 using System.Reflection;
@@ -14,7 +15,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.LinkLabel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
@@ -30,8 +30,10 @@ namespace SealFisher
 		public ScrollViewer inventoryScrollViewer = new ScrollViewer();
 		public static StackPanel inventoryStackPanel = new StackPanel();
 		public static string[] itemList = new string[3];
+		public static string[] sellItemList = new string[3];
 		public static List<itemSlot> slotList = new List<itemSlot>();
 		public static List<string> soldFish = new List<string>();
+		MainWindow wndGame = (MainWindow)Application.Current.MainWindow;
 
 		//-- Constructor --//
 
@@ -151,9 +153,37 @@ namespace SealFisher
 
 		private void SellFish(string fish)
 		{
-			//Sell fish - WIP
-			MessageBox.Show(fish);
+			double rarityMultiplier = 1;
 
+			//Sell fish - WIP
+			sellItemList = fish.Split(';');
+			if (sellItemList[2] == "Common")
+			{
+				rarityMultiplier = 0.5;
+			}
+			else if (sellItemList[2] == "Trash")
+			{
+				rarityMultiplier = 0.25;
+			}
+			else if (sellItemList[2] == "Rare")
+			{
+				rarityMultiplier = 0.75;
+			}
+			else if (sellItemList[2] == "Super rare")
+			{
+				rarityMultiplier = 1;
+			}
+			else if (sellItemList[2] == "Legendary")
+			{
+				rarityMultiplier = 1.5;
+			}
+			else if (sellItemList[2] == "Special")
+			{
+				rarityMultiplier = 2;
+			}
+
+			//Add money
+			wndGame.AddMoney(Convert.ToInt32(sellItemList[1]) * rarityMultiplier);
 			soldFish.Add(fish);
 		}
 
