@@ -1,0 +1,16 @@
+﻿<Window x:Class="SealFisher.wndInventory"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SealFisher"
+        mc:Ignorable="d"
+        Title="Inventory" Height="912" Width="525" Loaded="Window_Loaded" ResizeMode="NoResize">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="22*"/>
+			<ColumnDefinition Width="149*"/>
+			<ColumnDefinition Width="4*"/>
+		</Grid.ColumnDefinitions>
+	</Grid>
+</Window>

@@ -1,0 +1,28 @@
+﻿<Window x:Class="SealFisher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SealFisher"
+        mc:Ignorable="d"
+        Title="SealFisher" Height="914" Width="1858" ResizeMode="CanMinimize">
+	<Grid>
+		<Image x:Name="imgBackground" Source="/background_fisher_idle.png" RenderTransformOrigin="0.381,0.667" Grid.ColumnSpan="3" Stretch="Fill"/>
+		<Button x:Name="btnCast" Content="Cast" FontSize="22" Click="btnCast_Click" ContentStringFormat="" HorizontalContentAlignment="Center" Height="50" Width="168" RenderTransformOrigin="0.319,-0.89" Margin="1413,502,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
+			<Button.Style>
+				<Style/>
+			</Button.Style>
+		</Button>
+		<TextBlock x:Name="tblDev" HorizontalAlignment="Left" Margin="10,832,0,0" TextWrapping="Wrap" Text="Early Dev Preview - Seeloewen - 14.05.2023" VerticalAlignment="Top" Height="56" Width="719" FontSize="36"/>
+		<TextBlock x:Name="tblFishWarning" TextWrapping="Wrap" Text="!" Margin="1353,476,464,320" FontSize="72" FontWeight="Bold" Foreground="Red" Visibility="Hidden">
+			<TextBlock.FocusVisualStyle>
+				<Style/>
+			</TextBlock.FocusVisualStyle>
+		</TextBlock>
+		<TextBlock x:Name="tblCaughtFish" TextWrapping="Wrap" Text="Caught fish..." Margin="468,106,202,662" FontSize="40" Visibility="Hidden" Grid.ColumnSpan="2"/>
+		<Button x:Name="btnInventory" Content="Inventory" HorizontalAlignment="Left" Margin="1738,19,0,0" VerticalAlignment="Top" Height="34" Width="101" FontSize="20" Click="btnInventory_Click"/>
+		<Button Content="EZ CHEAT" Margin="1607,778,0,0" Click="Button_Click_1" FontSize="30" VerticalAlignment="Top" HorizontalAlignment="Left" Height="58" Width="178"/>
+		<TextBlock x:Name="tblMoney" TextWrapping="Wrap" Text="Money: 0" Margin="34,25,1206,792" FontSize="30"/>
+
+	</Grid>
+</Window>
