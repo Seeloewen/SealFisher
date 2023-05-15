@@ -150,159 +150,206 @@ namespace SealFisher
 		private void GenerateFish()
 		{
 			//Generate fish based on a certain number
-			int fishNumber = random.Next(1, 675 - (rodpower * 15));
+			int fishNumber = random.Next(1, 676 - (rodpower * 15));
 
-			//Common fish
-			if (fishNumber >= 1 && fishNumber <= (50 - rodpower))
+			if (fishNumber >= 1 && fishNumber <= (500 - (rodpower * 10)))
 			{
-				CatchFish("Common", "Carp");
+				CatchFish("Common");
 			}
-			else if (fishNumber >= (51 - rodpower) && fishNumber <= (100 - (rodpower * 2)))
+			else if (fishNumber >= (501 - (rodpower * 10)) && fishNumber <= (625 - (rodpower * 15)))
 			{
-				CatchFish("Common", "Trout");
+				CatchFish("Trash");
 			}
-			else if (fishNumber >= (101 - (rodpower * 2)) && fishNumber <= (150 - (rodpower * 3)))
+			else if (fishNumber >= (626 - (rodpower * 15)) && fishNumber <= (650) - (rodpower * 15))
 			{
-				CatchFish("Common", "Salmon");
+				CatchFish("Rare");
 			}
-			else if (fishNumber >= (151 - (rodpower * 3)) && fishNumber <= (200 - (rodpower * 4)))
+			else if (fishNumber >= (651 - (rodpower * 15)) && fishNumber <= (665 - (rodpower * 15)))
 			{
-				CatchFish("Common", "Tuna");
+				CatchFish("Super rare");
 			}
-			else if (fishNumber >= (201 - (rodpower * 4)) && fishNumber <= (250 - (rodpower * 5)))
+			else if (fishNumber == (666 - (rodpower * 15)) && fishNumber <= (670 - (rodpower * 15)))
 			{
-				CatchFish("Common", "Pike");
+				CatchFish("Legendary");
 			}
-			else if (fishNumber >= (251 - (rodpower * 5)) && fishNumber <= (300 - (rodpower * 6)))
+			else if (fishNumber == (671 - (rodpower * 15)) && fishNumber <= (675 - (rodpower * 15)))
 			{
-				CatchFish("Common", "Herring");
-			}
-			else if (fishNumber >= (301 - (rodpower * 6)) && fishNumber <= (350 - (rodpower * 7)))
-			{
-				CatchFish("Common", "Zander");
-			}
-			else if (fishNumber >= (351 - (rodpower * 7)) && fishNumber <= (400 - (rodpower * 8)))
-			{
-				CatchFish("Common", "Eel");
-			}
-			else if (fishNumber >= (401 - (rodpower * 8)) && fishNumber <= (450 - (rodpower * 9)))
-			{
-				CatchFish("Common", "Cod");
-			}
-			else if (fishNumber >= (451 - (rodpower * 9)) && fishNumber <= (500 - (rodpower * 10)))
-			{
-				CatchFish("Common", "Catfish");
-			}
-			//Trash
-			else if (fishNumber >= (501 - (rodpower * 10)) && fishNumber <= (525 - (rodpower * 11)))
-			{
-				CatchFish("Trash", "Plastic bottle");
-			}
-			else if (fishNumber >= (526 - (rodpower * 11)) && fishNumber <= (550 - (rodpower * 12)))
-			{
-				CatchFish("Trash", "Metal can");
-			}
-			else if (fishNumber >= (551 - (rodpower * 12)) && fishNumber <= (575 - (rodpower * 13)))
-			{
-				CatchFish("Trash", "Cigarrete");
-			}
-			else if (fishNumber >= (576 - (rodpower * 13)) && fishNumber <= (600 - (rodpower * 14)))
-			{
-				CatchFish("Trash", "Broken phone");
-			}
-			else if (fishNumber >= (601 - (rodpower * 14)) && fishNumber <= (625 - (rodpower * 15)))
-			{
-				CatchFish("Trash", "Plastic bag");
-			}
-			//Rare fish
-			else if (fishNumber >= (626 - (rodpower * 15)) && fishNumber <= (630) - (rodpower * 15))
-			{
-				CatchFish("Rare", "Coelacanth");
-			}
-			else if (fishNumber >= (631 - (rodpower * 15)) && fishNumber <= (635) - (rodpower * 15))
-			{
-				CatchFish("Rare", "Arapaima");
-			}
-			else if (fishNumber >= (636 - (rodpower * 15)) && fishNumber <= (640) - (rodpower * 15))
-			{
-				CatchFish("Rare", "Megamouth shark");
-			}
-			else if (fishNumber >= (641 - (rodpower * 15)) && fishNumber <= (645) - (rodpower * 15))
-			{
-				CatchFish("Rare", "Manta ray");
-			}
-			else if (fishNumber >= (646 - (rodpower * 15)) && fishNumber <= (650) - (rodpower * 15))
-			{
-				CatchFish("Rare", "Olm");
-			}
-			//Super rare fish
-			else if (fishNumber >= (651 - (rodpower * 15)) && fishNumber <= (653 - (rodpower * 15)))
-			{
-				CatchFish("Super rare", "Blacksnake cusk-eel");
-			}
-			else if (fishNumber >= (654 - (rodpower * 15)) && fishNumber <= (656 - (rodpower * 15)))
-			{
-				CatchFish("Super rare", "Hainan dogfish");
-			}
-			else if (fishNumber >= (657 - (rodpower * 15)) && fishNumber <= (659 - (rodpower * 15)))
-			{
-				CatchFish("Super rare", "Denison barb");
-			}
-			else if (fishNumber >= (660 - (rodpower * 15)) && fishNumber <= (662 - (rodpower * 15)))
-			{
-				CatchFish("Super rare", "Harlequin ghost pipefish");
-			}
-			else if (fishNumber >= (663 - (rodpower * 15)) && fishNumber <= (665 - (rodpower * 15)))
-			{
-				CatchFish("Super rare", "Devil's Hole pupfish");
-			}
-			//Legendary fish
-			else if (fishNumber == (666 - (rodpower * 15)))
-			{
-				CatchFish("Legendary", "Salamanderfish");
-			}
-			else if (fishNumber == (667 - (rodpower * 15)))
-			{
-				CatchFish("Legendary", "Red-mouthed cichlid");
-			}
-			else if (fishNumber == (668 - (rodpower * 15)))
-			{
-				CatchFish("Legendary", "Longfin triplefin");
-			}
-			else if (fishNumber == (669 - (rodpower * 15)))
-			{
-				CatchFish("Legendary", "Great White Shark");
-			}
-			else if (fishNumber == (670 - (rodpower * 15)))
-			{
-				CatchFish("Legendary", "Chinese sturgeon");
-			}
-			//Special items
-			else if (fishNumber == (671 - (rodpower * 15)))
-			{
-				CatchFish("Special", "Anchor");
-			}
-			else if (fishNumber == (672 - (rodpower * 15)))
-			{
-				CatchFish("Special", "Seal");
-			}
-			else if (fishNumber == (673 - (rodpower * 15)))
-			{
-				CatchFish("Special", "Diamond Sword");
-			}
-			else if (fishNumber == (674 - (rodpower * 15)))
-			{
-				CatchFish("Special", "Nuclear Waste");
-			}
-			else if (fishNumber == (675 - (rodpower * 15)))
-			{
-				CatchFish("Special", "???");
+				CatchFish("Special");
 			}
 
 		}
 
-		private void CatchFish(string rarity, string fishname)
+		private void CatchFish(string rarity)
 		{
+			//Common fish
+			int fishNum = 1;
+			string fishName = "";
+
+			if (rarity == "Common")
+			{
+				fishNum = random.Next(1, 11);
+				if (fishNum == 1)
+				{
+					fishName = "Trout";
+				}
+				else if (fishNum == 2)
+				{
+					fishName = "Salmon";
+				}
+				else if (fishNum == 3)
+				{
+					fishName = "Tuna";
+				}
+				else if (fishNum == 4)
+				{
+					fishName = "Pike";
+				}
+				else if (fishNum == 5)
+				{
+					fishName = "Herring";
+				}
+				else if (fishNum == 6)
+				{
+					fishName = "Zander";
+				}
+				else if (fishNum == 7)
+				{
+					fishName = "Eel";
+				}
+				else if (fishNum == 8)
+				{
+					fishName = "Cod";
+				}
+				else if (fishNum == 9)
+				{
+					fishName = "Catfish";
+				}
+				else if (fishNum == 10)
+				{
+					fishName = "Carp";
+				}
+			}
+			else if (rarity == "Trash")
+			{
+				fishNum = random.Next(1, 6);
+				if (fishNum == 1)
+				{
+					fishName = "Plastic bottle";
+				}
+				else if (fishNum == 2)
+				{
+					fishName = "Metal can";
+				}
+				else if (fishNum == 3)
+				{
+					fishName = "Cigarrete";
+				}
+				else if (fishNum == 4)
+				{
+					fishName = "Broken phone";
+				}
+				else if (fishNum == 5)
+				{
+					fishName = "Plastic bag";
+				}
+			}
+			else if (rarity == "Rare")
+			{
+				fishNum = random.Next(1, 6);
+				if (fishNum == 1)
+				{
+					fishName = "Coelacanth";
+				}
+				else if (fishNum == 2)
+				{
+					fishName = "Arapaima";
+				}
+				else if (fishNum == 3)
+				{
+					fishName = "Megamouth shark";
+				}
+				else if (fishNum == 4)
+				{
+					fishName = "Manta ray";
+				}
+				else if (fishNum == 5)
+				{
+					fishName = "Olm";
+				}
+			}
+			else if (rarity == "Super rare")
+			{
+				fishNum = random.Next(1, 6);
+				if (fishNum == 1)
+				{
+					fishName = "Blacksnake cusk-eel";
+				}
+				else if (fishNum == 2)
+				{
+					fishName = "Hainan dogfis";
+				}
+				else if (fishNum == 3)
+				{
+					fishName = "Denison barb";
+				}
+				else if (fishNum == 4)
+				{
+					fishName = "Harlequin ghost pipefish";
+				}
+				else if (fishNum == 5)
+				{
+					fishName = "Devil's Hole pupfish";
+				}
+			}
+			else if (rarity == "Legendary")
+			{
+				fishNum = random.Next(1, 6);
+				if (fishNum == 1)
+				{
+					fishName = "Salamanderfish";
+				}
+				else if (fishNum == 2)
+				{
+					fishName = "Red-mouthed cichlid";
+				}
+				else if (fishNum == 3)
+				{
+					fishName = "Longfin triplefin";
+				}
+				else if (fishNum == 4)
+				{
+					fishName = "Great White Shark";
+				}
+				else if (fishNum == 5)
+				{
+					fishName = "Chinese sturgeon";
+				}
+			}
+			else if (rarity == "Special")
+			{
+				fishNum = random.Next(1, 6);
+				if (fishNum == 1)
+				{
+					fishName = "Anchor";
+				}
+				else if (fishNum == 2)
+				{
+					fishName = "Seal";
+				}
+				else if (fishNum == 3)
+				{
+					fishName = "Diamond Sword";
+				}
+				else if (fishNum == 4)
+				{
+					fishName = "Nuclear Waste";
+				}
+				else if (fishNum == 5)
+				{
+					fishName = "Bomb";
+				}
+			}
+			
 			//Set weight based on fish rarity
 			int weight = 0;
 			if (rarity == "Common")
@@ -331,10 +378,10 @@ namespace SealFisher
 			}
 
 			//Add fish to inventory
-			publicVariables.inventory.Add(String.Format("{0};{1};{2};{3}", fishname, weight, rarity, DateTime.Now));
+			publicVariables.inventory.Add(String.Format("{0};{1};{2};{3}", fishName, weight, rarity, DateTime.Now));
 
 			//Show 'caught fish' notification
-			tblCaughtFish.Text = String.Format("You caught a {0} ({1}) weighing {2} KG", fishname, rarity, weight);
+			tblCaughtFish.Text = String.Format("You caught a {0} ({1}) weighing {2} KG", fishName, rarity, weight);
 			tblCaughtFish.Visibility = Visibility.Visible;
 			caughtNotifcationTimer.Stop();
 			caughtNotifcationTimer.Interval = new TimeSpan(0, 0, 5);
