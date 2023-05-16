@@ -77,12 +77,21 @@ namespace SealFisher
 			//Check rodstate, then execute actions depending on rodstate
 			if (rodState == "idle")
 			{
-				SetRodState("casted");
+				//Check if inventory is full
+				if (InventoryFull() == false)
+				{
+					SetRodState("casted");
 
-				//Start timer for fish spawn
-				fishCatchTime = random.Next(3, 10);
-				fishTimer.Interval = new TimeSpan(0, 0, fishCatchTime);
-				fishTimer.Start();
+					//Start timer for fish spawn
+					fishCatchTime = random.Next(3, 10);
+					fishTimer.Interval = new TimeSpan(0, 0, fishCatchTime);
+					fishTimer.Start();
+				}
+				else
+				{
+					MessageBox.Show("Your inventory is full. Please sell some fish or upgrade your storage.", "Inventory full", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+				}
+
 			}
 			else if (rodState == "casted")
 			{
@@ -128,6 +137,19 @@ namespace SealFisher
 			//Add money and round to 0 decimals
 			publicVariables.money = Math.Round(publicVariables.money + money, 0);
 			tblMoney.Text = string.Format("Money: {0}", publicVariables.money.ToString());
+		}
+
+		public bool InventoryFull()
+		{
+			if (publicVariables.inventory.Count >= publicVariables.fishInventorySlots)
+			{
+				return true;
+			}
+
+			else
+			{
+				return false;
+			}
 		}
 
 		private void SetRodState(string state)
