@@ -33,6 +33,7 @@ namespace SealFisher
 		public static string[] sellItemList = new string[3];
 		public static List<itemSlot> slotList = new List<itemSlot>();
 		public static List<string> soldFish = new List<string>();
+		public static bool IsOpen;
 		MainWindow wndGame = (MainWindow)Application.Current.MainWindow;
 
 		//-- Constructor --//
@@ -77,6 +78,12 @@ namespace SealFisher
 		{
 			//Load the inventory
 			LoadInventory();
+			IsOpen = true;
+		}
+
+		private void Window_Unloaded(object sender, RoutedEventArgs e)
+		{
+			IsOpen = false;
 		}
 
 		//-- Custom Methods --//
@@ -155,7 +162,7 @@ namespace SealFisher
 		{
 			double rarityMultiplier = 1;
 
-			//Sell fish - WIP
+			//Sell fish
 			sellItemList = fish.Split(';');
 			if (sellItemList[2] == "Common")
 			{
@@ -187,7 +194,7 @@ namespace SealFisher
 			soldFish.Add(fish);
 		}
 
-		private void RefreshInventory()
+		public void RefreshInventory()
 		{
 			//Remove sold fish from the inventory
 			foreach (string entry in soldFish)
@@ -200,7 +207,6 @@ namespace SealFisher
 			inventoryStackPanel.Children.Clear();
 			LoadInventory();
 		}
-
 	}
 
 	//Item slot

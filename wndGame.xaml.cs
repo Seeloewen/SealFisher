@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -116,7 +117,11 @@ namespace SealFisher
 			//Open inventory window
 			wndInventory = new wndInventory() { Owner = this };
 			wndInventory.Owner = Application.Current.MainWindow;
-			wndInventory.ShowDialog();
+			if (wndInventory.IsOpen == false)
+			{
+				wndInventory.Show();
+			}
+
 		}
 
 		private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -410,6 +415,7 @@ namespace SealFisher
 
 			//Add fish to inventory
 			publicVariables.inventory.Add(String.Format("{0};{1};{2};{3}", fishName, weight, rarity, DateTime.Now));
+			wndInventory.RefreshInventory();
 
 			//Show 'caught fish' notification
 			tblCaughtFish.Text = String.Format("You caught a {0} ({1}) weighing {2} KG", fishName, rarity, weight);
