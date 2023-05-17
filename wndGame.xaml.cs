@@ -249,6 +249,8 @@ namespace SealFisher
 
 		private void CatchFish(string rarity)
 		{
+			wndInventory = new wndInventory() { Owner = this };
+
 			//Common fish
 			int fishNum = 0;
 			string fishName = "";
