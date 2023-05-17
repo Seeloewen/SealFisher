@@ -21,10 +21,10 @@
 		</TextBlock>
 		<TextBlock x:Name="tblCaughtFish" TextWrapping="Wrap" Text="Caught fish {name} ({rarity}) weighing {weight}KG" Margin="253,106,230,0" FontSize="40" Visibility="Hidden" FontWeight="SemiBold" FontStyle="Italic" TextAlignment="Center" Height="130" VerticalAlignment="Top"/>
 		<Button x:Name="btnInventory" Content="Inventory" Margin="0,25,35,0" VerticalAlignment="Top" Height="34" FontSize="18" Click="btnInventory_Click" HorizontalAlignment="Right" Width="101"/>
-		<Button x:Name="btnDebugGiveFish" Content="Debug - Give 10 fish" Margin="164,18,0,0" Click="Button_Click_1" FontSize="18" HorizontalAlignment="Left" Width="242" RenderTransformOrigin="1.3,0.675" Height="35" VerticalAlignment="Top"/>
+		<Button x:Name="btnDebugGiveFish" Content="Debug - Give 10 fish" Margin="24,64,0,0" Click="Button_Click_1" FontSize="18" HorizontalAlignment="Left" Width="242" RenderTransformOrigin="1.3,0.675" Height="35" VerticalAlignment="Top"/>
 		<TextBlock x:Name="tblMoney" TextWrapping="Wrap" Text="Money: 0" Margin="24,11,0,0" FontSize="30" Height="48" VerticalAlignment="Top" HorizontalAlignment="Left" Width="242"/>
 		<Button x:Name="btnStatistics" Content="Statistics" Margin="0,25,152,0" FontSize="18" Height="34" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102"/>
-		<Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="10,0,0,51" Width="104" RenderTransformOrigin="0.527,0.508" FontSize="18" Height="34" VerticalAlignment="Bottom"/>
+		<Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="10,0,0,51" Width="104" RenderTransformOrigin="0.527,0.508" FontSize="18" Height="34" VerticalAlignment="Bottom" Click="btnSave_Click"/>
 
 	</Grid>
 </Window>

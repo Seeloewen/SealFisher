@@ -203,7 +203,7 @@ namespace SealFisher
 			Content = inventoryScrollViewer;
 
 			//Set header text depending on fish amount
-			tblHeader.Text = String.Format("Inventory ({0}/{1} fish)", slotList.Count, publicVariables.fishInventorySlots);
+			tblHeader.Text = String.Format("Inventory ({0}/{1} fish)", slotList.Count, publicVariables.playerStats[4]);
 		}
 
 		private void SellFish(string fish)

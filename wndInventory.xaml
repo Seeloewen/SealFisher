@@ -6,11 +6,4 @@
         xmlns:local="clr-namespace:SealFisher"
         mc:Ignorable="d"
         Title="Inventory" Height="912" Width="525" Loaded="Window_Loaded" ResizeMode="NoResize" Unloaded="Window_Unloaded">
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="22*"/>
-			<ColumnDefinition Width="149*"/>
-			<ColumnDefinition Width="4*"/>
-		</Grid.ColumnDefinitions>
-	</Grid>
 </Window>

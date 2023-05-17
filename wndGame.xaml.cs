@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,7 @@ using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using static System.Windows.Forms.LinkLabel;
 
 namespace SealFisher
 {
@@ -44,6 +46,12 @@ namespace SealFisher
 		BitmapImage background_fisher_idle = new BitmapImage(imageUribackground_fisher_idle);
 		wndInventory wndInventory;
 
+		//Directories and files
+		static string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+		static string gameDirectory = appData + "/SealFisher";
+		string statsSaveFile = gameDirectory + "/statistics.txt";
+		string inventorySaveFile = gameDirectory + "/inventory.txt";
+
 		//-- Constructor --//
 
 		public MainWindow()
@@ -57,6 +65,8 @@ namespace SealFisher
 
 		private void wndGame_Loaded(object sender, RoutedEventArgs e)
 		{
+			CreateGameDirectory();
+			LoadGame();
 			InitializeStats();
 		}
 
@@ -138,7 +148,117 @@ namespace SealFisher
 			}
 		}
 
+		private void btnSave_Click(object sender, RoutedEventArgs e)
+		{
+			SaveGame(true);
+		}
+
 		//-- Custom Methods --//
+
+		public void CreateGameDirectory()
+		{
+			//Checks if all necessary directories are there and creates them if not
+			try
+			{
+				if (Directory.Exists(appData))
+				{
+					if (!Directory.Exists(gameDirectory))
+					{
+						Directory.CreateDirectory(gameDirectory);
+					}
+				}
+				else
+				{
+					MessageBox.Show("Could not create game directory, because your Appdata directory is invalid.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(String.Format("Could not create game directory: {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+		}
+
+		public bool necessaryDirectoriesExist()
+		{
+			//Checks if all directories, that the game needs, exist
+			if (Directory.Exists(appData) && Directory.Exists(gameDirectory))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		public void SaveGame(bool showConfirmation)
+		{
+			//Check if necessary directories for saving the files exist
+			if (necessaryDirectoriesExist() == true)
+			{
+				try
+				{
+					//Save inventory
+					using (StreamWriter file = new StreamWriter(inventorySaveFile))
+					{
+						foreach (string item in publicVariables.inventory)
+							file.WriteLine(item);
+					}
+
+					//Save user progress/stats
+					using (StreamWriter file = new StreamWriter(statsSaveFile))
+					{
+						foreach (string statistic in publicVariables.playerStats)
+							file.WriteLine(statistic);
+					}
+
+					//Show save confirmation if enabled
+					if (showConfirmation == true)
+					{
+						MessageBox.Show("Your inventory and player stats have been saved successfully.", "Saved game", MessageBoxButton.OK, MessageBoxImage.Information);
+					}
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(String.Format("Could not save your game: {0}", ex.Message), "Error when saving game", MessageBoxButton.OK, MessageBoxImage.Error);
+				}
+			}
+			else
+			{
+				MessageBox.Show("Could not save your game because of issues with necessary directories. Try restarting the app. Note that you will loose all unsaved progress.", "Error when saving game", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+
+		}
+
+		private void LoadGame()
+		{
+			if (necessaryDirectoriesExist() == true)
+			{
+				try
+				{
+					//Load inventory
+					var loadedItems = File.ReadLines(inventorySaveFile);
+					foreach (var item in loadedItems)
+					{
+						publicVariables.inventory.Add(item);
+					}
+
+					//Load player stats
+					string[] loadedStats = File.ReadAllLines(statsSaveFile);
+					publicVariables.playerStats[0] = loadedStats[0]; //Started playing date
+					publicVariables.playerStats[1] = loadedStats[1]; //Money
+					publicVariables.playerStats[2] = loadedStats[2]; //Rodpower
+					publicVariables.playerStats[3] = loadedStats[3]; //Baitpower
+					publicVariables.playerStats[4] = loadedStats[4]; //Fish inventory slots
+
+					//Update UI elements
+					tblMoney.Text = String.Format("Money: {0}", publicVariables.playerStats[1]);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(String.Format("Could not load your game progress: {0}", ex.Message), "Error loading game", MessageBoxButton.OK, MessageBoxImage.Error);
+				}
+			}
+		}
 
 		public void AddMoney(double money)
 		{
@@ -171,6 +291,12 @@ namespace SealFisher
 			if (string.IsNullOrEmpty(publicVariables.playerStats[3]))
 			{
 				publicVariables.playerStats[3] = "1";
+
+			}
+			//Set fish inventory slots
+			if (string.IsNullOrEmpty(publicVariables.playerStats[4]))
+			{
+				publicVariables.playerStats[4] = "10";
 			}
 
 
@@ -179,7 +305,7 @@ namespace SealFisher
 		public bool InventoryFull()
 		{
 			//Check if the inventory list has as many entries as fishInventorySlots is big
-			if (publicVariables.inventory.Count >= publicVariables.fishInventorySlots)
+			if (publicVariables.inventory.Count >= Convert.ToInt32(publicVariables.playerStats[4]))
 			{
 				return true;
 			}

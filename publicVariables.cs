@@ -16,14 +16,13 @@ namespace SealFisher
 		 * [3] Fish caught date
 		 */
 
-		public static string[] playerStats = new string[4];
+		public static string[] playerStats = new string[5];
 		/* Player stats is structured like this:
 		 * [0] Started playing date
 		 * [1] Money
 		 * [2] Rodpower
 		 * [3] Baitpower
+		 * [4] Fish Inventory Slots
 		 */
-
-		public static int fishInventorySlots = 10;
 	}
 }
