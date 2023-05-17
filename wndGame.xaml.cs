@@ -32,8 +32,6 @@ namespace SealFisher
 		System.Windows.Threading.DispatcherTimer fishTimer = new System.Windows.Threading.DispatcherTimer();
 		System.Windows.Threading.DispatcherTimer caughtNotifcationTimer = new System.Windows.Threading.DispatcherTimer();
 		string rodState = "idle";
-		int rodpower;
-		int baitpower;
 		int fishCatchTime;
 		Random random = new Random();
 
@@ -56,6 +54,11 @@ namespace SealFisher
 		}
 
 		//-- Event Handlers --//
+
+		private void wndGame_Loaded(object sender, RoutedEventArgs e)
+		{
+			InitializeStats();
+		}
 
 		private void fishTimer_Tick(object sender, EventArgs e)
 		{
@@ -128,7 +131,7 @@ namespace SealFisher
 		{
 			//DEBUG CHEAT!
 			int i = 0;
-			while (i < 100)
+			while (i < 10)
 			{
 				GenerateFish();
 				i++;
@@ -140,12 +143,42 @@ namespace SealFisher
 		public void AddMoney(double money)
 		{
 			//Add money and round to 0 decimals
-			publicVariables.money = Math.Round(publicVariables.money + money, 0);
-			tblMoney.Text = string.Format("Money: {0}", publicVariables.money.ToString());
+			publicVariables.playerStats[1] = Convert.ToString(Math.Round(Convert.ToInt32(publicVariables.playerStats[1]) + money, 0));
+			tblMoney.Text = string.Format("Money: {0}", publicVariables.playerStats[1].ToString());
+		}
+
+		public void InitializeStats()
+		{
+			//Set play started date if not already defined
+			if (String.IsNullOrEmpty(publicVariables.playerStats[0]))
+			{
+				publicVariables.playerStats[0] = DateTime.Now.ToString();
+			}
+
+			//Set money
+			if (string.IsNullOrEmpty(publicVariables.playerStats[1]))
+			{
+				publicVariables.playerStats[1] = "0";
+			}
+
+			//Set rodpower
+			if (string.IsNullOrEmpty(publicVariables.playerStats[2]))
+			{
+				publicVariables.playerStats[2] = "1";
+			}
+
+			//Set baitpower
+			if (string.IsNullOrEmpty(publicVariables.playerStats[3]))
+			{
+				publicVariables.playerStats[3] = "1";
+			}
+
+
 		}
 
 		public bool InventoryFull()
 		{
+			//Check if the inventory list has as many entries as fishInventorySlots is big
 			if (publicVariables.inventory.Count >= publicVariables.fishInventorySlots)
 			{
 				return true;
@@ -163,13 +196,13 @@ namespace SealFisher
 			{
 				//Rod is not thrown out
 				rodState = "idle";
-				btnCast.Content = "Cast";
+				btnCast.Content = "Cast rod";
 				imgBackground.Source = background_fisher_idle;
 			}
 			else if (state == "catchable")
 			{
 				//Rod is thrown out and there is a catchable fish
-				btnCast.Content = "Catch";
+				btnCast.Content = "Catch fish";
 				rodState = "catchable";
 				imgBackground.Source = background_fisher_rodcasted;
 			}
@@ -178,37 +211,36 @@ namespace SealFisher
 				//rod is thrown out but there is no fish
 				rodState = "casted";
 				imgBackground.Source = background_fisher_rodcasted;
-				btnCast.Content = "Reel in";
+				btnCast.Content = "Reel rod in";
 			}
 		}
 
 		private void GenerateFish()
 		{
 			//Generate fish based on a certain number
-			int fishNumber = random.Next(1, 676 - (rodpower * 15));
-			rodpower = 1;
+			int fishNumber = random.Next(1, 676 - (Convert.ToInt32(publicVariables.playerStats[2]) * 15));
 
-			if (fishNumber >= 1 && fishNumber <= (500 - (rodpower * 10)))
+			if (fishNumber >= 1 && fishNumber <= (500 - (Convert.ToInt32(publicVariables.playerStats[2]) * 10)))
 			{
 				CatchFish("Common");
 			}
-			else if (fishNumber >= (501 - (rodpower * 10)) && fishNumber <= (625 - (rodpower * 15)))
+			else if (fishNumber >= (501 - (Convert.ToInt32(publicVariables.playerStats[2]) * 10)) && fishNumber <= (625 - (Convert.ToInt32(publicVariables.playerStats[2]) * 15)))
 			{
 				CatchFish("Trash");
 			}
-			else if (fishNumber >= (626 - (rodpower * 15)) && fishNumber <= (650) - (rodpower * 15))
+			else if (fishNumber >= (626 - (Convert.ToInt32(publicVariables.playerStats[2]) * 15)) && fishNumber <= (650) - (Convert.ToInt32(publicVariables.playerStats[2]) * 15))
 			{
 				CatchFish("Rare");
 			}
-			else if (fishNumber >= (651 - (rodpower * 15)) && fishNumber <= (665 - (rodpower * 15)))
+			else if (fishNumber >= (651 - (Convert.ToInt32(publicVariables.playerStats[2]) * 15)) && fishNumber <= (665 - (Convert.ToInt32(publicVariables.playerStats[2]) * 15)))
 			{
 				CatchFish("Super rare");
 			}
-			else if (fishNumber >= (666 - (rodpower * 15)) && fishNumber <= (670 - (rodpower * 15)))
+			else if (fishNumber >= (666 - (Convert.ToInt32(publicVariables.playerStats[2]) * 15)) && fishNumber <= (670 - (Convert.ToInt32(publicVariables.playerStats[2]) * 15)))
 			{
 				CatchFish("Legendary");
 			}
-			else if (fishNumber >= (671 - (rodpower * 15)) && fishNumber <= (675 - (rodpower * 15)))
+			else if (fishNumber >= (671 - (Convert.ToInt32(publicVariables.playerStats[2]) * 15)) && fishNumber <= (675 - (Convert.ToInt32(publicVariables.playerStats[2]) * 15)))
 			{
 				CatchFish("Special");
 			}
@@ -390,23 +422,23 @@ namespace SealFisher
 			int weight = 0;
 			if (rarity == "Common")
 			{
-				weight = random.Next(1, (50 + baitpower));
+				weight = random.Next(1, (50 + Convert.ToInt32(publicVariables.playerStats[3])));
 			}
 			if (rarity == "Trash")
 			{
-				weight = random.Next(1, (10 + baitpower));
+				weight = random.Next(1, (10 + Convert.ToInt32(publicVariables.playerStats[3])));
 			}
 			else if (rarity == "Rare")
 			{
-				weight = random.Next(50, (100 + baitpower));
+				weight = random.Next(50, (100 + Convert.ToInt32(publicVariables.playerStats[3])));
 			}
 			else if (rarity == "Super rare")
 			{
-				weight = random.Next(100, (150 + baitpower));
+				weight = random.Next(100, (150 + Convert.ToInt32(publicVariables.playerStats[3])));
 			}
 			else if (rarity == "Legendary")
 			{
-				weight = random.Next(150, (200 + baitpower));
+				weight = random.Next(150, (200 + Convert.ToInt32(publicVariables.playerStats[3])));
 			}
 			else if (rarity == "Special")
 			{

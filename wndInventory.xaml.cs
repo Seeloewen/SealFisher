@@ -35,6 +35,8 @@ namespace SealFisher
 		public static List<string> soldFish = new List<string>();
 		public static bool IsOpen;
 		MainWindow wndGame = (MainWindow)Application.Current.MainWindow;
+		int soldFishAmount;
+		double earnedMoney;
 
 		//-- Constructor --//
 
@@ -47,31 +49,76 @@ namespace SealFisher
 
 		void btnSellAll_Click(object sender, RoutedEventArgs e)
 		{
-			//Sell all fish for money
-			foreach (string fish in publicVariables.inventory)
+			if (publicVariables.inventory.Count > 0)
 			{
-				//Sell the fish
-				SellFish(fish);
+				if (MessageBox.Show("Are you sure that you want to sell all your fish?",
+									"Sell all fish",
+									MessageBoxButton.YesNo,
+									MessageBoxImage.Question) == MessageBoxResult.Yes)
+				{
+					//Reset sell stats
+					soldFishAmount = 0;
+					earnedMoney = 0;
+
+					//Sell all fish for money
+					foreach (string fish in publicVariables.inventory)
+					{
+						//Sell the fish
+						SellFish(fish);
+					}
+					//Refresh Inventory
+					RefreshInventory();
+
+					//Show confirmation message with sell stats
+					MessageBox.Show(string.Format("Sold {0} fish for {1} total money.", soldFishAmount, earnedMoney), "Sold fish", MessageBoxButton.OK, MessageBoxImage.Information);
+				}
+				
+			}
+			else
+			{
+				MessageBox.Show("You don't have any fish to sell!", "Sell all fish", MessageBoxButton.OK, MessageBoxImage.Exclamation);
 			}
 
-			//Refresh Inventory
-			RefreshInventory();
 		}
 
 		void btnSellSelected_Click(object sender, RoutedEventArgs e)
 		{
-			//Only sell selected fish for money
+			int selectedFishAmount = 0;
+
 			foreach (itemSlot slot in slotList)
 			{
 				if (slot.slotCheckBox.IsChecked == true)
 				{
-					//Sell the fish
-					SellFish(publicVariables.inventory[slot.slotNumber]);
+					selectedFishAmount++;
 				}
 			}
 
-			//Refresh Inventory
-			RefreshInventory();
+			if (selectedFishAmount > 0)
+			{
+				//Reset sell stats
+				soldFishAmount = 0;
+				earnedMoney = 0;
+
+				//Only sell selected fish for money
+				foreach (itemSlot slot in slotList)
+				{
+					if (slot.slotCheckBox.IsChecked == true)
+					{
+						//Sell the fish
+						SellFish(publicVariables.inventory[slot.slotNumber]);
+					}
+				}
+
+				//Refresh Inventory
+				RefreshInventory();
+
+				//Show confirmation message with sell stats
+				MessageBox.Show(string.Format("Sold {0} fish for {1} total money.", soldFishAmount, earnedMoney), "Sold fish", MessageBoxButton.OK, MessageBoxImage.Information);
+			}
+			else
+			{
+				MessageBox.Show("You don't have any fish selected to sell", "Sell selected fish", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+			}
 		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -84,6 +131,7 @@ namespace SealFisher
 		private void Window_Unloaded(object sender, RoutedEventArgs e)
 		{
 			IsOpen = false;
+			wndGame.Activate();
 		}
 
 		//-- Custom Methods --//
@@ -191,6 +239,8 @@ namespace SealFisher
 
 			//Add money
 			wndGame.AddMoney(Convert.ToInt32(sellItemList[1]) * rarityMultiplier);
+			soldFishAmount++;
+			earnedMoney = Math.Round(earnedMoney + Convert.ToInt32(sellItemList[1]) * rarityMultiplier);
 			soldFish.Add(fish);
 		}
 
