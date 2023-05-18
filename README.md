@@ -5,3 +5,5 @@ A simple fishing game! You catch fish, sell them for ingame money and use that m
 At a later point in development, you'll also be able to archive certain fish so you don't sell them. An achievement system is also planned, as well as a bunch of new upgrades.
 
 This project isn't really meant to be a long-term-development; it's rather used for me to understand C# and especially WPF better. This means that at some point, it will no longer receive updates, besides maybe bug fixes.
+
+Also, since some of the fish you can catch are protected, here you have a legal disclaimer: This game does not support the fishing of protected species.
