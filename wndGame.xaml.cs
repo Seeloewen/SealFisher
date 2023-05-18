@@ -97,7 +97,7 @@ namespace SealFisher
 					SetRodState("casted");
 
 					//Start timer for fish spawn
-					fishCatchTime = random.Next(3, 10);
+					fishCatchTime = random.Next(1, 12);
 					fishTimer.Interval = new TimeSpan(0, 0, fishCatchTime);
 					fishTimer.Start();
 				}
