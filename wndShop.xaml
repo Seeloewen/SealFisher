@@ -1,0 +1,41 @@
+﻿<Window x:Class="SealFisher.wndShop"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SealFisher"
+        mc:Ignorable="d"
+        Title="Shop" Height="403" Width="384" ResizeMode="NoResize" Loaded="Window_Loaded">
+	<Grid Height="561" VerticalAlignment="Top">
+		<TextBlock x:Name="tblHeader" TextWrapping="Wrap" Text="Shop" FontSize="25" FontWeight="SemiBold" Margin="15,8,255,512"/>
+		<TextBlock x:Name="tblMoney" HorizontalAlignment="Left" Margin="231,13,0,0" TextWrapping="Wrap" Text="Money: 0" VerticalAlignment="Top" FontSize="20"/>
+		<Border x:Name="bdrRod" BorderBrush="Black" BorderThickness="1" Margin="10,58,10,435">
+			<Canvas x:Name="cvsRod" Margin="-1,0,0,0" Height="60" VerticalAlignment="Top" HorizontalAlignment="Left" Width="343">
+				<TextBlock x:Name="tblRodLevel" TextWrapping="Wrap" Text="Rod - Level x" FontSize="15" FontWeight="DemiBold" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="9" VerticalAlignment="Top"/>
+				<TextBlock x:Name="tblRodCost" TextWrapping="Wrap" Text="Cost: x Money" FontSize="15" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="29" VerticalAlignment="Top"/>
+				<Button x:Name="btnUpgradeRod" Content="Upgrade" Width="126" RenderTransformOrigin="0.577,0.253" FontSize="15" HorizontalAlignment="Center" Canvas.Left="205" Canvas.Top="18" VerticalAlignment="Top" Click="btnUpgradeRod_Click"/>
+			</Canvas>
+		</Border>
+		<Border x:Name="bdrBait" BorderBrush="Black" BorderThickness="1" Margin="10,135,10,360">
+			<Canvas x:Name="cvsBait" Margin="-1,0,-1,0" Height="58" VerticalAlignment="Top">
+				<TextBlock x:Name="tblBaitLevel" TextWrapping="Wrap" Text="Bait - Level x" FontSize="15" FontWeight="DemiBold" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="9" VerticalAlignment="Top"/>
+				<TextBlock x:Name="tblBaitCost" TextWrapping="Wrap" Text="Cost: x Money" FontSize="15" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="29" VerticalAlignment="Top"/>
+				<Button x:Name="btnUpgradeBait" Content="Upgrade" Width="126" RenderTransformOrigin="0.577,0.253" FontSize="15" HorizontalAlignment="Center" Canvas.Left="205" Canvas.Top="18" VerticalAlignment="Top" Click="btnUpgradeBait_Click"/>
+			</Canvas>
+		</Border>
+		<Border x:Name="bdrStorage" BorderBrush="Black" BorderThickness="1" Margin="10,210,10,285">
+			<Canvas x:Name="cvsStorage" Margin="-1,0,-1,0" Height="58" VerticalAlignment="Top">
+				<TextBlock x:Name="tblStorageLevel" TextWrapping="Wrap" Text="Storage - Level x" FontSize="15" FontWeight="DemiBold" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="9" VerticalAlignment="Top"/>
+				<TextBlock x:Name="tblStorageCost" TextWrapping="Wrap" Text="Cost: x Money" FontSize="15" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="29" VerticalAlignment="Top"/>
+				<Button x:Name="btnUpgradeStorage" Content="Upgrade" Width="126" RenderTransformOrigin="0.577,0.253" FontSize="15" HorizontalAlignment="Center" Canvas.Left="205" Canvas.Top="18" VerticalAlignment="Top" Click="btnUpgradeStorage_Click"/>
+			</Canvas>
+		</Border>
+		<Border x:Name="bdrLocation" BorderBrush="Black" BorderThickness="1" Margin="10,285,10,210">
+			<Canvas x:Name="cvsLocation" Margin="-1,0,-1,0" Height="58" VerticalAlignment="Top">
+				<TextBlock x:Name="tblLocationLevel" TextWrapping="Wrap" Text="Location - Level 2" FontSize="15" FontWeight="DemiBold" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="9" VerticalAlignment="Top"/>
+				<TextBlock x:Name="tblLocationCost" TextWrapping="Wrap" Text="Cost: ???" FontSize="15" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="29" VerticalAlignment="Top"/>
+				<Button x:Name="btnUpgradeLocation" Content="Coming soon..." Width="126" RenderTransformOrigin="0.577,0.253" FontSize="15" HorizontalAlignment="Center" Canvas.Left="205" Canvas.Top="18" VerticalAlignment="Top" IsEnabled="False"/>
+			</Canvas>
+		</Border>
+	</Grid>
+</Window>

@@ -44,7 +44,10 @@ namespace SealFisher
 		BitmapImage background_fisher_rodcasted = new BitmapImage(imageUribackground_fisher_rodcasted);
 		static Uri imageUribackground_fisher_idle = new Uri("pack://application:,,,/SealFisher;component/Resources/background_fisher_idle.png");
 		BitmapImage background_fisher_idle = new BitmapImage(imageUribackground_fisher_idle);
+
+		//Windows
 		wndInventory wndInventory;
+		wndShop wndShop;
 
 		//Directories and files
 		static string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -150,7 +153,16 @@ namespace SealFisher
 
 		private void btnSave_Click(object sender, RoutedEventArgs e)
 		{
+			//Save the game
 			SaveGame(true);
+		}
+
+		private void btnShop_Click(object sender, RoutedEventArgs e)
+		{
+			//Open shop window
+			wndShop = new wndShop() { Owner = this };
+			wndShop.Owner = Application.Current.MainWindow;
+			wndShop.ShowDialog();
 		}
 
 		//-- Custom Methods --//
@@ -309,7 +321,6 @@ namespace SealFisher
 			{
 				return true;
 			}
-
 			else
 			{
 				return false;

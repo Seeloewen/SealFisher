@@ -64,6 +64,9 @@
     <Compile Include="wndInventory.xaml.cs">
       <DependentUpon>wndInventory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="wndShop.xaml.cs">
+      <DependentUpon>wndShop.xaml</DependentUpon>
+    </Compile>
     <Page Include="wndGame.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -77,6 +80,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="wndInventory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="wndShop.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
