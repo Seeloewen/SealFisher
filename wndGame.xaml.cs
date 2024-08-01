@@ -33,6 +33,7 @@ namespace SealFisher
         //General
         System.Windows.Threading.DispatcherTimer fishTimer = new System.Windows.Threading.DispatcherTimer();
         System.Windows.Threading.DispatcherTimer caughtNotifcationTimer = new System.Windows.Threading.DispatcherTimer();
+        DispatcherTimer FishwarningdisappearTimer = new DispatcherTimer();
         string rodState = "idle";
         int fishCatchTime;
         Random random = new Random();
@@ -62,7 +63,9 @@ namespace SealFisher
         {
             InitializeComponent();
             fishTimer.Tick += new EventHandler(fishTimer_Tick);
+            FishwarningdisappearTimer.Tick += new EventHandler(FishwarningdisappearTimer_Tick);
             caughtNotifcationTimer.Tick += new EventHandler(caughtNotificationTimer_Tick);
+            FishwarningdisappearTimer.Interval = new TimeSpan(0, 0, 3);
         }
 
         //-- Event Handlers --//
@@ -81,7 +84,15 @@ namespace SealFisher
             SetRodState("catchable");
             tblFishWarning.Visibility = Visibility.Visible;
             fishTimer.Stop();
-            //WIP - MAKE FISH DISAPPEAR AFTER 3 SECONDS OF NOT CLICKING ON THE BUTTON!
+            FishwarningdisappearTimer.Start();
+        }
+        private void FishwarningdisappearTimer_Tick(object sender, EventArgs e)
+        {
+            //MAKE FISH DISAPPEAR AFTER 3 SECONDS OF NOT CLICKING ON THE BUTTON!
+            SetRodState("casted");
+            tblFishWarning.Visibility = Visibility.Hidden;
+            FishwarningdisappearTimer.Stop();
+            fishTimer.Start();
         }
 
         private void caughtNotificationTimer_Tick(object sender, EventArgs e)
@@ -123,6 +134,7 @@ namespace SealFisher
                 //Retreat rod and get fish
                 SetRodState("idle");
                 fishTimer.Stop();
+                FishwarningdisappearTimer.Stop();
                 tblFishWarning.Visibility = Visibility.Hidden;
                 GenerateFish();
             }
@@ -144,7 +156,7 @@ namespace SealFisher
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            //DEBUG CHEAT!
+            //DEBUG CHEAT! 
             int i = 0;
             while (i < 10)
             {
