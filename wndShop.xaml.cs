@@ -15,102 +15,114 @@ using System.Windows.Shapes;
 namespace SealFisher
 {
 
-	public partial class wndShop : Window
-	{
+    public partial class wndShop : Window
+    {
 
-		MainWindow wndGame = (MainWindow)Application.Current.MainWindow;
+        MainWindow wndGame = (MainWindow)Application.Current.MainWindow;
 
-		int rodPrice;
-		int baitPrice;
-		int storagePrice;
+        int rodPrice;
+        int baitPrice;
+        int storagePrice;
 
-		public wndShop()
-		{
-			InitializeComponent();
-		}
+        public wndShop()
+        {
+            InitializeComponent();
+        }
 
-		private void Window_Loaded(object sender, RoutedEventArgs e)
-		{
-			//Set money display
-			tblMoney.Text = string.Format("Money: {0}", publicVariables.playerStats[1]);
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //Set money display
+            tblMoney.Text = string.Format("Money: {0}", publicVariables.playerStats[1]);
 
-			//Calculate the prices for the upgrades
-			CalculatePrices();
+            //Calculate the prices for the upgrades
+            CalculatePrices();
 
-			//Display levels
-			tblRodLevel.Text = string.Format("Rod - Level {0}", Convert.ToInt32(publicVariables.playerStats[2]) + 1);
-			tblBaitLevel.Text = string.Format("Bait - Level {0}", Convert.ToInt32(publicVariables.playerStats[3]) + 1);
-			tblStorageLevel.Text = string.Format("Storage - Level {0}", (Convert.ToInt32(publicVariables.playerStats[4]) + 10) / 10);
-		}
+            //Display levels
+            tblRodLevel.Text = string.Format("Rod - Level {0}", Convert.ToInt32(publicVariables.playerStats[2]) + 1);
+            tblBaitLevel.Text = string.Format("Bait - Level {0}", Convert.ToInt32(publicVariables.playerStats[3]) + 1);
+            tblStorageLevel.Text = string.Format("Storage - Level {0}", (Convert.ToInt32(publicVariables.playerStats[4]) + 10) / 10);
+        }
 
-		private void btnUpgradeRod_Click(object sender, RoutedEventArgs e)
-		{
-			if (Convert.ToInt32(publicVariables.playerStats[1]) >= rodPrice)
-			{
-				//Remove money from player
-				wndGame.AddMoney(-Convert.ToDouble(rodPrice));
+        private void btnUpgradeRod_Click(object sender, RoutedEventArgs e)
+        {
+            if (Convert.ToInt32(publicVariables.playerStats[1]) >= rodPrice)
+            {
+                //Remove money from player
+                wndGame.AddMoney(-Convert.ToDouble(rodPrice));
 
-				//Upgrade level and display new level
-				publicVariables.playerStats[2] = Convert.ToString(Convert.ToInt32(publicVariables.playerStats[2]) + 1);
-				tblRodLevel.Text = string.Format("Rod - Level {0}", Convert.ToInt32(publicVariables.playerStats[2]) + 1);
+                //Upgrade level and display new level
+                publicVariables.playerStats[2] = Convert.ToString(Convert.ToInt32(publicVariables.playerStats[2]) + 1);
+                tblRodLevel.Text = string.Format("Rod - Level {0}", Convert.ToInt32(publicVariables.playerStats[2]) + 1);
 
-				//Update and display new price
-				CalculatePrices();
+                //Update and display new price
+                CalculatePrices();
 
-				//Update money display
-				tblMoney.Text = string.Format("Money: {0}", publicVariables.playerStats[1]);
-			}
-		}
+                //Update money display
+                tblMoney.Text = string.Format("Money: {0}", publicVariables.playerStats[1]);
+            }
+        }
 
-		private void CalculatePrices()
-		{
-			//Calculate prices for the next level
-			rodPrice = (Convert.ToInt32(publicVariables.playerStats[2]) + 1) * 120;
-			baitPrice = (Convert.ToInt32(publicVariables.playerStats[3]) + 1) * 550;
-			storagePrice = ((Convert.ToInt32(publicVariables.playerStats[4]) + 10) / 10) * 1100;
+        private void CalculatePrices()
+        {
+            //Calculate prices for the next level
+            rodPrice = (Convert.ToInt32(publicVariables.playerStats[2]) + 1) * 120;
+            baitPrice = (Convert.ToInt32(publicVariables.playerStats[3]) + 1) * 1;
+            storagePrice = ((Convert.ToInt32(publicVariables.playerStats[4]) + 10) / 10) * 1100;
 
-			//Show prices
-			tblRodCost.Text = string.Format("Cost: {0}", Convert.ToString(rodPrice));
-			tblBaitCost.Text = string.Format("Cost: {0}", Convert.ToString(baitPrice));
-			tblStorageCost.Text = string.Format("Cost: {0}", Convert.ToString(storagePrice));
-		}
+            //Show prices
+            tblRodCost.Text = string.Format("Cost: {0}", Convert.ToString(rodPrice));
+            tblBaitCost.Text = string.Format("Cost: {0}", Convert.ToString(baitPrice));
+            tblStorageCost.Text = string.Format("Cost: {0}", Convert.ToString(storagePrice));
+        }
 
-		private void btnUpgradeBait_Click(object sender, RoutedEventArgs e)
-		{
-			if (Convert.ToInt32(publicVariables.playerStats[1]) >= baitPrice)
-			{
-				//Remove money from player
-				wndGame.AddMoney(-Convert.ToDouble(baitPrice));
 
-				//Upgrade level and display new level
-				publicVariables.playerStats[3] = Convert.ToString(Convert.ToInt32(publicVariables.playerStats[3]) + 1);
-				tblBaitLevel.Text = string.Format("Bait - Level {0}", Convert.ToInt32(publicVariables.playerStats[3]) + 1);
+        private void btnUpgradeBait_Click(object sender, RoutedEventArgs e)
+        {
 
-				//Update and display new price
-				CalculatePrices();
+            if (Convert.ToInt32(publicVariables.playerStats[1]) >= baitPrice)
+            {
+                //Remove money from player
+                wndGame.AddMoney(-Convert.ToDouble(baitPrice));
 
-				//Update money display
-				tblMoney.Text = string.Format("Money: {0}", publicVariables.playerStats[1]);
-			}
-		}
+                //Upgrade level and display new level
+                publicVariables.playerStats[3] = Convert.ToString(Convert.ToInt32(publicVariables.playerStats[3]) + 1);
+                tblBaitLevel.Text = string.Format("Bait - Level {0}", Convert.ToInt32(publicVariables.playerStats[3]) + 1);
 
-		private void btnUpgradeStorage_Click(object sender, RoutedEventArgs e)
-		{
-			if (Convert.ToInt32(publicVariables.playerStats[1]) >= storagePrice)
-			{
-				//Remove money from player
-				wndGame.AddMoney(-Convert.ToDouble(storagePrice));
+                //Update and display new price
+                CalculatePrices();
 
-				//Upgrade level and display new level
-				publicVariables.playerStats[4] = Convert.ToString(Convert.ToInt32(publicVariables.playerStats[4]) + 10);
-				tblStorageLevel.Text = string.Format("Storage - Level {0}", (Convert.ToInt32(publicVariables.playerStats[4]) + 10) / 10);
+                //Update money display
+                tblMoney.Text = string.Format("Money: {0}", publicVariables.playerStats[1]);
 
-				//Update and display new price
-				CalculatePrices();
+                //Check if the bait is max level and don't allow further upgrades
+                if (Convert.ToInt32(publicVariables.playerStats[3]) + 1 >= 10)
+                {
+                    btnUpgradeBait.IsEnabled = false;
+                    btnUpgradeBait.Content = "Maxed";
+                    tblBaitLevel.Text = "Bait - Level 10";
+                    tblBaitCost.Text = "Cost: ---";
 
-				//Update money display
-				tblMoney.Text = string.Format("Money: {0}", publicVariables.playerStats[1]);
-			}
-		}
-	}
+                }
+            }
+        }
+
+        private void btnUpgradeStorage_Click(object sender, RoutedEventArgs e)
+        {
+            if (Convert.ToInt32(publicVariables.playerStats[1]) >= storagePrice)
+            {
+                //Remove money from player
+                wndGame.AddMoney(-Convert.ToDouble(storagePrice));
+
+                //Upgrade level and display new level
+                publicVariables.playerStats[4] = Convert.ToString(Convert.ToInt32(publicVariables.playerStats[4]) + 10);
+                tblStorageLevel.Text = string.Format("Storage - Level {0}", (Convert.ToInt32(publicVariables.playerStats[4]) + 10) / 10);
+
+                //Update and display new price
+                CalculatePrices();
+
+                //Update money display
+                tblMoney.Text = string.Format("Money: {0}", publicVariables.playerStats[1]);
+            }
+        }
+    }
 }
