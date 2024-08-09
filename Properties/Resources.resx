@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="background_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\background_default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="imgBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\imgBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="background_fisher_idle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\background_fisher_idle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="imgBackgroundCasted" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\imgBackgroundCasted.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="background_fisher_rodcasted" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\background_fisher_rodcasted.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="imgBackgroundIdle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\imgBackgroundIdle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
