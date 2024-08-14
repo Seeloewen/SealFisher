@@ -119,7 +119,7 @@ namespace SealFisher
         {
             //Calculate prices for the next level
             rodPrice = (Player.rodPower + 1) * 120;
-            baitPrice = (Player.baitPower + 1) * 1;
+            baitPrice = (Player.baitPower + 1) * 550;
             storagePrice = (Player.inventorySlots + 10) / 10 * 1100;
 
             //Show prices
