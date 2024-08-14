@@ -27,7 +27,7 @@ namespace SealFisher
         private Random random = new Random();
         private List<FishType> fishTypes;
         private RodState rodState = RodState.idle;
-        private int fishCatchTime;
+        private double fishCatchTime;
 
         //Images
         private static Uri uriBackground = new Uri("pack://application:,,,/SealFisher;component/Resources/imgBackground.png");
@@ -145,8 +145,8 @@ namespace SealFisher
                         SetRodState(RodState.casted);
 
                         //Start timer for fish spawn
-                        fishCatchTime = random.Next(1, 12);
-                        fishTimer.Interval = fishCatchTime * 1000;
+                        GenerateFishigTime();
+                        fishTimer.Interval = (int)(fishCatchTime * 1000);
                         fishTimer.Start();
                     }
                     else
@@ -586,6 +586,11 @@ namespace SealFisher
         {
             //Get an image from an imagesource from a uri
             return BitmapFrame.Create(uri);
+        }
+        public void GenerateFishigTime()
+        {
+            int BaseValue = 13;
+            fishCatchTime = BaseValue / Player.baitPower + random.Next(0,4);    
         }
     }
 
