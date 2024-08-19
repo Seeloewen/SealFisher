@@ -12,5 +12,6 @@ namespace SealFisher
 		public static int rodPower = 1;
 		public static int baitPower = 1;
 		public static int inventorySlots = 10;
+		public static int Location = 1;
 	}
 }

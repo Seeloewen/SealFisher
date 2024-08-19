@@ -23,6 +23,8 @@ namespace SealFisher
         int rodPrice;
         int baitPrice;
         int storagePrice;
+        int LocationPrice;
+        bool baitPowerMaxed = false;
 
         //-- Constructor --//
 
@@ -45,6 +47,7 @@ namespace SealFisher
             tblRodLevel.Text = $"Rod - Level {Player.rodPower + 1}";
             tblBaitLevel.Text = $"Bait - Level {Player.baitPower + 1}";
             tblStorageLevel.Text = $"Storage - Level {(Player.inventorySlots + 10) / 10}";
+            tblLocationLevel.Text = $"Location - Level {Player.Location + 1}";
         }
 
         private void btnUpgradeRod_Click(object sender, RoutedEventArgs e)
@@ -84,12 +87,13 @@ namespace SealFisher
                 tblMoney.Text = $"Money: {Player.money}";
 
                 //Check if the bait is max level and don't allow further upgrades
-                if (Player.baitPower + 1 >= 10)
+                if (Player.baitPower >= 10)
                 {
                     btnUpgradeBait.IsEnabled = false;
                     btnUpgradeBait.Content = "Maxed";
                     tblBaitLevel.Text = "Bait - Level 10";
                     tblBaitCost.Text = "Cost: ---";
+                    baitPowerMaxed = true;
                 }
             }
         }
@@ -112,20 +116,53 @@ namespace SealFisher
                 tblMoney.Text = $"Money: {Player.money}";
             }
         }
+        private void btnUpgradeLocation_Click(object sender, RoutedEventArgs e)
+        {
+            if(Player.money >= LocationPrice)
+            {
+                //Remove money from player
+                wndGame.RemoveMoney(LocationPrice);
+
+                //Upgrade level and display new level
+                Player.Location++;
+                tblLocationLevel.Text = $"Location - Level {Player.Location + 1}";
+
+                //Update and display new price
+                CalculatePrices();
+
+                //Update money display
+                tblMoney.Text = $"Money: {Player.money}";
+
+                if(Player.Location >= 2)
+                {
+                    btnUpgradeLocation.IsEnabled = false;
+                    btnUpgradeLocation.Content = "Coming Soon";
+                    tblLocationCost.Text = "Cost: ???";
+                }
+            }
+        }
 
         //-- Custom Methods --//
 
         private void CalculatePrices()
         {
             //Calculate prices for the next level
-            rodPrice = (Player.rodPower + 1) * 120;
-            baitPrice = (Player.baitPower + 1) * 550;
+            rodPrice = (Player.rodPower + 1) * 120;            
+            baitPrice = (Player.baitPower + 1) * 300;
             storagePrice = (Player.inventorySlots + 10) / 10 * 1100;
+            LocationPrice = Player.Location * 10000;
 
             //Show prices
             tblRodCost.Text = $"Cost: {rodPrice}";
-            tblBaitCost.Text = $"Cost: {baitPrice}";
+            if (Player.baitPower <= 9)
+            {
+                tblBaitCost.Text = $"Cost: {baitPrice}";
+            }
             tblStorageCost.Text = $"Cost: {storagePrice}";
+            if (Player.Location == 1)
+            {
+                tblLocationCost.Text = $"Cost: {LocationPrice}";
+            }
         }
     }
 }

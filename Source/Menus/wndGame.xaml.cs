@@ -14,6 +14,11 @@ namespace SealFisher
         casted,
         catchable
     }
+    public enum Location
+    {
+        Location1,
+        Location2
+    }
 
     public partial class wndGame : Window
     {
@@ -36,7 +41,16 @@ namespace SealFisher
         private BitmapImage imgBackgroundCasted = new BitmapImage(uriBackgroundCasted);
         private static Uri uriBackgroundIdle = new Uri("pack://application:,,,/SealFisher;component/Resources/imgBackgroundIdle.png");
         private BitmapImage imgBackgroundIdle = new BitmapImage(uriBackgroundIdle);
-
+        private static Uri uriBackground1Boat = new Uri("pack://application:,,,/SealFisher;component/Resources/background1 boat.png");
+        private BitmapImage imgBackground1Boat = new BitmapImage(uriBackground1Boat);
+        private static Uri uriBackground1Boat2 = new Uri("pack://application:,,,/SealFisher;component/Resources/background1 boat2.png");
+        private BitmapImage imgBackground1Boat2 = new BitmapImage(uriBackground1Boat2);
+        private static Uri uriBackground1BoatFinished = new Uri("pack://application:,,,/SealFisher;component/Resources/background1 boat Finish.png");
+        private BitmapImage imgBackgroundIdle1BoatFinished = new BitmapImage(uriBackground1BoatFinished);
+        private static Uri uriBackground2Idle = new Uri("pack://application:,,,/SealFisher;component/Resources/Background 2 idle.png");
+        private BitmapImage imgBackground2Idle = new BitmapImage(uriBackground2Idle);
+        private static Uri uriBackground2Casted = new Uri("pack://application:,,,/SealFisher;component/Resources/Background 2 rodcasted.png");
+        private BitmapImage imgBackground2Casted = new BitmapImage(uriBackground2Casted);
         //Menus
         private wndInventory wndInventory;
         private wndShop wndShop;
@@ -216,6 +230,7 @@ namespace SealFisher
                         file.WriteLine(Player.baitPower);
                         file.WriteLine(Player.inventorySlots);
                         file.WriteLine(Player.startDate);
+                        file.WriteLine(Player.Location);
                     }
 
                     //Show save confirmation if enabled
@@ -258,6 +273,7 @@ namespace SealFisher
                     Player.baitPower = int.Parse(loadedStats[2]);
                     Player.inventorySlots = int.Parse(loadedStats[3]);
                     Player.startDate = loadedStats[4];
+                    Player.Location = int.Parse(loadedStats[5]);
 
                     //Update UI elements
                     SetMoney(Player.money);

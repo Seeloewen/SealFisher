@@ -33,8 +33,8 @@
 		<Border x:Name="bdrLocation" BorderBrush="Black" BorderThickness="1" Margin="10,285,10,210">
 			<Canvas x:Name="cvsLocation" Margin="-1,0,-1,0" Height="58" VerticalAlignment="Top">
 				<TextBlock x:Name="tblLocationLevel" TextWrapping="Wrap" Text="Location - Level 2" FontSize="15" FontWeight="DemiBold" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="9" VerticalAlignment="Top"/>
-				<TextBlock x:Name="tblLocationCost" TextWrapping="Wrap" Text="Cost: ???" FontSize="15" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="29" VerticalAlignment="Top"/>
-				<Button x:Name="btnUpgradeLocation" Content="Coming soon..." Width="126" RenderTransformOrigin="0.577,0.253" FontSize="15" HorizontalAlignment="Center" Canvas.Left="205" Canvas.Top="18" VerticalAlignment="Top" IsEnabled="False"/>
+				<TextBlock x:Name="tblLocationCost" TextWrapping="Wrap" Text="Cost: x Money" FontSize="15" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="29" VerticalAlignment="Top"/>
+				<Button x:Name="btnUpgradeLocation" Content="Upgrade" Width="126" RenderTransformOrigin="0.577,0.253" FontSize="15" HorizontalAlignment="Center" Canvas.Left="205" Canvas.Top="18" VerticalAlignment="Top" Click="btnUpgradeLocation_Click"/>
 			</Canvas>
 		</Border>
 	</Grid>
