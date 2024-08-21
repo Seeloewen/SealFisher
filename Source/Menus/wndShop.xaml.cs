@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 
 namespace SealFisher
@@ -24,7 +25,6 @@ namespace SealFisher
         int baitPrice;
         int storagePrice;
         int LocationPrice;
-        bool baitPowerMaxed = false;
 
         //-- Constructor --//
 
@@ -40,14 +40,14 @@ namespace SealFisher
             //Set money display
             tblMoney.Text = $"Money: {Player.money}";
 
-            //Calculate the prices for the upgrades
-            CalculatePrices();
-
             //Display levels
             tblRodLevel.Text = $"Rod - Level {Player.rodPower + 1}";
             tblBaitLevel.Text = $"Bait - Level {Player.baitPower + 1}";
             tblStorageLevel.Text = $"Storage - Level {(Player.inventorySlots + 10) / 10}";
             tblLocationLevel.Text = $"Location - Level {Player.Location + 1}";
+
+            //Calculate the prices for the upgrades
+            CalculatePrices();
         }
 
         private void btnUpgradeRod_Click(object sender, RoutedEventArgs e)
@@ -93,7 +93,6 @@ namespace SealFisher
                     btnUpgradeBait.Content = "Maxed";
                     tblBaitLevel.Text = "Bait - Level 10";
                     tblBaitCost.Text = "Cost: ---";
-                    baitPowerMaxed = true;
                 }
             }
         }
@@ -133,11 +132,21 @@ namespace SealFisher
                 //Update money display
                 tblMoney.Text = $"Money: {Player.money}";
 
-                if(Player.Location >= 2)
+
+                wndGame.btnSwitchLocationForward.Visibility = Visibility.Visible;
+                wndGame.btnCast.Visibility = Visibility.Hidden;
+                wndGame.tblCaughtFish.Text = "You have to build several times";
+                wndGame.tblCaughtFish.Visibility = Visibility.Visible;
+                wndGame.StopAllTimers();
+                wndGame.caughtNotifcationTimer.Interval = 5000;
+                wndGame.caughtNotifcationTimer.Start();
+
+                if (Player.Location >= 2)
                 {
                     btnUpgradeLocation.IsEnabled = false;
                     btnUpgradeLocation.Content = "Coming Soon";
                     tblLocationCost.Text = "Cost: ???";
+
                 }
             }
         }
@@ -158,10 +167,24 @@ namespace SealFisher
             {
                 tblBaitCost.Text = $"Cost: {baitPrice}";
             }
+            if (Player.baitPower >= 10)
+            {
+                btnUpgradeBait.IsEnabled = false;
+                btnUpgradeBait.Content = "Maxed";
+                tblBaitLevel.Text = "Bait - Level 10";
+                tblBaitCost.Text = "Cost: ---";
+            }
             tblStorageCost.Text = $"Cost: {storagePrice}";
             if (Player.Location == 1)
             {
                 tblLocationCost.Text = $"Cost: {LocationPrice}";
+            }
+            if (Player.Location >= 2)
+            {
+                btnUpgradeLocation.IsEnabled = false;
+                btnUpgradeLocation.Content = "Coming Soon";
+                tblLocationCost.Text = "Cost: ???";
+
             }
         }
     }

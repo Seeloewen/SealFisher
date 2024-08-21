@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using static System.Environment;
 
 namespace SealFisher
@@ -19,6 +20,13 @@ namespace SealFisher
         Location1,
         Location2
     }
+    public enum BuildingProgress
+    {
+        none,
+        start,
+        middle,
+        Finished
+    }
 
     public partial class wndGame : Window
     {
@@ -27,12 +35,15 @@ namespace SealFisher
 
         //General - Using Windows Forms Timers here as they have a slightly better acurracy on low tickrates
         private System.Windows.Forms.Timer fishTimer = new System.Windows.Forms.Timer();
-        private System.Windows.Forms.Timer caughtNotifcationTimer = new System.Windows.Forms.Timer();
+        public System.Windows.Forms.Timer caughtNotifcationTimer = new System.Windows.Forms.Timer();
         private System.Windows.Forms.Timer fishWarningDisappearTimer = new System.Windows.Forms.Timer();
         private Random random = new Random();
         private List<FishType> fishTypes;
         private RodState rodState = RodState.idle;
+        private BuildingProgress buildingProgress = BuildingProgress.none;
+        private Location location = Location.Location1;
         private double fishCatchTime;
+        public int Locationmultiplier = 1;
 
         //Images
         private static Uri uriBackground = new Uri("pack://application:,,,/SealFisher;component/Resources/imgBackground.png");
@@ -81,6 +92,8 @@ namespace SealFisher
             CreateGameDirectory();
             LoadGame();
             InitializeFish();
+            Buildable();
+            SetLocationMultiplier();
         }
 
         private void fishTimer_Tick(object sender, EventArgs e)
@@ -231,6 +244,7 @@ namespace SealFisher
                         file.WriteLine(Player.inventorySlots);
                         file.WriteLine(Player.startDate);
                         file.WriteLine(Player.Location);
+                        file.WriteLine(buildingProgress);
                     }
 
                     //Show save confirmation if enabled
@@ -274,6 +288,8 @@ namespace SealFisher
                     Player.inventorySlots = int.Parse(loadedStats[3]);
                     Player.startDate = loadedStats[4];
                     Player.Location = int.Parse(loadedStats[5]);
+                    string enumString = loadedStats[6].ToString();
+                    GetBuildingProgress(enumString);
 
                     //Update UI elements
                     SetMoney(Player.money);
@@ -283,8 +299,31 @@ namespace SealFisher
                     MessageBox.Show($"Could not load your game progress: {ex.Message}", "Error loading game", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            if (Player.Location == 2)
+            {
+                btnSwitchLocationForward.Visibility = Visibility.Visible;
+            }
         }
-
+        public BuildingProgress GetBuildingProgress(string enumString)
+        {
+            switch (enumString)
+            {
+                case "none":
+                    btnSwitchLocationForward.Content = "Build";
+                    return buildingProgress = BuildingProgress.none;
+                case "start":
+                    btnSwitchLocationForward.Content = "Build";
+                    return buildingProgress = BuildingProgress.start;
+                case "middle":
+                    btnSwitchLocationForward.Content = "Build";
+                    return buildingProgress = BuildingProgress.middle;
+                case "Finished":
+                    btnSwitchLocationForward.Content = "Location 2";
+                    return buildingProgress = BuildingProgress.Finished;
+                default:
+                    return buildingProgress = BuildingProgress.none;
+            }
+        }
         public Rarity GetRarityFromString(string rarity)
         {
             switch (rarity)
@@ -331,12 +370,12 @@ namespace SealFisher
         {
 
             //Calculate raw chances for rarities based on rod power
-            double commonChance = 0.6 - 0.006 * Player.rodPower;
-            double trashChance = 0.35 - 0.005 * Player.rodPower;
-            double rareChance = 0.05 + 0.003 * Player.rodPower;
-            double superRareChance = 0.03 + 0.001 * Player.rodPower;
-            double legendaryChance = 0.01 + 0.0005 * Player.rodPower;
-            double specialChance = 0.005 + 0.0001 * Player.rodPower;
+            double commonChance = 0.6 - 0.006 * Player.rodPower * Locationmultiplier;
+            double trashChance = 0.35 - 0.005 * Player.rodPower * Locationmultiplier;
+            double rareChance = 0.05 + 0.003 * Player.rodPower * Locationmultiplier;
+            double superRareChance = 0.03 + 0.001 * Player.rodPower * Locationmultiplier;
+            double legendaryChance = 0.01 + 0.0005 * Player.rodPower * Locationmultiplier;
+            double specialChance = 0.005 + 0.0001 * Player.rodPower * Locationmultiplier;
 
             //Calculate sum of the chances
             double totalChance = commonChance + trashChance + rareChance + superRareChance + legendaryChance + specialChance;
@@ -374,21 +413,43 @@ namespace SealFisher
                 //Rod is not thrown out
                 btnCast.Content = "Cast rod";
                 rodState = RodState.idle;
-                Background = new ImageBrush() { ImageSource = GetImageSource(uriBackgroundIdle) };
+                if(location == Location.Location1)
+                {
+                    Background = new ImageBrush() { ImageSource = GetImageSource(uriBackgroundIdle) };
+                }
+                else if(location == Location.Location2)
+                {
+                    Background = new ImageBrush() { ImageSource = GetImageSource(uriBackground2Idle) };
+                }
+                
             }
             else if (state == RodState.catchable)
             {
                 //Rod is thrown out and there is a catchable fish
                 btnCast.Content = "Catch fish";
                 rodState = RodState.catchable;
-                Background = new ImageBrush() { ImageSource = GetImageSource(uriBackgroundCasted) };
+                if (location == Location.Location1)
+                {
+                   Background = new ImageBrush() { ImageSource = GetImageSource(uriBackgroundCasted) };
+                }
+                else if(location == Location.Location2)
+                {
+                    Background = new ImageBrush() { ImageSource = GetImageSource(uriBackground2Casted) };
+                }
             }
             else if (state == RodState.casted)
             {
                 //rod is thrown out but there is no fish
                 btnCast.Content = "Reel rod in";
                 rodState = RodState.casted;
-                Background = new ImageBrush() { ImageSource = GetImageSource(uriBackgroundCasted)} ;
+                if (location == Location.Location1)
+                {
+                    Background = new ImageBrush() { ImageSource = GetImageSource(uriBackgroundCasted) };
+                }
+                else if (location == Location.Location2)
+                {
+                    Background = new ImageBrush() { ImageSource = GetImageSource(uriBackground2Casted) };
+                }
             }
         }
 
@@ -606,7 +667,77 @@ namespace SealFisher
         public void GenerateFishigTime()
         {
             int BaseValue = 13;
-            fishCatchTime = BaseValue / Player.baitPower + random.Next(0,4);    
+            fishCatchTime = BaseValue / Player.baitPower * Locationmultiplier + random.Next(0,4);    
+        }
+
+        private void btnSwitchLocationForward_Click(object sender, RoutedEventArgs e)
+        {
+            if (buildingProgress == BuildingProgress.none)
+            {
+                Background = new ImageBrush() { ImageSource = GetImageSource(uriBackground1Boat) };
+                buildingProgress = BuildingProgress.start;
+            }
+            else if (buildingProgress == BuildingProgress.start)
+            {
+                Background = new ImageBrush() { ImageSource = GetImageSource(uriBackground1Boat2) };
+                buildingProgress = BuildingProgress.middle;
+            }
+            else if(buildingProgress == BuildingProgress.middle)
+            {
+                Background = new ImageBrush() { ImageSource = GetImageSource(uriBackground1BoatFinished) };
+                buildingProgress = BuildingProgress.Finished;
+                btnSwitchLocationForward.Content = "Location 2";
+            }
+            else if(buildingProgress == BuildingProgress.Finished && location == Location.Location1)
+            {
+                Background = new ImageBrush() { ImageSource = GetImageSource(uriBackground2Idle) };
+                location = Location.Location2;
+                btnSwitchLocationForward.Visibility = Visibility.Hidden;
+                btnSwitchLocationBackward.Visibility = Visibility.Visible;
+                btnCast.Visibility = Visibility.Visible;
+                StopAllTimers();
+                SetRodState(RodState.idle);
+                SetLocationMultiplier();
+            }
+        }
+
+        private void btnSwitchLocationBackward_Click(object sender, RoutedEventArgs e)
+        {
+            if(location == Location.Location2) 
+            {
+                Background = new ImageBrush() { ImageSource = GetImageSource(uriBackgroundIdle) };
+                location = Location.Location1;
+                btnSwitchLocationBackward.Visibility = Visibility.Hidden;
+                btnSwitchLocationForward.Visibility = Visibility.Visible;
+                btnCast.Visibility = Visibility.Visible;
+                StopAllTimers();
+                SetRodState(RodState.idle);
+                SetLocationMultiplier();
+            }
+        }
+        public void StopAllTimers()
+        {
+            fishTimer.Stop();
+            fishWarningDisappearTimer.Stop();
+            caughtNotifcationTimer.Stop();
+        }
+        public void Buildable()
+        {
+            if(Player.Location == 2 && (buildingProgress == BuildingProgress.none || buildingProgress == BuildingProgress.start || buildingProgress == BuildingProgress.middle))
+            {
+                btnCast.Visibility = Visibility.Hidden;
+            }
+        }
+        public void SetLocationMultiplier()
+        {
+            if(location == Location.Location1)
+            {
+                Locationmultiplier = 1;
+            }
+            else if (location == Location.Location2)
+            {
+                Locationmultiplier = 2;
+            }
         }
     }
 
