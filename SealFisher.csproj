@@ -12,19 +12,14 @@
     <SupportedOSPlatformVersion>10.0.20348.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Resource Include="Resources\imgBackground.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
+    <None Remove="Resources\Background 2 idle.png" />
+    <None Remove="Resources\Background 2 rodcasted.png" />
+    <None Remove="Resources\background1 boat Finish.png" />
+    <None Remove="Resources\background1 boat.png" />
+    <None Remove="Resources\background1 boat2.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\imgBackgroundIdle.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\imgBackgroundCasted.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Resources\**\*.*" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
