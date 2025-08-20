@@ -23,6 +23,7 @@
         </TextBlock>
         <TextBlock x:Name="tblCaughtFish" TextWrapping="Wrap" Text="Caught fish {name} ({rarity}) weighing {weight}KG" Margin="253,106,230,0" FontSize="40" Visibility="Hidden" FontWeight="SemiBold" FontStyle="Italic" TextAlignment="Center" Height="130" VerticalAlignment="Top"/>
         <Button x:Name="btnInventory" Content="Inventory" Margin="0,25,35,0" VerticalAlignment="Top" Height="34" FontSize="18" Click="btnInventory_Click" HorizontalAlignment="Right" Width="101"/>
+        <Button x:Name="btnAchievements" Content="Achievements" Margin="0,75,35,0" VerticalAlignment="Top" Height="34" FontSize="15" Click="btnAchievements_Click" HorizontalAlignment="Right" Width="101"/>
         <Button x:Name="btnDebugFish" Content="Debug - Give 10 fish" Margin="24,64,0,0" Click="btnDebugGiveFish" FontSize="18" HorizontalAlignment="Left" Width="242" RenderTransformOrigin="1.3,0.675" Height="35" VerticalAlignment="Top" Visibility="Hidden"/>
         <TextBlock x:Name="tblMoney" TextWrapping="Wrap" Text="Money: 0" Margin="24,11,0,0" FontSize="30" Height="48" VerticalAlignment="Top" HorizontalAlignment="Left" Width="242"/>
         <Button x:Name="btnShop" Content="Shop" Margin="0,25,152,0" FontSize="18" Height="34" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102" Click="btnShop_Click"/>

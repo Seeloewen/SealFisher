@@ -65,6 +65,7 @@ namespace SealFisher
         //Menus
         private wndInventory wndInventory;
         private wndShop wndShop;
+        private wndAchievements wndAchievements;
 
         //Directories and files
         static string appData = GetFolderPath(SpecialFolder.ApplicationData);
@@ -156,6 +157,11 @@ namespace SealFisher
             //Open shop window
             wndShop = new wndShop() { Owner = this };
             wndShop.ShowDialog();
+        }
+        private void btnAchievements_Click(object sender, RoutedEventArgs e)
+        {
+            wndAchievements = new wndAchievements() { Owner = this };
+            wndAchievements.ShowDialog();
         }
 
         //-- Custom Methods --//
@@ -739,6 +745,8 @@ namespace SealFisher
                 Locationmultiplier = 2;
             }
         }
+
+       
     }
 
     //Fish rarity, used to calculate the chances for getting specific fish types
