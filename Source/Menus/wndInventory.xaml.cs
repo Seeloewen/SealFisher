@@ -233,6 +233,10 @@ namespace SealFisher
             soldFishAmount++;
             earnedMoney = Math.Round(earnedMoney + fish.weight * rarityMultiplier);
             soldFish.Add(fish);
+            if(Player.Ach2 == false)
+            {
+                Player.Ach2 = true;
+            }
         }
 
         public void RefreshInventory()

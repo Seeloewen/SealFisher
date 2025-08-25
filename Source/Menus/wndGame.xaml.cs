@@ -66,6 +66,7 @@ namespace SealFisher
         private wndInventory wndInventory;
         private wndShop wndShop;
         private wndAchievements wndAchievements;
+        private wndStatistics wndStatistics;
 
         //Directories and files
         static string appData = GetFolderPath(SpecialFolder.ApplicationData);
@@ -163,6 +164,11 @@ namespace SealFisher
             wndAchievements = new wndAchievements() { Owner = this };
             wndAchievements.ShowDialog();
         }
+        private void btnStatistics_Click(object sender, RoutedEventArgs e)
+        {
+            wndStatistics = new wndStatistics() { Owner = this };
+            wndStatistics.ShowDialog();
+        }
 
         //-- Custom Methods --//
 
@@ -199,6 +205,7 @@ namespace SealFisher
                     fishWarningDisappearTimer.Stop();
                     tblFishWarning.Visibility = Visibility.Hidden;
                     GenerateFish();
+                    UpdateFishAchievements();
                     break;
             }
         }
@@ -251,6 +258,22 @@ namespace SealFisher
                         file.WriteLine(Player.startDate);
                         file.WriteLine(Player.Location);
                         file.WriteLine(buildingProgress);
+                        file.WriteLine(Player.Ach1);
+                        file.WriteLine(Player.Ach2);
+                        file.WriteLine(Player.Ach3);
+                        file.WriteLine(Player.Ach4);
+                        file.WriteLine(Player.Ach5);
+                        file.WriteLine(Player.Ach6);
+                        file.WriteLine(Player.Ach7);
+                        file.WriteLine(Player.Ach8);
+                        file.WriteLine(Player.Ach9);
+                        file.WriteLine(Player.FishStat);
+                        file.WriteLine(Player.TrashFishStat);
+                        file.WriteLine(Player.CommonFishStat);
+                        file.WriteLine(Player.RareFishStat);
+                        file.WriteLine(Player.SuperRareFishStat);
+                        file.WriteLine(Player.LegendaryFishStat);
+                        file.WriteLine(Player.SpecialFishStat);
                     }
 
                     //Show save confirmation if enabled
@@ -295,7 +318,24 @@ namespace SealFisher
                     Player.startDate = loadedStats[4];
                     Player.Location = int.Parse(loadedStats[5]);
                     string enumString = loadedStats[6].ToString();
+                    Player.Ach1 = bool.Parse(loadedStats[7]);
+                    Player.Ach2 = bool.Parse(loadedStats[8]);
+                    Player.Ach3 = bool.Parse(loadedStats[9]);
+                    Player.Ach4 = bool.Parse(loadedStats[10]);
+                    Player.Ach5 = bool.Parse(loadedStats[11]);
+                    Player.Ach6 = bool.Parse(loadedStats[12]);
+                    Player.Ach7 = bool.Parse(loadedStats[13]);
+                    Player.Ach8 = bool.Parse(loadedStats[14]);
+                    Player.Ach9 = bool.Parse(loadedStats[15]);
+                    Player.FishStat = int.Parse(loadedStats[16]);
+                    Player.TrashFishStat = int.Parse(loadedStats[17]);
+                    Player.CommonFishStat = int.Parse(loadedStats[18]);
+                    Player.RareFishStat = int.Parse(loadedStats[19]);
+                    Player.SuperRareFishStat = int.Parse(loadedStats[20]);
+                    Player.LegendaryFishStat = int.Parse(loadedStats[21]);
+                    Player.SpecialFishStat = int.Parse(loadedStats[22]);
                     GetBuildingProgress(enumString);
+                    if (buildingProgress == BuildingProgress.Finished) Player.Ach8 = true;
 
                     //Update UI elements
                     SetMoney(Player.money);
@@ -329,6 +369,16 @@ namespace SealFisher
                 default:
                     return buildingProgress = BuildingProgress.none;
             }
+        }
+        public void UpdateFishAchievements()
+        {
+            if(Player.FishStat >= 1) Player.Ach1 = true;
+            if(Player.SealStat >= 1) Player.Ach3 = true;
+            if(Player.FishStat >= 100) Player.Ach4 = true;
+            if(Player.FishStat >= 1000) Player.Ach5 = true;
+            if(Player.FishStat >= 10000) Player.Ach6 = true;
+            if(Player.FishStat >= 100000) Player.Ach7 = true;
+            if (Player.SealStat >= 100) Player.Ach9 = true;
         }
         public Rarity GetRarityFromString(string rarity)
         {
@@ -498,153 +548,195 @@ namespace SealFisher
             //Common fish
             int fishNum = 0;
             string fishName = "";
+            Player.FishStat++;
 
             switch (rarity)
             {
                 case Rarity.Common:
                     fishNum = random.Next(1, 11);
+                    Player.CommonFishStat++;
 
                     switch (fishNum)
                     {
                         case 1:
                             fishName = "Trout";
+                            Player.TroutStat++;
                             break;
                         case 2:
                             fishName = "Salmon";
+                            Player.SalmonStat++;
                             break;
                         case 3:
                             fishName = "Tuna";
+                            Player.TunaStat++;
                             break;
                         case 4:
                             fishName = "Pike";
+                            Player.PikeStat++;
                             break;
                         case 5:
                             fishName = "Herring";
+                            Player.HerringStat++;
                             break;
                         case 6:
                             fishName = "Zander";
+                            Player.ZanderStat++;
                             break;
                         case 7:
                             fishName = "Eel";
+                            Player.EelStat++;
                             break;
                         case 8:
                             fishName = "Cod";
+                            Player.CodStat++;
                             break;
                         case 9:
                             fishName = "Catfish";
+                            Player.CatfishStat++;
                             break;
                         case 10:
                             fishName = "Carp";
+                            Player.CarpStat++;
                             break;
                     }
                     break;
                 case Rarity.Trash:
                     fishNum = random.Next(1, 6);
+                    Player.TrashFishStat++;
 
                     switch (fishNum)
                     {
                         case 1:
                             fishName = "Plastic bottle";
+                            Player.PlasticBottleStat++;
                             break;
                         case 2:
                             fishName = "Metal can";
+                            Player.MetalCanStat++;
                             break;
                         case 3:
                             fishName = "Cigarrete";
+                            Player.CigarreteStat++;
                             break;
                         case 4:
                             fishName = "Broken phone";
+                            Player.BrokenPhoneStat++;
                             break;
                         case 5:
                             fishName = "Plastic bag";
+                            Player.PlasticBagStat++;
                             break;
                     }
                     break;
                 case Rarity.Rare:
                     fishNum = random.Next(1, 6);
+                    Player.RareFishStat++;
 
                     switch(fishNum)
                     {
                         case 1:
                             fishName = "Coelacanth";
+                            Player.CoelacanthStat++;
                             break;
                         case 2:
                             fishName = "Arapaima";
+                            Player.ArapaimaStat++;
                             break;
                         case 3:
                             fishName = "Megamouth shark";
+                            Player.MegamouthSharkStat++;
                             break;
                         case 4:
                             fishName = "Manta ray";
+                            Player.MantaRayStat++;
                             break;
                         case 5:
                             fishName = "Olm";
+                            Player.OlmStat++;
                             break;
                     }
                     break;
                 case Rarity.SuperRare:
                     fishNum = random.Next(1, 6);
+                    Player.SuperRareFishStat++;
 
                     switch(fishNum)
                     {
                         case 1:
                             fishName = "Blacksnake cusk-eel";
+                            Player.BlacksnakeCuskEelStat++;
                             break;
                         case 2:
                             fishName = "Hainan dogfish";
+                            Player.HainanDogfishStat++;
                             break;
                         case 3:
                             fishName = "Denison barb";
+                            Player.DenisonBarbStat++;
                             break;
                         case 4:
                             fishName = "Harlequin ghost pipefish";
+                            Player.HarlequinGhostPipefishStat++;
                             break;
                         case 5:
                             fishName = "Devil's Hole pupfish";
+                            Player.DevilsHolePupfishStat++;
                             break;
                     }
                     break;
                 case Rarity.Legendary:
                     fishNum = random.Next(1, 6);
+                    Player.LegendaryFishStat++;
 
                     switch(fishNum)
                     {
                         case 1:
                             fishName = "Salamanderfish";
+                            Player.SalamanderfishStat++;
                             break;
                         case 2:
                             fishName = "Red-mouthed cichlid";
+                            Player.RedMouthedCichlidStat++;
                             break;
                         case 3:
                             fishName = "Longfin triplefin";
+                            Player.LongfinTriplefinStat++;
                             break;
                         case 4:
                             fishName = "Great White Shark";
+                            Player.GreatWhiteSharkStat++;
                             break;
                         case 5:
                             fishName = "Chinese sturgeon";
+                            Player.ChineseSturgeonStat++;
                             break;
                     }
                     break;
                 case Rarity.Special:
                     fishNum = random.Next(1, 6);
+                    Player.SpecialFishStat++;
 
                     switch(fishNum)
                     {
                         case 1:
                             fishName = "Anchor";
+                            Player.AnchorStat++;
                             break;
                         case 2:
                             fishName = "Seal";
+                            Player.SealStat++;
                             break;
                         case 3:
                             fishName = "Diamond Sword";
+                            Player.DiamondSwordStat++;
                             break;
                         case 4:
                             fishName = "Nuclear Waste";
+                            Player.NuclearWasteStat++;
                             break;
                         case 5:
                             fishName = "Bomb";
+                            Player.BombStat++;
                             break;
                     }
                     break;
@@ -663,7 +755,6 @@ namespace SealFisher
             caughtNotifcationTimer.Stop();
             caughtNotifcationTimer.Interval = 5000;
             caughtNotifcationTimer.Start();
-
         }
         public static ImageSource GetImageSource(Uri uri)
         {
@@ -693,6 +784,7 @@ namespace SealFisher
                 Background = new ImageBrush() { ImageSource = GetImageSource(uriBackground1BoatFinished) };
                 buildingProgress = BuildingProgress.Finished;
                 btnSwitchLocationForward.Content = "Location 2";
+                if(!Player.Ach8)Player.Ach8 = true;
             }
             else if(buildingProgress == BuildingProgress.Finished && location == Location.Location1)
             {
@@ -746,7 +838,7 @@ namespace SealFisher
             }
         }
 
-       
+
     }
 
     //Fish rarity, used to calculate the chances for getting specific fish types
