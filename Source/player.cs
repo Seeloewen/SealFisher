@@ -13,6 +13,7 @@ namespace SealFisher
 		public static int baitPower = 1;
 		public static int inventorySlots = 10;
 		public static int Location = 1;
+        //Player Achievements
 		public static bool Ach1 = false;
 		public static bool Ach2 = false;
 		public static bool Ach3 = false;
@@ -22,7 +23,7 @@ namespace SealFisher
 		public static bool Ach7 = false;
 		public static bool Ach8 = false;
 		public static bool Ach9 = false;
-
+        //Player fish Stats
         public static int FishStat;
         public static int TroutStat;
         public static int SalmonStat;

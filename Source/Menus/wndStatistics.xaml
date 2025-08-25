@@ -26,13 +26,13 @@
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1" Margin="10">
                                 <Canvas VerticalAlignment="Top" Height="50">
-                                    <TextBlock Text="BaitPower:" FontSize="18"/>
+                                    <TextBlock Text="Bait Power:" FontSize="18"/>
                                     <TextBlock x:Name="tblBaitPowerStat" Margin="0,25,0,0" Text="0" FontSize="18"/>
                                 </Canvas>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1" Margin="10">
                                 <Canvas VerticalAlignment="Top" Height="50">
-                                    <TextBlock Text="InventorySlots:" FontSize="18"/>
+                                    <TextBlock Text="Inventory Slots:" FontSize="18"/>
                                     <TextBlock x:Name="tblInvSlotsStat" Margin="0,25,0,0" Text="0" FontSize="18"/>
                                 </Canvas>
                             </Border>
@@ -47,49 +47,49 @@
                 </Grid>
                 
             </TabItem>
-            <TabItem Header="GeneralFishStats" FontSize="13">
+            <TabItem Header="General Fish Stats" FontSize="13">
                 <Grid Background="#FFE5E5E5">
                     <ScrollViewer>
                         <StackPanel>
                             <Border BorderBrush="Black" BorderThickness="1" Margin="10">
                                 <Canvas VerticalAlignment="Top" Height="50">
-                                    <TextBlock Text="FishStat:" FontSize="18"/>
+                                    <TextBlock Text="Fish Caught:" FontSize="18"/>
                                     <TextBlock x:Name="tblFishStat" Margin="0,25,0,0" Text="0" FontSize="18"/>
                                 </Canvas>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1" Margin="10">
                                 <Canvas VerticalAlignment="Top" Height="50">
-                                    <TextBlock Text="Trash FishStat:" FontSize="18"/>
+                                    <TextBlock Text="Trash Caught:" FontSize="18"/>
                                     <TextBlock x:Name="tblTrashFishStat" Margin="0,25,0,0" Text="0" FontSize="18"/>
                                 </Canvas>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1" Margin="10">
                                 <Canvas VerticalAlignment="Top" Height="50">
-                                    <TextBlock Text="Common FishStat:" FontSize="18"/>
+                                    <TextBlock Text="Common Fish Caught:" FontSize="18"/>
                                     <TextBlock x:Name="tblCommonFishStat" Margin="0,25,0,0" Text="0" FontSize="18"/>
                                 </Canvas>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1" Margin="10">
                                 <Canvas VerticalAlignment="Top" Height="50">
-                                    <TextBlock Text="Rare FishStat:" FontSize="18"/>
+                                    <TextBlock Text="Rare Fish Caught:" FontSize="18"/>
                                     <TextBlock x:Name="tblRareFishStat" Margin="0,25,0,0" Text="0" FontSize="18"/>
                                 </Canvas>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1" Margin="10">
                                 <Canvas VerticalAlignment="Top" Height="50">
-                                    <TextBlock Text="SuperRare FishStat:" FontSize="18"/>
+                                    <TextBlock Text="SuperRare Fish Caught:" FontSize="18"/>
                                     <TextBlock x:Name="tblSuperRareFishStat" Margin="0,25,0,0" Text="0" FontSize="18"/>
                                 </Canvas>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1" Margin="10">
                                 <Canvas VerticalAlignment="Top" Height="50">
-                                    <TextBlock Text="Legandary FishStat:" FontSize="18"/>
-                                    <TextBlock x:Name="tblLegandaryFishStat" Margin="0,25,0,0" Text="0" FontSize="18"/>
+                                    <TextBlock Text="Legendary Fish Caught:" FontSize="18"/>
+                                    <TextBlock x:Name="tblLegendaryFishStat" Margin="0,25,0,0" Text="0" FontSize="18"/>
                                 </Canvas>
                             </Border>
                             <Border BorderBrush="Black" BorderThickness="1" Margin="10">
                                 <Canvas VerticalAlignment="Top" Height="50">
-                                    <TextBlock Text="Special FishStat:" FontSize="18"/>
+                                    <TextBlock Text="Special Fish Caught:" FontSize="18"/>
                                     <TextBlock x:Name="tblSpecialFishStat" Margin="0,25,0,0" Text="0" FontSize="18"/>
                                 </Canvas>
                             </Border>

@@ -15,7 +15,7 @@
                 <Style/>
             </Button.Style>
         </Button>
-        <TextBlock x:Name="tblDev" HorizontalAlignment="Left" Margin="10,0,0,10" TextWrapping="Wrap" Text="Early Dev Preview - Seeloewen - 09.08.2024" Width="719" FontSize="36" Height="41" VerticalAlignment="Bottom"/>
+        <TextBlock x:Name="tblDev" HorizontalAlignment="Left" Margin="10,0,0,10" TextWrapping="Wrap" Text="Early Access 1.0.0 - Seeloewen, Finni - 25.08.2025" Width="800" FontSize="36" Height="41" VerticalAlignment="Bottom"/>
         <TextBlock x:Name="tblFishWarning" TextWrapping="Wrap" Text="!" Margin="0,0,118,148" FontSize="150" FontWeight="Bold" Foreground="Red" Visibility="Hidden" RenderTransformOrigin="1.219,0.738" TextAlignment="Justify" HorizontalAlignment="Right" Width="58" Height="183" VerticalAlignment="Bottom">
             <TextBlock.FocusVisualStyle>
                 <Style/>
@@ -34,7 +34,7 @@
                 <Style/>
             </Button.Style>
         </Button>
-        <Button x:Name="btnSwitchLocationBackward" Content="Location1" FontSize="35" Click="btnSwitchLocationBackward_Click" ContentStringFormat="" HorizontalContentAlignment="Center" RenderTransformOrigin="0.319,-0.89" FontWeight="DemiBold" Height="100" VerticalAlignment="Bottom" HorizontalAlignment="left" Width="233" Visibility="Hidden" Margin="35,0,0,363">
+        <Button x:Name="btnSwitchLocationBackward" Content="Location 1" FontSize="35" Click="btnSwitchLocationBackward_Click" ContentStringFormat="" HorizontalContentAlignment="Center" RenderTransformOrigin="0.319,-0.89" FontWeight="DemiBold" Height="100" VerticalAlignment="Bottom" HorizontalAlignment="left" Width="233" Visibility="Hidden" Margin="35,0,0,363">
             <Button.Style>
                 <Style/>
             </Button.Style>

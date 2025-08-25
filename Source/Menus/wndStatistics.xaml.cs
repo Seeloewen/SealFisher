@@ -19,6 +19,9 @@ namespace SealFisher
     /// </summary>
     public partial class wndStatistics : Window
     {
+
+        //-- Constructor --//
+
         public wndStatistics()
         {
             InitializeComponent();
@@ -38,7 +41,7 @@ namespace SealFisher
             tblCommonFishStat.Text = $"{Player.CommonFishStat}";
             tblRareFishStat.Text = $"{Player.RareFishStat}";
             tblSuperRareFishStat.Text = $"{Player.SuperRareFishStat}";
-            tblLegandaryFishStat.Text = $"{Player.LegendaryFishStat}";
+            tblLegendaryFishStat.Text = $"{Player.LegendaryFishStat}";
             tblSpecialFishStat.Text = $"{Player.SpecialFishStat}";
         }
     }

@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -19,6 +20,9 @@ namespace SealFisher
     /// </summary>
     public partial class wndAchievements : Window
     {
+
+        //-- Constructor --//
+
         public wndAchievements()
         {
             InitializeComponent();
@@ -27,6 +31,7 @@ namespace SealFisher
 
         public void Achievementhandler()
         {
+            //Checks Achievement boxes if reached
             if(Player.Ach1) cbAchievement1.IsChecked = true;
             if(Player.Ach2) cbAchievement2.IsChecked = true;
             if(Player.Ach3) cbAchievement3.IsChecked = true;

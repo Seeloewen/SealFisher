@@ -354,6 +354,7 @@ namespace SealFisher
         {
             switch (enumString)
             {
+                //updates the buildingprogress
                 case "none":
                     btnSwitchLocationForward.Content = "Build";
                     return buildingProgress = BuildingProgress.none;
@@ -372,6 +373,7 @@ namespace SealFisher
         }
         public void UpdateFishAchievements()
         {
+            //Updates Achievements related to fish
             if(Player.FishStat >= 1) Player.Ach1 = true;
             if(Player.SealStat >= 1) Player.Ach3 = true;
             if(Player.FishStat >= 100) Player.Ach4 = true;
