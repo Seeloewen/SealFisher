@@ -274,6 +274,7 @@ namespace SealFisher
                         file.WriteLine(Player.SuperRareFishStat);
                         file.WriteLine(Player.LegendaryFishStat);
                         file.WriteLine(Player.SpecialFishStat);
+                        file.WriteLine(Player.SealStat);
                     }
 
                     //Show save confirmation if enabled
@@ -334,6 +335,7 @@ namespace SealFisher
                     Player.SuperRareFishStat = int.Parse(loadedStats[20]);
                     Player.LegendaryFishStat = int.Parse(loadedStats[21]);
                     Player.SpecialFishStat = int.Parse(loadedStats[22]);
+                    Player.SealStat = int.Parse(loadedStats[23]);
                     GetBuildingProgress(enumString);
                     if (buildingProgress == BuildingProgress.Finished) Player.Ach8 = true;
 
