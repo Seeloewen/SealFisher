@@ -434,11 +434,22 @@ namespace SealFisher
             double trashChance = 0.35 - 0.005 * Player.rodPower * Locationmultiplier;
             double rareChance = 0.05 + 0.003 * Player.rodPower * Locationmultiplier;
             double superRareChance = 0.03 + 0.001 * Player.rodPower * Locationmultiplier;
-            double legendaryChance = 0.01 + 0.0005 * Player.rodPower * Locationmultiplier;
-            double specialChance = 0.005 + 0.0001 * Player.rodPower * Locationmultiplier;
+            double legendaryChance = 0;
+            double specialChance = 0;
+            if (location == Location.Location1)
+            {
+                legendaryChance = 0;
+                specialChance = 0;
+            }
+            else if (location == Location.Location2) 
+            {
+                legendaryChance = 0.01 + 0.0005 * Player.rodPower * Locationmultiplier;
+                specialChance = 0.005 + 0.0001 * Player.rodPower * Locationmultiplier;
+            }
 
-            //Calculate sum of the chances
-            double totalChance = commonChance + trashChance + rareChance + superRareChance + legendaryChance + specialChance;
+
+                //Calculate sum of the chances
+                double totalChance = commonChance + trashChance + rareChance + superRareChance + legendaryChance + specialChance;
 
             //Normalize chances
             commonChance /= totalChance;
