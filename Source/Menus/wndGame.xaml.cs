@@ -436,12 +436,7 @@ namespace SealFisher
             double superRareChance = 0.03 + 0.001 * Player.rodPower * Locationmultiplier;
             double legendaryChance = 0;
             double specialChance = 0;
-            if (location == Location.Location1)
-            {
-                legendaryChance = 0;
-                specialChance = 0;
-            }
-            else if (location == Location.Location2) 
+            if (location == Location.Location2) 
             {
                 legendaryChance = 0.01 + 0.0005 * Player.rodPower * Locationmultiplier;
                 specialChance = 0.005 + 0.0001 * Player.rodPower * Locationmultiplier;
@@ -811,6 +806,7 @@ namespace SealFisher
                 StopAllTimers();
                 SetRodState(RodState.idle);
                 SetLocationMultiplier();
+                InitializeFish();
             }
         }
 
@@ -826,6 +822,7 @@ namespace SealFisher
                 StopAllTimers();
                 SetRodState(RodState.idle);
                 SetLocationMultiplier();
+                InitializeFish();
             }
         }
         public void StopAllTimers()
