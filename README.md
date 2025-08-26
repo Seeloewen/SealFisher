@@ -1,5 +1,7 @@
 # SealFisher
 
+![GitHub all releases](https://img.shields.io/github/downloads/Seeloewen/SealFisher/total?style=for-the-badge)
+
 This game is now mainly being developed by @Finni08 as a learning project. This repository may not always reflect the latest changes. Check his project for more information: https://github.com/Finni08/SealFisher
 
 A simple fishing game! You catch fish, sell them for ingame money and use that money to buy upgrades. The game hasn't got any real goal, you can set yourself your own goals, for example getting the biggest fish or getting as much money as possible.
