@@ -66,6 +66,15 @@ namespace SealFisher
 
                 //Update money display
                 tblMoney.Text = $"Money: {Player.money}";
+
+                //Check if the rod is max level and don't allow further upgrades
+                if(Player.rodPower >= 100)
+                {
+                    btnUpgradeRod.IsEnabled = false;
+                    btnUpgradeRod.Content = "Maxed";
+                    tblRodLevel.Text = "Bait - Level 100";
+                    tblRodCost.Text = "Cost: ---";
+                }
             }
         }
 
