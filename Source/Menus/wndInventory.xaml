@@ -5,5 +5,5 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SealFisher"
         mc:Ignorable="d"
-        Title="Inventory" Height="912" Width="525" Loaded="Window_Loaded" ResizeMode="NoResize" Unloaded="Window_Unloaded">
+        Title="Inventory" Height="912" Width="755" Loaded="Window_Loaded" ResizeMode="NoResize" Unloaded="Window_Unloaded">
 </Window>

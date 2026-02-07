@@ -34,6 +34,7 @@ namespace SealFisher
         public static List<Fish> soldFish = new List<Fish>();
         public static bool IsOpen;
         private int soldFishAmount;
+        private int archivedFishAmount;
         private double earnedMoney;
 
         //-- Constructor --//
@@ -115,6 +116,44 @@ namespace SealFisher
                 MessageBox.Show("You don't have any fish selected to sell", "Sell selected fish", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
+        void btnArchiveSelected_click(object sender, RoutedEventArgs e)
+        {
+            int selectedFishAmount = 0;
+
+            foreach (ItemSlot slot in slotList)
+            {
+                if (slot.slotCheckBox.IsChecked == true)
+                {
+                    selectedFishAmount++;
+                }
+            }
+            if (selectedFishAmount > 0)
+            {
+                //Reset archive stats
+                archivedFishAmount = 0;
+                
+
+                //Archive selected fish to save them
+                foreach (ItemSlot slot in slotList)
+                {
+                    if (slot.slotCheckBox.IsChecked == true)
+                    {
+                        //Archive the fish
+                        ArchiveFish(Player.inventory[slot.slotNumber]);
+                    }
+                }
+
+                //Refresh Inventory
+                RefreshInventory();
+
+                //Show confirmation message with archive stats
+                MessageBox.Show($"Archived {archivedFishAmount} fish.", "Archived fish", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("You don't have any fish selected to archive", "Archive selected fish", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -165,16 +204,27 @@ namespace SealFisher
             btnSellSelected.FontWeight = FontWeights.Bold;
             btnSellSelected.Click += btnSellSelected_Click;
 
+            //Create 'Archive selected' button
+            Button btnArchiveSelected = new Button();
+            btnArchiveSelected.Width = 220;
+            btnArchiveSelected.Height = 30;
+            btnArchiveSelected.Margin = new Thickness(480, 60, 0, 0);
+            btnArchiveSelected.FontSize = 15;
+            btnArchiveSelected.Content = "Archive selected fish";
+            btnArchiveSelected.FontWeight = FontWeights.Bold;
+            btnArchiveSelected.Click += btnArchiveSelected_click;
+
             //Place all top objects into header canvas
             Canvas cvsHeader = new Canvas();
             cvsHeader.Children.Add(tblHeader);
             cvsHeader.Children.Add(btnSellAll);
             cvsHeader.Children.Add(btnSellSelected);
+            cvsHeader.Children.Add(btnArchiveSelected);
             inventoryStackPanel.Children.Add(cvsHeader);
 
             //Create textblock for empty inventory
             TextBlock tblNoFish = new TextBlock();
-            tblNoFish.Margin = new Thickness(100, 400, 0, 0);
+            tblNoFish.Margin = new Thickness(200, 400, 0, 0);
             tblNoFish.FontSize = 30;
             tblNoFish.Text = "You don't have any fish!";
             if (Player.inventory.Count == 0)
@@ -235,6 +285,10 @@ namespace SealFisher
             soldFish.Add(fish);
             Player.Ach2 = true; 
         }
+        private void ArchiveFish(Fish fish)
+        {
+            archivedFishAmount++;
+        }
 
         public void RefreshInventory()
         {
@@ -276,7 +330,7 @@ namespace SealFisher
             slotCanvas.Children.Add(slotTextblock);
 
             //Add checkbox to canvas
-            slotCheckBox.Margin = new Thickness(415, 5, 0, 0);
+            slotCheckBox.Margin = new Thickness(645, 5, 0, 0);
             slotCanvas.Children.Add(slotCheckBox);
 
             //Set backcolor of slot depending on rarity
@@ -308,7 +362,7 @@ namespace SealFisher
             border.Margin = slotNumber == 0 ? new Thickness(25, 110, 0, 0) : new Thickness(25, 25, 0, 0);
 
             border.Height = 70;
-            border.Width = 440;
+            border.Width = 670;
             border.BorderBrush = Brushes.Black;
             border.BorderThickness = new Thickness(2);
             border.Child = slotCanvas;
