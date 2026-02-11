@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SealFisher.Source.Menus;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection.PortableExecutable;
@@ -56,6 +57,7 @@ namespace SealFisher
         public Button btnSave = new Button();
         public Button btnSwitchLocationForward = new Button();
         public Button btnSwitchLocationBackward = new Button();
+        public Button btnArchive = new Button();
         public Button btnDebugGiveFish = new Button();
         public TextBlock tblDev = new TextBlock();
         public TextBlock tblFishWarning = new TextBlock();
@@ -85,6 +87,7 @@ namespace SealFisher
         private wndShop wndShop;
         private wndAchievements wndAchievements;
         private wndStatistics wndStatistics;
+        private wndArchive wndArchive;
 
         //Directories and files
         static string appData = GetFolderPath(SpecialFolder.ApplicationData);
@@ -187,6 +190,11 @@ namespace SealFisher
         {
             wndStatistics = new wndStatistics() { Owner = this };
             wndStatistics.ShowDialog();
+        }
+        private void btnArchive_Click(object sender, RoutedEventArgs e)
+        {
+            wndArchive = new wndArchive() { Owner = this };
+            wndArchive.ShowDialog();
         }
 
         //-- Custom Methods --//
@@ -421,6 +429,15 @@ namespace SealFisher
             Canvas.SetRight(btnStatistics, 269);
             Canvas.SetTop(btnStatistics, 25);
 
+            btnArchive.Width = 101;
+            btnArchive.Height = 34;
+            btnArchive.FontSize = 18;
+            btnArchive.Content = "Archive";
+            btnArchive.Click += btnArchive_Click;
+            btnArchive.HorizontalContentAlignment = HorizontalAlignment.Center;
+            Canvas.SetRight(btnArchive, 152);
+            Canvas.SetTop(btnArchive, 75);
+
             btnSave.Width = 101;
             btnSave.Height = 34;
             btnSave.FontSize = 18;
@@ -504,6 +521,7 @@ namespace SealFisher
             cvsHeader.Children.Add(btnAchievements);
             cvsHeader.Children.Add(btnShop);
             cvsHeader.Children.Add(btnStatistics);
+            cvsHeader.Children.Add(btnArchive);
             cvsHeader.Children.Add(btnSave);
             cvsHeader.Children.Add(btnSwitchLocationForward);
             cvsHeader.Children.Add(btnSwitchLocationBackward);
