@@ -1,4 +1,5 @@
 ﻿using SealFisher;
+using SealFisher.Source.Menus;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
@@ -131,23 +132,29 @@ namespace SealFisher
             {
                 //Reset archive stats
                 archivedFishAmount = 0;
-                
 
-                //Archive selected fish to save them
-                foreach (ItemSlot slot in slotList)
+                if (selectedFishAmount > Player.archiveSlots - Player.archive.Count) 
                 {
-                    if (slot.slotCheckBox.IsChecked == true)
-                    {
-                        //Archive the fish
-                        ArchiveFish(Player.inventory[slot.slotNumber]);
-                    }
+                    MessageBox.Show("You dont have enough space in your Archive", "Achived fish", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
+                else
+                {
+                    //Archive selected fish to save them
+                    foreach (ItemSlot slot in slotList)
+                    {
+                        if (slot.slotCheckBox.IsChecked == true)
+                        {
+                            //Archive the fish
+                            ArchiveFish(Player.inventory[slot.slotNumber]);
+                        }
+                    }
 
-                //Refresh Inventory
-                RefreshInventory();
+                    //Refresh Inventory
+                    RefreshInventory();
 
-                //Show confirmation message with archive stats
-                MessageBox.Show($"Archived {archivedFishAmount} fish.", "Archived fish", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //Show confirmation message with archive stats
+                    MessageBox.Show($"Archived {archivedFishAmount} fish.", "Archived fish", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
             else
             {
@@ -237,7 +244,7 @@ namespace SealFisher
             {
                 for (int i = 0; i < Player.inventory.Count; i++)
                 {
-                    slotList.Add(new ItemSlot(i));
+                    slotList.Add(new ItemSlot(i,true));
                 }
             }
 
@@ -248,7 +255,7 @@ namespace SealFisher
             Content = inventoryScrollViewer;
 
             //Set header text depending on fish amount
-            tblHeader.Text = $"Inventory ({slotList.Count}/{Player.inventorySlots} fish)";
+            tblHeader.Text = $"Inventory ({slotList.Count}/{Player.archiveSlots} fish)";
         }
 
         private void SellFish(Fish fish)
@@ -287,6 +294,8 @@ namespace SealFisher
         }
         private void ArchiveFish(Fish fish)
         {
+            soldFish.Add(fish);
+            Player.archive.Add(fish);
             archivedFishAmount++;
         }
 
@@ -316,13 +325,19 @@ namespace SealFisher
         public Fish fish;
         public int slotNumber;
 
-        public ItemSlot(int num)
+        public ItemSlot(int num, bool isinventory)
         {
             slotNumber = num;
 
-            //Get item string and split it up
-            fish = Player.inventory[slotNumber];
-
+            //Get item string and split it up 
+            if (isinventory)
+            {
+                fish = Player.inventory[slotNumber];
+            }
+            else
+            {
+                fish = Player.archive[slotNumber];
+            }
             //Add textblock to canvas
             slotTextblock.Text = $"Fish #{slotNumber + 1}: {fish.name} ({fish.rarity})\nWeight: {fish.weight}KG - Caught on: {fish.caughtDate}";
             slotTextblock.FontSize = 20;
@@ -368,7 +383,14 @@ namespace SealFisher
             border.Child = slotCanvas;
 
             //Add slot to inventory
-            wndInventory.inventoryStackPanel.Children.Add(border);
+            if (isinventory)
+            {
+                wndInventory.inventoryStackPanel.Children.Add(border);
+            }
+            else
+            {
+                wndArchive.archiveStackPanel.Children.Add(border);
+            }
         }
     }
 }

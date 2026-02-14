@@ -94,6 +94,7 @@ namespace SealFisher
         static string gameDirectory = $"{appData}/SealFisher";
         string statsSaveFile = $"{gameDirectory}/statistics.txt";
         string inventorySaveFile = $"{gameDirectory}/inventory.txt";
+        string archiveSaveFile = $"{gameDirectory}/archive.txt";
 
         //-- Constructor --//
 
@@ -150,16 +151,6 @@ namespace SealFisher
             CastRod();
         }
 
-        private void btnInventory_Click(object sender, RoutedEventArgs e)
-        {
-            //Open inventory window
-            wndInventory = new wndInventory() { Owner = this };
-            if (wndInventory.IsOpen == false)
-            {
-                wndInventory.Show();
-            }
-        }
-
         private void btnDebugGiveFish_Click(object sender, RoutedEventArgs e)
         {
             //Cheat for debugging
@@ -195,6 +186,15 @@ namespace SealFisher
         {
             wndArchive = new wndArchive() { Owner = this };
             wndArchive.ShowDialog();
+        }
+        private void btnInventory_Click(object sender, RoutedEventArgs e)
+        {
+            //Open inventory window
+            wndInventory = new wndInventory() { Owner = this };
+            if (wndInventory.IsOpen == false)
+            {
+                wndInventory.ShowDialog();
+            }
         }
 
         //-- Custom Methods --//
@@ -274,6 +274,14 @@ namespace SealFisher
                             file.WriteLine($"{fish.name};{fish.weight};{fish.rarity};{fish.caughtDate}");
                         }
                     }
+                    //Save archive
+                    using (StreamWriter file = new StreamWriter(archiveSaveFile))
+                    {
+                        foreach (Fish fish in Player.archive)
+                        {
+                            file.WriteLine($"{fish.name};{fish.weight};{fish.rarity};{fish.caughtDate}");
+                        }
+                    }
 
                     //Save user progress/stats
                     using (StreamWriter file = new StreamWriter(statsSaveFile))
@@ -302,6 +310,7 @@ namespace SealFisher
                         file.WriteLine(Player.LegendaryFishStat);
                         file.WriteLine(Player.SpecialFishStat);
                         file.WriteLine(Player.SealStat);
+                        file.WriteLine(Player.archiveSlots);
                     }
 
                     //Show save confirmation if enabled
@@ -337,6 +346,15 @@ namespace SealFisher
                         Player.inventory.Add(new Fish(split[0], Convert.ToInt32(split[1]), GetRarityFromString(split[2]), split[3]));
                     }
 
+                    //Load archive
+                    var loadedarchiveFish = File.ReadLines(inventorySaveFile);
+                    foreach (string fish in loadedarchiveFish)
+                    {
+                        string[] split = fish.Split(';');
+
+                        Player.archive.Add(new Fish(split[0], Convert.ToInt32(split[1]), GetRarityFromString(split[2]), split[3]));
+                    }
+
                     //Load player stats
                     string[] loadedStats = File.ReadAllLines(statsSaveFile);
                     Player.money = int.Parse(loadedStats[0]);
@@ -363,6 +381,7 @@ namespace SealFisher
                     Player.LegendaryFishStat = int.Parse(loadedStats[21]);
                     Player.SpecialFishStat = int.Parse(loadedStats[22]);
                     Player.SealStat = int.Parse(loadedStats[23]);
+                    Player.archiveSlots = int.Parse(loadedStats[24]);
                     GetBuildingProgress(enumString);
                     if (buildingProgress == BuildingProgress.Finished) Player.Ach8 = true;
 
