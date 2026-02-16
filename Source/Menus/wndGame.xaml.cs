@@ -80,6 +80,8 @@ namespace SealFisher
         {
             InitializeComponent();
 
+            Game.Run();
+
             //Setup timers
             fishTimer.Tick += new EventHandler(fishTimer_Tick);
             fishWarningDisappearTimer.Tick += new EventHandler(fishWarningDisappearTimer_Tick);
