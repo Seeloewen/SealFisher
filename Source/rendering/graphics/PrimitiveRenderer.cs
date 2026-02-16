@@ -2,6 +2,8 @@
 using SealFisher.Rendering.Graphics.Abstraction.Shader;
 using SealFisher.rendering.windowing;
 using Silk.NET.DXGI;
+using SealFisher.Rendering.Graphics.Abstraction.Geometry;
+using SealFisher.Rendering.Graphics.Abstraction;
 
 namespace SealFisher.Rendering.Graphics
 {
@@ -13,6 +15,7 @@ namespace SealFisher.Rendering.Graphics
 
         public static void Init()
         {
+            //Create shaders and input layout for buffer
             vertexShader = new VertexShader();
             vertexShader.Create();
 
@@ -31,6 +34,33 @@ namespace SealFisher.Rendering.Graphics
             vertexShader.Use();
             pixelShader.Use();
             wnd.primitiveBuffer.Flush();
+        }
+
+        public static void DrawRect(Window wnd, Rect rect, Color c)
+        {
+            wnd.primitiveBuffer.Put(rect.x1, rect.y1, c.r, c.g, c.b, c.a);
+            wnd.primitiveBuffer.Put(rect.x2, rect.y2, c.r, c.g, c.b, c.a);
+            wnd.primitiveBuffer.Put(rect.x1, rect.y2, c.r, c.g, c.b, c.a);
+            wnd.primitiveBuffer.Put(rect.x1, rect.y1, c.r, c.g, c.b, c.a);
+            wnd.primitiveBuffer.Put(rect.x2, rect.y1, c.r, c.g, c.b, c.a);
+            wnd.primitiveBuffer.Put(rect.x2, rect.y2, c.r, c.g, c.b, c.a);
+        }
+
+        public static void DrawTriangle(Window wnd, Triangle triangle, Color c)
+        {
+            wnd.primitiveBuffer.Put(triangle.x1, triangle.y1, c.r, c.g, c.b, c.a);
+            wnd.primitiveBuffer.Put(triangle.x2, triangle.y2, c.r, c.g, c.b, c.a);
+            wnd.primitiveBuffer.Put(triangle.x3, triangle.y3, c.r, c.g, c.b, c.a);
+        }
+
+        public static void DrawQuad(Window wnd, Quad quad, Color c)
+        {
+            wnd.primitiveBuffer.Put(quad.x1, quad.y1, c.r, c.g, c.b, c.a);
+            wnd.primitiveBuffer.Put(quad.x3, quad.y3, c.r, c.g, c.b, c.a);
+            wnd.primitiveBuffer.Put(quad.x4, quad.y4, c.r, c.g, c.b, c.a);
+            wnd.primitiveBuffer.Put(quad.x1, quad.y1, c.r, c.g, c.b, c.a);
+            wnd.primitiveBuffer.Put(quad.x2, quad.y2, c.r, c.g, c.b, c.a);
+            wnd.primitiveBuffer.Put(quad.x3, quad.y3, c.r, c.g, c.b, c.a);
         }
     }
 }

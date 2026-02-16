@@ -3,19 +3,24 @@ using Silk.NET.GLFW;
 
 namespace SealFisher.Rendering
 {
-    static internal unsafe class Screen
+    static public unsafe class Screen
     {
-        internal static Monitor* monitor; //Primary monitor
+        public static Monitor* monitor; //Primary monitor
         private static VideoMode* videoMode;
 
-        internal static void Init()
+        public static void Init()
         {
             monitor = Renderer.glfw.GetPrimaryMonitor();
             videoMode = Renderer.glfw.GetVideoMode(monitor);
         }
 
-        internal static int GetWidth() => videoMode->Width;
+        public static int GetWidth() => videoMode->Width;
 
-        internal static int GetHeight() => videoMode->Height;
+        public static int GetHeight() => videoMode->Height;
+
+        public static float xToScreen(int x) => (x * 2f) / GetWidth() - 1f;
+
+        public static float yToScreen(int y) => ((GetHeight() - y) * 2f) / GetHeight() - 1f;
+
     }
 }

@@ -36,7 +36,6 @@ namespace SealFisher.Rendering.Graphics.Abstraction.Shader
 
             if (i != 0)
             {
-                Console.WriteLine("brr:" + SilkMarshal.PtrToString((nint)errorBlob.GetBufferPointer()));
                 MessageBox.Show("Shader could not be compiled: " + SilkMarshal.PtrToString((nint)errorBlob.GetBufferPointer()));
                 return null;
             }

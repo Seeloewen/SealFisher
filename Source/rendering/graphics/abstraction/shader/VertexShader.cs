@@ -11,7 +11,7 @@ namespace SealFisher.Rendering.Graphics.Abstraction.Shader
         public ComPtr<ID3D11VertexShader> instance;
 
         public unsafe void Create()
-        {
+        {         
             shaderBlob = IShader.Compile("vertex.hlsl", "vs_5_0");
             if (shaderBlob.Handle == null)
             {
