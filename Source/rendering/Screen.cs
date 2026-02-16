@@ -1,8 +1,7 @@
-﻿using SealFisher.rendering.graphics;
+﻿using SealFisher.Rendering.Graphics;
 using Silk.NET.GLFW;
-using System.Windows.Forms;
 
-namespace SealFisher.rendering
+namespace SealFisher.Rendering
 {
     static internal unsafe class Screen
     {

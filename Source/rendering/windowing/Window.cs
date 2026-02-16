@@ -1,18 +1,11 @@
-﻿using SealFisher.rendering.graphics;
-using SealFisher.rendering.graphics.abstraction.buffer;
+﻿using SealFisher.Rendering.Graphics;
+using SealFisher.Rendering.Graphics.Abstraction.Buffer;
 using Silk.NET.Core.Native;
-using Silk.NET.Direct3D.Compilers;
 using Silk.NET.Direct3D11;
 using Silk.NET.DXGI;
 using Silk.NET.GLFW;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Storage.Streams;
-using Windows.System.Threading;
 
 namespace SealFisher.rendering.windowing
 {

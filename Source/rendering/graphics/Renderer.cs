@@ -1,5 +1,4 @@
-﻿using SealFisher.rendering;
-using SealFisher.rendering.windowing;
+﻿using SealFisher.rendering.windowing;
 using Silk.NET.Core.Native;
 using Silk.NET.Direct3D.Compilers;
 using Silk.NET.Direct3D11;
@@ -7,13 +6,9 @@ using Silk.NET.DXGI;
 using Silk.NET.GLFW;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
-namespace SealFisher.rendering.graphics
+namespace SealFisher.Rendering.Graphics
 {
     public static class Renderer
     {
@@ -53,12 +48,12 @@ namespace SealFisher.rendering.graphics
         }
 
 
-      
+
         public static void Render()
         {
             float[] clearColor = { 0.243f, 0.898f, 0.941f, 1.0f };
 
-            foreach(Window wnd in wnds)
+            foreach (Window wnd in wnds)
             {
                 deviceContext.ClearRenderTargetView(wnd.renderTarget, ref clearColor[0]);
                 deviceContext.IASetPrimitiveTopology(D3DPrimitiveTopology.D3D11PrimitiveTopologyTrianglelist);

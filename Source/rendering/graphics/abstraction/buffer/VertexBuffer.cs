@@ -1,14 +1,9 @@
-﻿using SealFisher.rendering.graphics.abstraction.buffer;
-using Silk.NET.Core.Native;
+﻿using Silk.NET.Core.Native;
 using Silk.NET.Direct3D11;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SealFisher.rendering.graphics.abstraction.buffer
+namespace SealFisher.Rendering.Graphics.Abstraction.Buffer
 {
     public class VertexBuffer
     {
@@ -37,13 +32,13 @@ namespace SealFisher.rendering.graphics.abstraction.buffer
         public void Put(float x, float y, float r, float g, float b, float a)
         {
             //Check if the current amount of vertices in the buffer plus one more vertice would exceed the buffer length
-            if(vertices.Count * sizeof(float) + 7 * sizeof(float) > bytes)
+            if (vertices.Count * sizeof(float) + 7 * sizeof(float) > bytes)
             {
                 vertexAmount = 0;
-                Flush(); //Needs to be modular later on
+                Flush(); //This might not be right, but I dont care enough to check it (famous last words)
             }
 
-            vertices.Add(x); 
+            vertices.Add(x);
             vertices.Add(y);
             vertices.Add(0.0f);
             vertices.Add(r);

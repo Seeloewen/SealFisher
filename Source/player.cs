@@ -3,26 +3,26 @@ using System.Collections.Generic;
 
 namespace SealFisher
 {
-	public static class Player
-	{
+    public static class Player
+    {
         //Player stats
         public static List<Fish> inventory = new List<Fish>();
         public static string startDate = DateTime.Now.ToString();
-		public static int money = 0;
-		public static int rodPower = 1;
-		public static int baitPower = 1;
-		public static int inventorySlots = 10;
-		public static int Location = 1;
+        public static int money = 0;
+        public static int rodPower = 1;
+        public static int baitPower = 1;
+        public static int inventorySlots = 10;
+        public static int Location = 1;
         //Player Achievements
-		public static bool Ach1 = false;
-		public static bool Ach2 = false;
-		public static bool Ach3 = false;
-		public static bool Ach4 = false;
-		public static bool Ach5 = false;
-		public static bool Ach6 = false;
-		public static bool Ach7 = false;
-		public static bool Ach8 = false;
-		public static bool Ach9 = false;
+        public static bool Ach1 = false;
+        public static bool Ach2 = false;
+        public static bool Ach3 = false;
+        public static bool Ach4 = false;
+        public static bool Ach5 = false;
+        public static bool Ach6 = false;
+        public static bool Ach7 = false;
+        public static bool Ach8 = false;
+        public static bool Ach9 = false;
         //Player fish Stats
         public static int FishStat;
         public static int TroutStat;

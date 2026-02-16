@@ -1,41 +1,40 @@
-﻿using SealFisher.rendering.graphics;
+﻿using SealFisher.Util;
 using Silk.NET.Core.Native;
 using Silk.NET.Direct3D.Compilers;
-using Silk.NET.Direct3D11;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
-namespace SealFisher.rendering.graphics.abstraction.shader
+namespace SealFisher.Rendering.Graphics.Abstraction.Shader
 {
     /* Not really how interfaces should be used, but who cares. This doesn't really serve any purpose of abstraction,
      * but is rather used as a blueprint for what shaders definitely need to implement.
      */
     public interface IShader
     {
+        public ComPtr<ID3D10Blob> shaderBlob { get; set; }
+
         public void Create();
 
         public void Use();
 
-        protected static unsafe ComPtr<ID3D10Blob> Compile(string rawContent, string profile)
+        protected static unsafe ComPtr<ID3D10Blob> Compile(string fileName, string profile)
         {
-            if(Renderer.device.Handle == null)
+            if (Renderer.device.Handle == null)
             {
                 MessageBox.Show("Could not begin shader compilation. Make sure the renderer was initialized with a D3D11Device");
-                return null;    
+                return null;
             }
 
             ComPtr<ID3D10Blob> shaderBlob = default;
             ComPtr<ID3D10Blob> errorBlob = default;
 
+            string rawContent = FileUtil.StrFromResource(fileName);
             var shaderBytes = Encoding.ASCII.GetBytes(rawContent);
             int i = Renderer.d3dCompiler.Compile(in shaderBytes[0], (nuint)shaderBytes.Length, nameof(rawContent), null, ref Unsafe.NullRef<ID3DInclude>(), "Main", profile, 0, 0, ref shaderBlob, ref errorBlob);
-        
-            if(i != 0)
+
+            if (i != 0)
             {
                 Console.WriteLine("brr:" + SilkMarshal.PtrToString((nint)errorBlob.GetBufferPointer()));
                 MessageBox.Show("Shader could not be compiled: " + SilkMarshal.PtrToString((nint)errorBlob.GetBufferPointer()));

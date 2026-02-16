@@ -1,6 +1,5 @@
-﻿using SealFisher.rendering.graphics;
+﻿using SealFisher.Rendering.Graphics;
 using SealFisher.rendering.windowing;
-using Silk.NET.GLFW;
 using System.Linq;
 
 namespace SealFisher
@@ -9,8 +8,8 @@ namespace SealFisher
     {
         public unsafe static void Run()
         {
-           Renderer.InitGLFW();
-           Renderer.InitD3D11();
+            Renderer.InitGLFW();
+            Renderer.InitD3D11();
 
             Window wndMain = new Window(500, 500, "wndMain");
 
@@ -24,7 +23,7 @@ namespace SealFisher
                 wndMain.primitiveBuffer.Put(-0.8f, -0.8f, 0f, 0f, 1f, 0.5f);
 
 
-                if(i == 0)
+                if (i == 0)
                 {
                     wndSecond = new Window(500, 500, "wndSecond");
                 }
@@ -42,7 +41,7 @@ namespace SealFisher
                 //Check for each window if it should be closed
                 foreach (Window wnd in Renderer.wnds.ToList())
                 {
-                    if(Renderer.glfw.WindowShouldClose(wnd.instance))
+                    if (Renderer.glfw.WindowShouldClose(wnd.instance))
                     {
                         Renderer.glfw.DestroyWindow(wnd.instance);
                         Renderer.wnds.Remove(wnd);

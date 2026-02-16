@@ -1,18 +1,12 @@
-﻿using SealFisher.rendering.graphics;
-using SealFisher.rendering.graphics.abstraction.shader;
+﻿using SealFisher.Rendering.Graphics.Abstraction.Shader;
 using Silk.NET.Core.Native;
 using Silk.NET.Direct3D.Compilers;
 using Silk.NET.Direct3D11;
 using Silk.NET.DXGI;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
-namespace SealFisher.rendering.graphics.abstraction.buffer
+namespace SealFisher.Rendering.Graphics.Abstraction.Buffer
 {
     public class InputLayout
     {
@@ -42,28 +36,14 @@ namespace SealFisher.rendering.graphics.abstraction.buffer
             this.size += size;
         }
 
-        public unsafe int Create(PixelShader shader)
+        public unsafe int Create(IShader shader)
         {
             InputElementDesc[] layoutArray = inputLayoutInfos.ToArray();
-            int i = Renderer.device.CreateInputLayout(in layoutArray[0], (uint)layoutArray.Length, shader.byteCode.GetBufferPointer(), shader.byteCode.GetBufferSize(), ref instance);
+            int i = Renderer.device.CreateInputLayout(in layoutArray[0], (uint)layoutArray.Length, shader.shaderBlob.GetBufferPointer(), shader.shaderBlob.GetBufferSize(), ref instance);
 
             if (i != 0)
             {
-                MessageBox.Show("Failed to create Input Layout for Pixel Shader");
-                return i; 
-            }
-
-            return 0;
-        }
-
-        public unsafe int Create(VertexShader shader)
-        {
-            InputElementDesc[] layoutArray = inputLayoutInfos.ToArray();
-            int i = Renderer.device.CreateInputLayout(in layoutArray[0], (uint)layoutArray.Length, shader.byteCode.GetBufferPointer(), shader.byteCode.GetBufferSize(), ref instance);
-
-            if (i != 0)
-            {
-                MessageBox.Show("Failed to create Input Layout for Vertex Shader");
+                MessageBox.Show("Failed to create Input Layout for Shader");
                 return i;
             }
 

@@ -43,7 +43,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Source\rendering\graphics\abstraction\geometry\" />
-    <Folder Include="Source\rendering\ui_lib\" />
+    <Folder Include="Source\Rendering\Graphics\Abstraction\Geometry\" />
+    <Folder Include="Source\Rendering\UiLib\" />
   </ItemGroup>
 </Project>

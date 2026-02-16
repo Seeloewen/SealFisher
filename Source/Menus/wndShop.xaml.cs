@@ -1,17 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-using System.Windows.Shapes;
 
 namespace SealFisher
 {
@@ -117,7 +105,7 @@ namespace SealFisher
         }
         private void btnUpgradeLocation_Click(object sender, RoutedEventArgs e)
         {
-            if(Player.money >= LocationPrice)
+            if (Player.money >= LocationPrice)
             {
                 //Remove money from player
                 wndGame.RemoveMoney(LocationPrice);
@@ -156,7 +144,7 @@ namespace SealFisher
         private void CalculatePrices()
         {
             //Calculate prices for the next level
-            rodPrice = (Player.rodPower + 1) * 120;            
+            rodPrice = (Player.rodPower + 1) * 120;
             baitPrice = (Player.baitPower + 1) * 300;
             storagePrice = (Player.inventorySlots + 10) / 10 * 1100;
             LocationPrice = Player.Location * 10000;

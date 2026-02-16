@@ -1,15 +1,9 @@
-﻿using SealFisher.rendering.graphics.abstraction.buffer;
-using SealFisher.rendering.graphics.abstraction.shader;
+﻿using SealFisher.Rendering.Graphics.Abstraction.Buffer;
+using SealFisher.Rendering.Graphics.Abstraction.Shader;
 using SealFisher.rendering.windowing;
 using Silk.NET.DXGI;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SealFisher.rendering.graphics
+namespace SealFisher.Rendering.Graphics
 {
     public class PrimitiveRenderer
     {
@@ -37,7 +31,6 @@ namespace SealFisher.rendering.graphics
             vertexShader.Use();
             pixelShader.Use();
             wnd.primitiveBuffer.Flush();
-
         }
     }
 }
