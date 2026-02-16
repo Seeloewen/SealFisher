@@ -25,6 +25,46 @@ namespace SealFisher
 		public static bool Ach7 = false;
 		public static bool Ach8 = false;
 		public static bool Ach9 = false;
+        public static void CalculateArchiveSlots()
+        {
+            if (Ach1 == true)
+            {
+                archiveSlots = archiveSlots + 1;
+            }
+            if (Ach2 == true) 
+            {
+                archiveSlots = archiveSlots + 1;
+            }
+            if (Ach3 == true)
+            {
+                archiveSlots = archiveSlots + 10;
+            }
+            if (Ach4 == true)
+            {
+                archiveSlots = archiveSlots + 5;
+            }
+            if (Ach5 == true)
+            {
+                archiveSlots = archiveSlots + 10;
+            }
+            if (Ach6 == true)
+            {
+                archiveSlots = archiveSlots + 20;
+            }
+            if (Ach7 == true)
+            {
+                archiveSlots = archiveSlots + 50;
+            }
+            if (Ach8 == true)
+            {
+                archiveSlots = archiveSlots + 5;
+            }
+            if (Ach9 == true)
+            {
+                archiveSlots = archiveSlots + 100;
+            }
+        }
+
         //Player fish Stats
         public static int FishStat;
         public static int TroutStat;

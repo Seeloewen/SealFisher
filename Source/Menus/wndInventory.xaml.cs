@@ -290,7 +290,11 @@ namespace SealFisher
             soldFishAmount++;
             earnedMoney = Math.Round(earnedMoney + fish.weight * rarityMultiplier);
             soldFish.Add(fish);
-            Player.Ach2 = true; 
+            if(Player.Ach2 == false)
+            {
+                Player.Ach2 = true;
+                Player.CalculateArchiveSlots();
+            }
         }
         private void ArchiveFish(Fish fish)
         {
