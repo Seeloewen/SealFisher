@@ -1,8 +1,9 @@
 ﻿using SealFisher.Rendering.Graphics;
-using SealFisher.rendering.windowing;
 using System.Linq;
 using SealFisher.Rendering.Graphics.Abstraction.Geometry;
 using SealFisher.Rendering.Graphics.Abstraction;
+using SealFisher.Rendering.Windowing;
+using SealFisher.Rendering.Gui.Components;
 
 namespace SealFisher
 {
@@ -28,12 +29,16 @@ namespace SealFisher
                 if (i == 0)
                 {
                     wndSecond = new Window(500, 500, "wndSecond");
+
+                    Rectangle r = new Rectangle(200, 200, 1000, 1000, new Color(0.5f));
+                    r.AddChild(new Rectangle(30, 30, 200, 200, new Color(0.9f, 0f, 0f)));
+                    wndSecond.AddChild(r);
+                    wndSecond.AddChild(new Rectangle(200, 1200, 500, 200, new Color(0.5f)));
+                    wndSecond.AddChild(new Rectangle(0, 0, 200, 200, new Color(0.5f, 0.0f, 0.0f)));
+                    wndSecond.AddChild(new Rectangle(2460, 1340, 100, 100, new Color(0.5f, 0.0f, 0.0f)));
+
                 }
                 i++;
-
-                PrimitiveRenderer.DrawRect(wndSecond, new Rect(200, 200, 500, 500), new Color(0, 255, 0));
-                PrimitiveRenderer.DrawTriangle(wndSecond, new Triangle(900, 200, 1100, 500, 700, 500), new Color(0, 0, 255));
-                PrimitiveRenderer.DrawQuad(wndSecond, new Quad(1500, 200, 1900, 100, 2000, 500, 1400, 600), new Color(255, 0, 0));
 
                 Renderer.glfw.PollEvents();
                 Renderer.Render();

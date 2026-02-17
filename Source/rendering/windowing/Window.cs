@@ -1,18 +1,22 @@
 ﻿using SealFisher.Rendering.Graphics;
 using SealFisher.Rendering.Graphics.Abstraction.Buffer;
+using SealFisher.Rendering.Graphics.Abstraction.Geometry;
+using SealFisher.Rendering.Gui.Components;
 using Silk.NET.Core.Native;
 using Silk.NET.Direct3D11;
 using Silk.NET.DXGI;
 using Silk.NET.GLFW;
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace SealFisher.rendering.windowing
+namespace SealFisher.Rendering.Windowing
 {
     public unsafe class Window
     {
         private readonly uint width;
         private readonly uint height;
+        private readonly string title;
 
         public WindowHandle* instance;
         public ComPtr<IDXGISwapChain1> swapChain;
@@ -21,22 +25,49 @@ namespace SealFisher.rendering.windowing
 
         public VertexBuffer primitiveBuffer;
 
+        public bool isVisible = false;
+        private List<GuiComponent> children = new List<GuiComponent>();
+
         public Window(int width, int height, string title)
         {
             this.width = (uint)width;
             this.height = (uint)height;
+            this.title = title;
 
             Renderer.glfw.WindowHint(WindowHintClientApi.ClientApi, ClientApi.NoApi); //NoApi means DX Context can be used
-            instance = Renderer.glfw.CreateWindow(width, height, title, null, null);
 
+            Show();
             if (instance == null) throw new Exception("Could not create window");
 
             viewport = new Viewport() { Width = width, Height = height };
-            InitSwapChain();
-            InitRenderTargetView(); //Create RTV (basically a reference to the buffer, making it accessible for drawing)
             primitiveBuffer = new VertexBuffer(PrimitiveRenderer.layout);
 
             Renderer.wnds.Add(this);
+        }
+
+        public void Show()
+        {
+            if (isVisible) return;
+
+            instance = Renderer.glfw.CreateWindow((int)width, (int)height, title, null, null);
+            InitSwapChain();
+            InitRenderTargetView(); //Create RTV (basically a reference to the buffer, making it accessible for drawing)
+            isVisible = true;
+        }
+
+        public void Hide()
+        {
+            if (!isVisible) return;
+
+            Renderer.glfw.DestroyWindow(instance);
+            isVisible = false;
+        }
+
+        public void AddChild(GuiComponent gui)
+        {
+            gui.SetParentBounds(new Rect(0, 0, (int)width, (int)height));
+            gui.SetParentWindow(this);
+            children.Add(gui);
         }
 
         private void InitSwapChain()
@@ -75,5 +106,7 @@ namespace SealFisher.rendering.windowing
         }
 
         public IntPtr GetNativePtr() => new GlfwNativeWindow(Renderer.glfw, instance).Win32.Value.Hwnd;
+
+        public List<GuiComponent> GetChildren() => children;
     }
 }

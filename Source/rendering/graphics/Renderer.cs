@@ -1,4 +1,5 @@
-﻿using SealFisher.rendering.windowing;
+﻿using SealFisher.Rendering.Gui.Components;
+using SealFisher.Rendering.Windowing;
 using Silk.NET.Core.Native;
 using Silk.NET.Direct3D.Compilers;
 using Silk.NET.Direct3D11;
@@ -7,6 +8,7 @@ using Silk.NET.GLFW;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using WinRT;
 
 namespace SealFisher.Rendering.Graphics
 {
@@ -55,12 +57,16 @@ namespace SealFisher.Rendering.Graphics
 
             foreach (Window wnd in wnds)
             {
+                if (!wnd.isVisible) continue;
+
                 deviceContext.ClearRenderTargetView(wnd.renderTarget, ref clearColor[0]);
                 deviceContext.IASetPrimitiveTopology(D3DPrimitiveTopology.D3D11PrimitiveTopologyTrianglelist);
                 deviceContext.RSSetViewports(1, ref wnd.viewport);
                 deviceContext.OMSetRenderTargets(1, ref wnd.renderTarget, ref Unsafe.NullRef<ID3D11DepthStencilView>());
 
-                PrimitiveRenderer.Render(wnd);
+                wnd.GetChildren().ForEach(c => c.Render()); //Render all children of the window
+
+                PrimitiveRenderer.Render(wnd); //Draw primitives in the buffer
                 wnd.swapChain.Present(0, 0);
             }
         }

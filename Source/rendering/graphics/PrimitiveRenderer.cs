@@ -1,9 +1,9 @@
 ﻿using SealFisher.Rendering.Graphics.Abstraction.Buffer;
 using SealFisher.Rendering.Graphics.Abstraction.Shader;
-using SealFisher.rendering.windowing;
 using Silk.NET.DXGI;
 using SealFisher.Rendering.Graphics.Abstraction.Geometry;
 using SealFisher.Rendering.Graphics.Abstraction;
+using SealFisher.Rendering.Windowing;
 
 namespace SealFisher.Rendering.Graphics
 {

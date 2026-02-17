@@ -22,5 +22,9 @@ namespace SealFisher.Rendering
 
         public static float yToScreen(int y) => ((GetHeight() - y) * 2f) / GetHeight() - 1f;
 
+        public static int xToInt(float x) => (int)(((x + 1) / 2) * GetWidth());
+
+        public static int yToInt(float y) => (int)((1f - (y + 1f) * 0.5f) * GetHeight());
+
     }
 }
