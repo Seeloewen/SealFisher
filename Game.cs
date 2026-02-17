@@ -33,9 +33,8 @@ namespace SealFisher
                     Rectangle r = new Rectangle(200, 200, 1000, 1000, new Color(0.5f));
                     r.AddChild(new Rectangle(30, 30, 200, 200, new Color(0.9f, 0f, 0f)));
                     wndSecond.AddChild(r);
-                    wndSecond.AddChild(new Rectangle(200, 1200, 500, 200, new Color(0.5f)));
-                    wndSecond.AddChild(new Rectangle(0, 0, 200, 200, new Color(0.5f, 0.0f, 0.0f)));
-                    wndSecond.AddChild(new Rectangle(2460, 1340, 100, 100, new Color(0.5f, 0.0f, 0.0f)));
+                    wndSecond.AddChild(new Rectangle(0, 0, 250, 250, new Color(0f, 1f, 0f)));
+                    wndSecond.AddChild(new Rectangle(250,250, 250, 250, new Color(1f, 0f, 0f)));
 
                 }
                 i++;

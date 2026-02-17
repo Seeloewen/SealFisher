@@ -14,9 +14,8 @@ namespace SealFisher.Rendering.Windowing
 {
     public unsafe class Window
     {
-        private readonly uint width;
-        private readonly uint height;
-        private readonly string title;
+        public readonly string title;
+        public readonly Resolution resolution;
 
         public WindowHandle* instance;
         public ComPtr<IDXGISwapChain1> swapChain;
@@ -30,8 +29,7 @@ namespace SealFisher.Rendering.Windowing
 
         public Window(int width, int height, string title)
         {
-            this.width = (uint)width;
-            this.height = (uint)height;
+            resolution = new Resolution(width, height);
             this.title = title;
 
             Renderer.glfw.WindowHint(WindowHintClientApi.ClientApi, ClientApi.NoApi); //NoApi means DX Context can be used
@@ -49,7 +47,7 @@ namespace SealFisher.Rendering.Windowing
         {
             if (isVisible) return;
 
-            instance = Renderer.glfw.CreateWindow((int)width, (int)height, title, null, null);
+            instance = Renderer.glfw.CreateWindow(GetWidth(), GetHeight(), title, null, null);
             InitSwapChain();
             InitRenderTargetView(); //Create RTV (basically a reference to the buffer, making it accessible for drawing)
             isVisible = true;
@@ -65,7 +63,7 @@ namespace SealFisher.Rendering.Windowing
 
         public void AddChild(GuiComponent gui)
         {
-            gui.SetParentBounds(new Rect(0, 0, (int)width, (int)height));
+            gui.SetParentBounds(new Rect(resolution, 0, 0, GetWidth(), GetHeight()));
             gui.SetParentWindow(this);
             children.Add(gui);
         }
@@ -75,8 +73,8 @@ namespace SealFisher.Rendering.Windowing
             //Create double buffered chain
             SwapChainDesc1 desc = new SwapChainDesc1()
             {
-                Width = width,
-                Height = height,
+                Width = (uint)GetWidth(),
+                Height = (uint)GetHeight(),
                 Format = Format.FormatR8G8B8A8Unorm,
                 SampleDesc = new SampleDesc() { Count = 1, Quality = 0 },
                 BufferUsage = DXGI.UsageRenderTargetOutput,
@@ -100,13 +98,12 @@ namespace SealFisher.Rendering.Windowing
             Renderer.glfw.SetWindowPos(instance, x, y);
         }
 
-        public void Draw(float x, float y, float r, float g, float b, float a)
-        {
-            primitiveBuffer.Put(x, y, r, g, b, a);
-        }
-
         public IntPtr GetNativePtr() => new GlfwNativeWindow(Renderer.glfw, instance).Win32.Value.Hwnd;
 
         public List<GuiComponent> GetChildren() => children;
+
+        public int GetWidth() => resolution.width;
+
+        public int GetHeight() => resolution.height;
     }
 }

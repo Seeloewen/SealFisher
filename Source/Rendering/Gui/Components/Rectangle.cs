@@ -16,7 +16,7 @@ namespace SealFisher.Rendering.Gui.Components
         {
             int relativeX = GetParentX() + posX;
             int relativeY = GetParentY() + posY;
-            PrimitiveRenderer.DrawRect(parentWindow, new Rect(relativeX, relativeY, relativeX + width, relativeY + height), color);
+            PrimitiveRenderer.DrawRect(parentWindow, new Rect(parentWindow.resolution, relativeX, relativeY, relativeX + width, relativeY + height), color);
         }
 
         public void SetColor(Color c) => color = c;

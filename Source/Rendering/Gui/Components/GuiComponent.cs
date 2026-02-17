@@ -30,7 +30,7 @@ namespace SealFisher.Rendering.Gui.Components
             this.width = width;
             this.height = height;
 
-            parentBounds = new Rect(0, 0, 0, 0);
+            parentBounds = new Rect(new Resolution(0,0), 0, 0, 0, 0);
         }
 
         public void Render()
@@ -76,8 +76,14 @@ namespace SealFisher.Rendering.Gui.Components
         public void AddChild(GuiComponent comp)
         {
             comp.parent = this;
-            comp.parentBounds = GetRelativeBounds();
-            comp.parentWindow = parentWindow;
+
+            //Update the parent window related properties if it's already in a window
+            if(parentWindow!= null)
+            {
+                comp.parentWindow = parentWindow;
+                comp.parentBounds = GetRelativeBounds();
+            }
+
             children.Add(comp);
         }
 
@@ -88,26 +94,27 @@ namespace SealFisher.Rendering.Gui.Components
             parentWindow = wnd;
             foreach(GuiComponent comp in children) //Don't forget to also update the parent window for the children
             {
-                comp.SetParentWindow(wnd); 
+                comp.SetParentWindow(wnd);
+                comp.parentBounds = GetRelativeBounds();
             }
         }
 
         public Rect GetRelativeBounds()
         {
-            int relativeX = Screen.xToInt(parentBounds.x1) +posX;
-            int relativeY = Screen.yToInt(parentBounds.y1) +posY;
+            int relativeX = Screen.xToInt(parentWindow.resolution, parentBounds.x1) +posX;
+            int relativeY = Screen.yToInt(parentWindow.resolution, parentBounds.y1) +posY;
 
             //Returns a rectangle relative to the parent's bounds
-            return new Rect(relativeX, relativeY, relativeX + width, relativeY + height);
+            return new Rect(parentWindow.resolution, relativeX, relativeY, relativeX + width, relativeY + height);
         }
 
         public void SetParentBounds(Rect r) => parentBounds = r;
 
         public Rect GetParentBounds() => parentBounds;
 
-        public int GetParentX() => Screen.xToInt(parentBounds.x1);
+        public int GetParentX() => Screen.xToInt(parentWindow.resolution, parentBounds.x1);
 
-        public int GetParentY() => Screen.yToInt(parentBounds.y1);
+        public int GetParentY() => Screen.yToInt(parentWindow.resolution, parentBounds.y1);
 
         public void SetPosX(int x) => posX = x;
 
