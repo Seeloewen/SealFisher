@@ -17,10 +17,10 @@ namespace SealFisher.Rendering.Graphics
         {
             //Create shaders and input layout for buffer
             vertexShader = new VertexShader();
-            vertexShader.Create();
+            vertexShader.Create("primitive_vertex.hlsl");
 
             pixelShader = new PixelShader();
-            pixelShader.Create();
+            pixelShader.Create("primitive_pixel.hlsl");
 
             layout = new InputLayout();
             layout.AddInfoElement("POSITION", Format.FormatR32G32B32Float, 12);

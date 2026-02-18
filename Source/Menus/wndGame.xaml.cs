@@ -79,6 +79,7 @@ namespace SealFisher
         {
             InitializeComponent();
 
+            Game.Init();
             Game.Run();
 
             //Setup timers

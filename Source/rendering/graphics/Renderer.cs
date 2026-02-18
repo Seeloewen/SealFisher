@@ -1,5 +1,6 @@
 ﻿using SealFisher.Rendering.Gui.Components;
 using SealFisher.Rendering.Windowing;
+using SealFisher.Source.Rendering.Graphics;
 using Silk.NET.Core.Native;
 using Silk.NET.Direct3D.Compilers;
 using Silk.NET.Direct3D11;
@@ -47,6 +48,7 @@ namespace SealFisher.Rendering.Graphics
             }
 
             PrimitiveRenderer.Init();
+            TextureRenderer.Init(); 
         }
 
 
@@ -67,6 +69,7 @@ namespace SealFisher.Rendering.Graphics
                 wnd.GetChildren().ForEach(c => c.Render()); //Render all children of the window
 
                 PrimitiveRenderer.Render(wnd); //Draw primitives in the buffer
+                TextureRenderer.Render(wnd);
                 wnd.swapChain.Present(0, 0);
             }
         }

@@ -15,7 +15,7 @@ namespace SealFisher.Rendering.Graphics.Abstraction.Shader
     {
         public ComPtr<ID3D10Blob> shaderBlob { get; set; }
 
-        public void Create();
+        public void Create(string fileName);
 
         public void Use();
 

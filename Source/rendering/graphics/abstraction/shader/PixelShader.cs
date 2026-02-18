@@ -10,9 +10,9 @@ namespace SealFisher.Rendering.Graphics.Abstraction.Shader
         public ComPtr<ID3D10Blob> shaderBlob { get; set; }
         public ComPtr<ID3D11PixelShader> instance;
 
-        public unsafe void Create()
+        public unsafe void Create(string fileName)
         {
-            shaderBlob = IShader.Compile("pixel.hlsl", "ps_5_0");
+            shaderBlob = IShader.Compile(fileName, "ps_5_0");
             if (shaderBlob.Handle == null)
             {
                 MessageBox.Show("Cannot create Pixel Shader. Compiled ShaderBlob is null.");

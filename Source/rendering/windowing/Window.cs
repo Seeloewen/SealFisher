@@ -2,6 +2,7 @@
 using SealFisher.Rendering.Graphics.Abstraction.Buffer;
 using SealFisher.Rendering.Graphics.Abstraction.Geometry;
 using SealFisher.Rendering.Gui.Components;
+using SealFisher.Source.Rendering.Graphics;
 using Silk.NET.Core.Native;
 using Silk.NET.Direct3D11;
 using Silk.NET.DXGI;
@@ -23,6 +24,7 @@ namespace SealFisher.Rendering.Windowing
         public Viewport viewport;
 
         public VertexBuffer primitiveBuffer;
+        public VertexBuffer textureBuffer;
 
         public bool isVisible = false;
         private List<GuiComponent> children = new List<GuiComponent>();
@@ -34,11 +36,9 @@ namespace SealFisher.Rendering.Windowing
 
             Renderer.glfw.WindowHint(WindowHintClientApi.ClientApi, ClientApi.NoApi); //NoApi means DX Context can be used
 
-            Show();
-            if (instance == null) throw new Exception("Could not create window");
-
             viewport = new Viewport() { Width = width, Height = height };
             primitiveBuffer = new VertexBuffer(PrimitiveRenderer.layout);
+            textureBuffer = new VertexBuffer(TextureRenderer.layout);
 
             Renderer.wnds.Add(this);
         }

@@ -49,6 +49,24 @@ namespace SealFisher.Rendering.Graphics.Abstraction.Buffer
             vertexAmount++;
         }
 
+        public void Put(float x, float y, float u, float v)
+        {
+            //Check if the current amount of vertices in the buffer plus one more vertice would exceed the buffer length
+            if (vertices.Count * sizeof(float) + 5 * sizeof(float) > bytes)
+            {
+                vertexAmount = 0;
+                Flush(); //This might not be right, but I dont care enough to check it (famous last words)
+            }
+
+            vertices.Add(x);
+            vertices.Add(y);
+            vertices.Add(0.0f);
+            vertices.Add(u);
+            vertices.Add(v);
+
+            vertexAmount++;
+        }
+
         public unsafe void Use()
         {
             MappedSubresource mappedSubresource = default;
