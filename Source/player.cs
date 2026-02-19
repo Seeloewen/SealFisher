@@ -25,41 +25,45 @@ namespace SealFisher
 		public static bool Ach7 = false;
 		public static bool Ach8 = false;
 		public static bool Ach9 = false;
-        public static void CalculateArchiveSlots()
+        public static void CalculateArchiveSlots(int Achcheck)
         {
-            if (Ach1 == true)
+            if(Achcheck == 10)
+            {
+                archiveSlots = 10;
+            }
+            if (Ach1 == true && (Achcheck == 1 || Achcheck == 10))
             {
                 archiveSlots = archiveSlots + 1;
             }
-            if (Ach2 == true) 
+            if (Ach2 == true && (Achcheck == 2 || Achcheck == 10)) 
             {
                 archiveSlots = archiveSlots + 1;
             }
-            if (Ach3 == true)
+            if (Ach3 == true && (Achcheck == 3 || Achcheck == 10))
             {
                 archiveSlots = archiveSlots + 10;
             }
-            if (Ach4 == true)
+            if (Ach4 == true && (Achcheck == 4 || Achcheck == 10))
             {
                 archiveSlots = archiveSlots + 5;
             }
-            if (Ach5 == true)
+            if (Ach5 == true && (Achcheck == 5 || Achcheck == 10))
             {
                 archiveSlots = archiveSlots + 10;
             }
-            if (Ach6 == true)
+            if (Ach6 == true && (Achcheck == 6 || Achcheck == 10))
             {
                 archiveSlots = archiveSlots + 20;
             }
-            if (Ach7 == true)
+            if (Ach7 == true && (Achcheck == 7 || Achcheck == 10))
             {
                 archiveSlots = archiveSlots + 50;
             }
-            if (Ach8 == true)
+            if (Ach8 == true && (Achcheck == 8 || Achcheck == 10))
             {
                 archiveSlots = archiveSlots + 5;
             }
-            if (Ach9 == true)
+            if (Ach9 == true && (Achcheck == 9 || Achcheck == 10))
             {
                 archiveSlots = archiveSlots + 100;
             }

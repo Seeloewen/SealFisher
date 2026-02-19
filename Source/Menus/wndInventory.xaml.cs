@@ -255,7 +255,7 @@ namespace SealFisher
             Content = inventoryScrollViewer;
 
             //Set header text depending on fish amount
-            tblHeader.Text = $"Inventory ({slotList.Count}/{Player.archiveSlots} fish)";
+            tblHeader.Text = $"Inventory ({slotList.Count}/{Player.inventorySlots} fish)";
         }
 
         private void SellFish(Fish fish)
@@ -293,7 +293,7 @@ namespace SealFisher
             if(Player.Ach2 == false)
             {
                 Player.Ach2 = true;
-                Player.CalculateArchiveSlots();
+                Player.CalculateArchiveSlots(2);
             }
         }
         private void ArchiveFish(Fish fish)

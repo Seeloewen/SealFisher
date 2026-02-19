@@ -384,7 +384,7 @@ namespace SealFisher
                     Player.archiveSlots = int.Parse(loadedStats[24]);
                     GetBuildingProgress(enumString);
                     if (buildingProgress == BuildingProgress.Finished) Player.Ach8 = true;
-                    Player.CalculateArchiveSlots();
+                    Player.CalculateArchiveSlots(10);
 
                     //Update UI elements
                     SetMoney(Player.money);
@@ -579,40 +579,40 @@ namespace SealFisher
         public void UpdateFishAchievements()
         {
             //Updates Achievements related to fish
-            if (Player.FishStat >= 1)
+            if (Player.FishStat >= 1 && Player.Ach1 == false)
             {
                 Player.Ach1 = true;
-                Player.CalculateArchiveSlots();
+                Player.CalculateArchiveSlots(1);
             }
-            if (Player.SealStat >= 1)
+            if (Player.SealStat >= 1 && Player.Ach3 == false)
             {
                 Player.Ach3 = true;
-                Player.CalculateArchiveSlots();
+                Player.CalculateArchiveSlots(3);
             }
-            if (Player.FishStat >= 100)
+            if (Player.FishStat >= 100 && Player.Ach4 == false)
             {
                 Player.Ach4 = true;
-                Player.CalculateArchiveSlots();
+                Player.CalculateArchiveSlots(4);
             }
-            if (Player.FishStat >= 1000)
+            if (Player.FishStat >= 1000 && Player.Ach5 == false)
             {
                 Player.Ach5 = true;
-                Player.CalculateArchiveSlots();
+                Player.CalculateArchiveSlots(5);
             }
-            if (Player.FishStat >= 10000)
+            if (Player.FishStat >= 10000 && Player.Ach6 == false)
             {
                 Player.Ach6 = true;
-                Player.CalculateArchiveSlots();
+                Player.CalculateArchiveSlots(6);
             }
-            if (Player.FishStat >= 100000)
+            if (Player.FishStat >= 100000 && Player.Ach7 == false)
             {
                 Player.Ach7 = true;
-                Player.CalculateArchiveSlots();
+                Player.CalculateArchiveSlots(7);
             }
-            if (Player.SealStat >= 100)
+            if (Player.SealStat >= 100 && Player.Ach9 == false)
             {
                 Player.Ach9 = true;
-                Player.CalculateArchiveSlots();
+                Player.CalculateArchiveSlots(9);
             }
         }
         public Rarity GetRarityFromString(string rarity)
@@ -1028,7 +1028,7 @@ namespace SealFisher
                 if (!Player.Ach8)
                 {
                     Player.Ach8 = true;
-                    Player.CalculateArchiveSlots();
+                    Player.CalculateArchiveSlots(8);
                 }
             }
             else if(buildingProgress == BuildingProgress.Finished && location == Location.Location1)
