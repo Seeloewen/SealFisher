@@ -23,6 +23,8 @@ namespace SealFisher.Rendering.Gui.Components
         public Action onLeftClick;
         public Action onRightClick;
 
+        public bool hasScrollEvent;
+
         public GuiComponent(int posX, int posY, int width, int height)
         {
             this.posX = posX;
@@ -63,7 +65,24 @@ namespace SealFisher.Rendering.Gui.Components
             }
         }
 
-        protected virtual void OnClick(ClickEvent ev)
+        public void Scroll(ScrollEvent ev)
+        {
+            if(hasScrollEvent)
+            {
+                OnScroll(ev);
+                ev.consumed = true;
+            }
+
+            if (ev.consumed) return;
+
+            //If the event hasn't been consumed by this point, send it to the children
+            foreach (GuiComponent comp in children)
+            {
+                comp.Scroll(ev);
+            }
+        }
+
+        protected void OnClick(ClickEvent ev)
         {
             ev.consumed = true;
 
@@ -72,8 +91,10 @@ namespace SealFisher.Rendering.Gui.Components
             if (onRightClick != null && ev.button == MouseButton.Right) onRightClick();
         }
 
+        protected virtual void OnScroll(ScrollEvent ev) { }
 
-        public void AddChild(GuiComponent comp)
+
+        public virtual void AddChild(GuiComponent comp)
         {
             comp.parent = this;
 

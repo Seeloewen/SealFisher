@@ -30,7 +30,7 @@ namespace SealFisher.Rendering.Graphics.Abstraction.Shader
             ComPtr<ID3D10Blob> shaderBlob = default;
             ComPtr<ID3D10Blob> errorBlob = default;
 
-            string rawContent = FileUtil.StrFromResource(fileName);
+            string rawContent = FileUtil.StrFromResource($"Shader/{fileName}");
             var shaderBytes = Encoding.ASCII.GetBytes(rawContent);
             int i = Renderer.d3dCompiler.Compile(in shaderBytes[0], (nuint)shaderBytes.Length, nameof(rawContent), null, ref Unsafe.NullRef<ID3DInclude>(), "Main", profile, 0, 0, ref shaderBlob, ref errorBlob);
 

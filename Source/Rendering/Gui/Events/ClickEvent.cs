@@ -2,7 +2,7 @@
 {
     public class ClickEvent : GuiEvent
     {
-        public MouseButton button;
+        public readonly MouseButton button;
 
         public ClickEvent(MouseButton btn)
         {

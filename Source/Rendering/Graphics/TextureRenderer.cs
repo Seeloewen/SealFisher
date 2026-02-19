@@ -53,19 +53,21 @@ namespace SealFisher.Source.Rendering.Graphics
                 MaxLOD = float.MaxValue
             };
             Renderer.device.CreateSamplerState(ref sampDesc, ref sampler);
+
+            TextureAtlas.LoadMappings("texture_map.json");
+            TextureAtlas.Create();
         }
 
-        public static void Draw(Window wnd, Rect rect, string fileName)
+        public static void Draw(Window wnd, Rect rect, string textureId)
         {
-            Texture texture = new Texture(fileName);
-            tempTexture = texture;
+            Rect textureBounds = TextureAtlas.GetTextureBounds(textureId);
 
-            wnd.textureBuffer.Put(rect.x1, rect.y1, 0, 0);
-            wnd.textureBuffer.Put(rect.x2, rect.y2, 1, 1);
-            wnd.textureBuffer.Put(rect.x1, rect.y2, 0, 1);
-            wnd.textureBuffer.Put(rect.x1, rect.y1, 0, 0);
-            wnd.textureBuffer.Put(rect.x2, rect.y1, 1, 0);
-            wnd.textureBuffer.Put(rect.x2, rect.y2, 1, 1);
+            wnd.textureBuffer.Put(rect.x1, rect.y1, textureBounds.x1, textureBounds.y1);
+            wnd.textureBuffer.Put(rect.x2, rect.y2, textureBounds.x2, textureBounds.y2);
+            wnd.textureBuffer.Put(rect.x1, rect.y2, textureBounds.x1, textureBounds.y2);
+            wnd.textureBuffer.Put(rect.x1, rect.y1, textureBounds.x1, textureBounds.y1);
+            wnd.textureBuffer.Put(rect.x2, rect.y1, textureBounds.x2, textureBounds.y1);
+            wnd.textureBuffer.Put(rect.x2, rect.y2, textureBounds.x2, textureBounds.y2);
 
         }
 
@@ -74,7 +76,7 @@ namespace SealFisher.Source.Rendering.Graphics
             wnd.textureBuffer.Use();
             vertexShader.Use();
             pixelShader.Use();
-            Renderer.deviceContext.PSSetShaderResources(0, 1, ref Texture.srv);
+            Renderer.deviceContext.PSSetShaderResources(0, 1, ref TextureAtlas.mapResource);
             Renderer.deviceContext.PSSetSamplers(0, 1, ref sampler);
             wnd.textureBuffer.Flush();
         }

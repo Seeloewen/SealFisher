@@ -72,7 +72,7 @@ namespace SealFisher
             wndMain.primitiveBuffer.Put(0.8f, -0.8f, 1f, 0f, 0f, 0.5f);
             wndMain.primitiveBuffer.Put(-0.8f, -0.8f, 0f, 0f, 1f, 0.5f);
 
-            TextureRenderer.Draw(wndSecond, new Rect(wndSecond.resolution, 0, 0, 500, 500), "imgBackground.png");
+            TextureRenderer.Draw(wndSecond, new Rect(wndSecond.resolution, 0, 0, 720, 480), "background_2_idle");
 
         }
     }
