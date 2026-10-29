@@ -1,9 +1,15 @@
-﻿using System;
+﻿using SealFisher.Source.Menus;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection.PortableExecutable;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
+using Windows.Media.Devices;
 using static System.Environment;
 
 namespace SealFisher
@@ -43,6 +49,21 @@ namespace SealFisher
         private Location location = Location.Location1;
         private double fishCatchTime;
         public int Locationmultiplier = 1;
+        public Button btnCast = new Button();
+        public Button btnInventory = new Button();
+        public Button btnAchievements = new Button();
+        public Button btnShop = new Button();
+        public Button btnStatistics = new Button();
+        public Button btnSave = new Button();
+        public Button btnSwitchLocationForward = new Button();
+        public Button btnSwitchLocationBackward = new Button();
+        public Button btnArchive = new Button();
+        public Button btnDebugGiveFish = new Button();
+        public TextBlock tblDev = new TextBlock();
+        public TextBlock tblFishWarning = new TextBlock();
+        public TextBlock tblCaughtFish = new TextBlock();
+        public TextBlock tblMoney = new TextBlock();
+        public Canvas cvsHeader = new Canvas();
 
         //Images
         private static Uri uriBackground = new Uri("pack://application:,,,/SealFisher;component/Resources/imgBackground.png");
@@ -66,12 +87,14 @@ namespace SealFisher
         private wndShop wndShop;
         private wndAchievements wndAchievements;
         private wndStatistics wndStatistics;
+        private wndArchive wndArchive;
 
         //Directories and files
         static string appData = GetFolderPath(SpecialFolder.ApplicationData);
         static string gameDirectory = $"{appData}/SealFisher";
         string statsSaveFile = $"{gameDirectory}/statistics.txt";
         string inventorySaveFile = $"{gameDirectory}/inventory.txt";
+        string archiveSaveFile = $"{gameDirectory}/archive.txt";
 
         //-- Constructor --//
 
@@ -93,6 +116,7 @@ namespace SealFisher
 
         private void wndGame_Loaded(object sender, RoutedEventArgs e)
         {
+            SetupWindow();
             CreateGameDirectory();
             LoadGame();
             InitializeFish();
@@ -130,17 +154,7 @@ namespace SealFisher
             CastRod();
         }
 
-        private void btnInventory_Click(object sender, RoutedEventArgs e)
-        {
-            //Open inventory window
-            wndInventory = new wndInventory() { Owner = this };
-            if (wndInventory.IsOpen == false)
-            {
-                wndInventory.Show();
-            }
-        }
-
-        private void btnDebugGiveFish(object sender, RoutedEventArgs e)
+        private void btnDebugGiveFish_Click(object sender, RoutedEventArgs e)
         {
             //Cheat for debugging
             for (int i = 0; i < 10; i++)
@@ -170,6 +184,20 @@ namespace SealFisher
         {
             wndStatistics = new wndStatistics() { Owner = this };
             wndStatistics.ShowDialog();
+        }
+        private void btnArchive_Click(object sender, RoutedEventArgs e)
+        {
+            wndArchive = new wndArchive() { Owner = this };
+            wndArchive.ShowDialog();
+        }
+        private void btnInventory_Click(object sender, RoutedEventArgs e)
+        {
+            //Open inventory window
+            wndInventory = new wndInventory() { Owner = this };
+            if (wndInventory.IsOpen == false)
+            {
+                wndInventory.ShowDialog();
+            }
         }
 
         //-- Custom Methods --//
@@ -249,6 +277,14 @@ namespace SealFisher
                             file.WriteLine($"{fish.name};{fish.weight};{fish.rarity};{fish.caughtDate}");
                         }
                     }
+                    //Save archive
+                    using (StreamWriter file = new StreamWriter(archiveSaveFile))
+                    {
+                        foreach (Fish fish in Player.archive)
+                        {
+                            file.WriteLine($"{fish.name};{fish.weight};{fish.rarity};{fish.caughtDate}");
+                        }
+                    }
 
                     //Save user progress/stats
                     using (StreamWriter file = new StreamWriter(statsSaveFile))
@@ -277,6 +313,7 @@ namespace SealFisher
                         file.WriteLine(Player.LegendaryFishStat);
                         file.WriteLine(Player.SpecialFishStat);
                         file.WriteLine(Player.SealStat);
+                        file.WriteLine(Player.archiveSlots);
                     }
 
                     //Show save confirmation if enabled
@@ -312,6 +349,15 @@ namespace SealFisher
                         Player.inventory.Add(new Fish(split[0], Convert.ToInt32(split[1]), GetRarityFromString(split[2]), split[3]));
                     }
 
+                    //Load archive
+                    var loadedarchiveFish = File.ReadLines(inventorySaveFile);
+                    foreach (string fish in loadedarchiveFish)
+                    {
+                        string[] split = fish.Split(';');
+
+                        Player.archive.Add(new Fish(split[0], Convert.ToInt32(split[1]), GetRarityFromString(split[2]), split[3]));
+                    }
+
                     //Load player stats
                     string[] loadedStats = File.ReadAllLines(statsSaveFile);
                     Player.money = int.Parse(loadedStats[0]);
@@ -338,8 +384,10 @@ namespace SealFisher
                     Player.LegendaryFishStat = int.Parse(loadedStats[21]);
                     Player.SpecialFishStat = int.Parse(loadedStats[22]);
                     Player.SealStat = int.Parse(loadedStats[23]);
+                    Player.archiveSlots = int.Parse(loadedStats[24]);
                     GetBuildingProgress(enumString);
                     if (buildingProgress == BuildingProgress.Finished) Player.Ach8 = true;
+                    Player.CalculateArchiveSlots(10);
 
                     //Update UI elements
                     SetMoney(Player.money);
@@ -353,6 +401,162 @@ namespace SealFisher
             {
                 btnSwitchLocationForward.Visibility = Visibility.Visible;
             }
+        }
+        void SetupWindow()
+        {
+            Background = new ImageBrush() { ImageSource = GetImageSource(uriBackgroundIdle) };
+
+            btnCast.Width = 233;
+            btnCast.Height = 100;
+            btnCast.FontSize = 35;
+            btnCast.Content = "Cast rod";
+            btnCast.FontWeight = FontWeights.DemiBold;
+            btnCast.Click += btnCast_Click;
+            btnCast.HorizontalContentAlignment = HorizontalAlignment.Center;
+            Canvas.SetRight(btnCast, 35);
+            Canvas.SetBottom(btnCast, 27);
+
+            btnInventory.Width = 101;
+            btnInventory.Height = 34;
+            btnInventory.FontSize = 18;
+            btnInventory.Content = "Inventory";
+            btnInventory.Click += btnInventory_Click;
+            btnInventory.HorizontalContentAlignment = HorizontalAlignment.Center;
+            Canvas.SetRight(btnInventory, 35);
+            Canvas.SetTop(btnInventory, 25);
+
+            btnAchievements.Width = 101;
+            btnAchievements.Height = 34;
+            btnAchievements.FontSize = 15;
+            btnAchievements.Content = "Achievements";
+            btnAchievements.Click += btnAchievements_Click;
+            btnAchievements.HorizontalContentAlignment = HorizontalAlignment.Center;
+            Canvas.SetRight(btnAchievements, 35);
+            Canvas.SetTop(btnAchievements, 75);
+
+            btnShop.Width = 101;
+            btnShop.Height = 34;
+            btnShop.FontSize = 18;
+            btnShop.Content = "Shop";
+            btnShop.Click += btnShop_Click;
+            btnShop.HorizontalContentAlignment = HorizontalAlignment.Center;
+            Canvas.SetRight(btnShop, 152);
+            Canvas.SetTop(btnShop, 25);
+
+            btnStatistics.Width = 101;
+            btnStatistics.Height = 34;
+            btnStatistics.FontSize = 18;
+            btnStatistics.Content = "Statistics";
+            btnStatistics.Click += btnStatistics_Click;
+            btnStatistics.HorizontalContentAlignment = HorizontalAlignment.Center;
+            Canvas.SetRight(btnStatistics, 269);
+            Canvas.SetTop(btnStatistics, 25);
+
+            btnArchive.Width = 101;
+            btnArchive.Height = 34;
+            btnArchive.FontSize = 18;
+            btnArchive.Content = "Archive";
+            btnArchive.Click += btnArchive_Click;
+            btnArchive.HorizontalContentAlignment = HorizontalAlignment.Center;
+            Canvas.SetRight(btnArchive, 152);
+            Canvas.SetTop(btnArchive, 75);
+
+            btnSave.Width = 101;
+            btnSave.Height = 34;
+            btnSave.FontSize = 18;
+            btnSave.Content = "Save";
+            btnSave.Click += btnSave_Click;
+            btnSave.HorizontalContentAlignment = HorizontalAlignment.Center;
+            Canvas.SetLeft(btnSave, 10);
+            Canvas.SetBottom(btnSave, 51);
+
+            btnSwitchLocationForward.Width = 233;
+            btnSwitchLocationForward.Height = 100;
+            btnSwitchLocationForward.FontSize = 35;
+            btnSwitchLocationForward.Content = "Build";
+            btnSwitchLocationForward.FontWeight = FontWeights.DemiBold;
+            btnSwitchLocationForward.Click += btnSwitchLocationForward_Click;
+            btnSwitchLocationForward.HorizontalContentAlignment = HorizontalAlignment.Center;
+            btnSwitchLocationForward.Visibility = Visibility.Hidden;
+            Canvas.SetRight(btnSwitchLocationForward, 35);
+            Canvas.SetBottom(btnSwitchLocationForward, 348);
+
+            btnSwitchLocationBackward.Width = 233;
+            btnSwitchLocationBackward.Height = 100;
+            btnSwitchLocationBackward.FontSize = 35;
+            btnSwitchLocationBackward.Content = "Location 1";
+            btnSwitchLocationBackward.FontWeight = FontWeights.DemiBold;
+            btnSwitchLocationBackward.Click += btnSwitchLocationBackward_Click;
+            btnSwitchLocationBackward.HorizontalContentAlignment = HorizontalAlignment.Center;
+            btnSwitchLocationBackward.Visibility = Visibility.Hidden;
+            Canvas.SetLeft(btnSwitchLocationBackward, 35);
+            Canvas.SetBottom(btnSwitchLocationBackward, 348);
+
+            btnDebugGiveFish.Width = 242;
+            btnDebugGiveFish.Height = 35;
+            btnDebugGiveFish.FontSize = 18;
+            btnDebugGiveFish.Content = "Debug - Give 10 fish";
+            btnDebugGiveFish.Click += btnDebugGiveFish_Click;
+            btnDebugGiveFish.HorizontalContentAlignment = HorizontalAlignment.Center;
+            btnDebugGiveFish.Visibility = Visibility.Hidden;
+            Canvas.SetLeft(btnDebugGiveFish, 24);
+            Canvas.SetTop(btnDebugGiveFish, 64);
+
+            tblFishWarning.Width = 58;
+            tblFishWarning.Height = 183;
+            tblFishWarning.FontSize = 150;
+            tblFishWarning.Text = "!";
+            tblFishWarning.Visibility = Visibility.Hidden;
+            tblFishWarning.Foreground = new SolidColorBrush(Colors.Red);
+            tblFishWarning.FontWeight = FontWeights.Bold;
+            tblFishWarning.TextAlignment = TextAlignment.Justify;
+            Canvas.SetRight(tblFishWarning, 118);
+            Canvas.SetBottom(tblFishWarning, 148);
+
+            tblCaughtFish.Width = 1375;
+            tblCaughtFish.Height = 130;
+            tblCaughtFish.FontSize = 40;
+            tblCaughtFish.Text = "Caught fish {name} ({rarity}) weighing {weight}KG";
+            tblCaughtFish.Visibility = Visibility.Hidden;
+            tblCaughtFish.FontWeight = FontWeights.SemiBold;
+            tblCaughtFish.FontStyle = FontStyles.Italic;
+            tblCaughtFish.TextAlignment = TextAlignment.Center;
+            Canvas.SetRight(tblCaughtFish, 253);
+            Canvas.SetTop(tblCaughtFish, 106);
+
+            tblMoney.Width = 242;
+            tblMoney.Height = 48;
+            tblMoney.FontSize = 30;
+            tblMoney.Text = "Money: 0";
+            Canvas.SetLeft(tblMoney, 24);
+            Canvas.SetTop(tblMoney, 11);
+
+            tblDev.Width = 800;
+            tblDev.Height = 41;
+            tblDev.FontSize = 36;
+            tblDev.Text = "Early Access 1.0.0 - Seeloewen, Finni - 07.02.2026";
+            Canvas.SetLeft(tblDev, 10);
+            Canvas.SetBottom(tblDev, 10);
+
+
+            cvsHeader.Children.Add(btnCast);
+            cvsHeader.Children.Add(btnInventory);
+            cvsHeader.Children.Add(btnAchievements);
+            cvsHeader.Children.Add(btnShop);
+            cvsHeader.Children.Add(btnStatistics);
+            cvsHeader.Children.Add(btnArchive);
+            cvsHeader.Children.Add(btnSave);
+            cvsHeader.Children.Add(btnSwitchLocationForward);
+            cvsHeader.Children.Add(btnSwitchLocationBackward);
+            cvsHeader.Children.Add(btnDebugGiveFish);
+            cvsHeader.Children.Add(tblFishWarning);
+            cvsHeader.Children.Add(tblCaughtFish);
+            cvsHeader.Children.Add(tblMoney);
+            cvsHeader.Children.Add(tblDev);
+
+
+            //
+            Content = cvsHeader;
         }
         public BuildingProgress GetBuildingProgress(string enumString)
         {
@@ -378,6 +582,41 @@ namespace SealFisher
         public void UpdateFishAchievements()
         {
             //Updates Achievements related to fish
+            if (Player.FishStat >= 1 && Player.Ach1 == false)
+            {
+                Player.Ach1 = true;
+                Player.CalculateArchiveSlots(1);
+            }
+            if (Player.SealStat >= 1 && Player.Ach3 == false)
+            {
+                Player.Ach3 = true;
+                Player.CalculateArchiveSlots(3);
+            }
+            if (Player.FishStat >= 100 && Player.Ach4 == false)
+            {
+                Player.Ach4 = true;
+                Player.CalculateArchiveSlots(4);
+            }
+            if (Player.FishStat >= 1000 && Player.Ach5 == false)
+            {
+                Player.Ach5 = true;
+                Player.CalculateArchiveSlots(5);
+            }
+            if (Player.FishStat >= 10000 && Player.Ach6 == false)
+            {
+                Player.Ach6 = true;
+                Player.CalculateArchiveSlots(6);
+            }
+            if (Player.FishStat >= 100000 && Player.Ach7 == false)
+            {
+                Player.Ach7 = true;
+                Player.CalculateArchiveSlots(7);
+            }
+            if (Player.SealStat >= 100 && Player.Ach9 == false)
+            {
+                Player.Ach9 = true;
+                Player.CalculateArchiveSlots(9);
+            }
             if (Player.FishStat >= 1) Player.Ach1 = true;
             if (Player.SealStat >= 1) Player.Ach3 = true;
             if (Player.FishStat >= 100) Player.Ach4 = true;
@@ -436,11 +675,17 @@ namespace SealFisher
             double trashChance = 0.35 - 0.005 * Player.rodPower * Locationmultiplier;
             double rareChance = 0.05 + 0.003 * Player.rodPower * Locationmultiplier;
             double superRareChance = 0.03 + 0.001 * Player.rodPower * Locationmultiplier;
-            double legendaryChance = 0.01 + 0.0005 * Player.rodPower * Locationmultiplier;
-            double specialChance = 0.005 + 0.0001 * Player.rodPower * Locationmultiplier;
+            double legendaryChance = 0;
+            double specialChance = 0;
+            if (location == Location.Location2) 
+            {
+                legendaryChance = 0.01 + 0.0005 * Player.rodPower * Locationmultiplier;
+                specialChance = 0.005 + 0.0001 * Player.rodPower * Locationmultiplier;
+            }
 
-            //Calculate sum of the chances
-            double totalChance = commonChance + trashChance + rareChance + superRareChance + legendaryChance + specialChance;
+
+                //Calculate sum of the chances
+                double totalChance = commonChance + trashChance + rareChance + superRareChance + legendaryChance + specialChance;
 
             //Normalize chances
             commonChance /= totalChance;
@@ -790,7 +1035,11 @@ namespace SealFisher
                 Background = new ImageBrush() { ImageSource = GetImageSource(uriBackground1BoatFinished) };
                 buildingProgress = BuildingProgress.Finished;
                 btnSwitchLocationForward.Content = "Location 2";
-                if (!Player.Ach8) Player.Ach8 = true;
+                if (!Player.Ach8)
+                {
+                    Player.Ach8 = true;
+                    Player.CalculateArchiveSlots(8);
+                }
             }
             else if (buildingProgress == BuildingProgress.Finished && location == Location.Location1)
             {
@@ -802,6 +1051,7 @@ namespace SealFisher
                 StopAllTimers();
                 SetRodState(RodState.idle);
                 SetLocationMultiplier();
+                InitializeFish();
             }
         }
 
@@ -817,6 +1067,7 @@ namespace SealFisher
                 StopAllTimers();
                 SetRodState(RodState.idle);
                 SetLocationMultiplier();
+                InitializeFish();
             }
         }
         public void StopAllTimers()

@@ -6,38 +6,4 @@
         xmlns:local="clr-namespace:SealFisher"
         mc:Ignorable="d"
         Title="SealFisher" Height="914" Width="1858" Loaded="wndGame_Loaded">
-    <Window.Background>
-        <ImageBrush ImageSource="/Resources/imgBackgroundIdle.png"/>
-    </Window.Background>
-    <Grid>
-        <Button x:Name="btnCast" Content="Cast rod" FontSize="35" Click="btnCast_Click" ContentStringFormat="" HorizontalContentAlignment="Center" RenderTransformOrigin="0.319,-0.89" Margin="0,0,35,27" FontWeight="DemiBold" Height="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="233">
-            <Button.Style>
-                <Style/>
-            </Button.Style>
-        </Button>
-        <TextBlock x:Name="tblDev" HorizontalAlignment="Left" Margin="10,0,0,10" TextWrapping="Wrap" Text="Early Access 1.0.0 - Seeloewen, Finni - 25.08.2025" Width="800" FontSize="36" Height="41" VerticalAlignment="Bottom"/>
-        <TextBlock x:Name="tblFishWarning" TextWrapping="Wrap" Text="!" Margin="0,0,118,148" FontSize="150" FontWeight="Bold" Foreground="Red" Visibility="Hidden" RenderTransformOrigin="1.219,0.738" TextAlignment="Justify" HorizontalAlignment="Right" Width="58" Height="183" VerticalAlignment="Bottom">
-            <TextBlock.FocusVisualStyle>
-                <Style/>
-            </TextBlock.FocusVisualStyle>
-        </TextBlock>
-        <TextBlock x:Name="tblCaughtFish" TextWrapping="Wrap" Text="Caught fish {name} ({rarity}) weighing {weight}KG" Margin="253,106,230,0" FontSize="40" Visibility="Hidden" FontWeight="SemiBold" FontStyle="Italic" TextAlignment="Center" Height="130" VerticalAlignment="Top"/>
-        <Button x:Name="btnInventory" Content="Inventory" Margin="0,25,35,0" VerticalAlignment="Top" Height="34" FontSize="18" Click="btnInventory_Click" HorizontalAlignment="Right" Width="101"/>
-        <Button x:Name="btnAchievements" Content="Achievements" Margin="0,75,35,0" VerticalAlignment="Top" Height="34" FontSize="15" Click="btnAchievements_Click" HorizontalAlignment="Right" Width="101"/>
-        <Button x:Name="btnDebugFish" Content="Debug - Give 10 fish" Margin="24,64,0,0" Click="btnDebugGiveFish" FontSize="18" HorizontalAlignment="Left" Width="242" RenderTransformOrigin="1.3,0.675" Height="35" VerticalAlignment="Top" Visibility="Hidden"/>
-        <TextBlock x:Name="tblMoney" TextWrapping="Wrap" Text="Money: 0" Margin="24,11,0,0" FontSize="30" Height="48" VerticalAlignment="Top" HorizontalAlignment="Left" Width="242"/>
-        <Button x:Name="btnShop" Content="Shop" Margin="0,25,152,0" FontSize="18" Height="34" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102" Click="btnShop_Click"/>
-        <Button x:Name="btnStatistics" Content="Statistics" Margin="0,25,269,0" FontSize="18" Height="34" VerticalAlignment="Top" HorizontalAlignment="Right" Width="102" Click="btnStatistics_Click"/>
-        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="10,0,0,51" Width="104" RenderTransformOrigin="0.527,0.508" FontSize="18" Height="34" VerticalAlignment="Bottom" Click="btnSave_Click"/>
-        <Button x:Name="btnSwitchLocationForward" Content="Build" FontSize="35" Click="btnSwitchLocationForward_Click" ContentStringFormat="" HorizontalContentAlignment="Center" RenderTransformOrigin="0.319,-0.89" Margin="0,0,35,349" FontWeight="DemiBold" Height="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="233" Visibility="Hidden">
-            <Button.Style>
-                <Style/>
-            </Button.Style>
-        </Button>
-        <Button x:Name="btnSwitchLocationBackward" Content="Location 1" FontSize="35" Click="btnSwitchLocationBackward_Click" ContentStringFormat="" HorizontalContentAlignment="Center" RenderTransformOrigin="0.319,-0.89" FontWeight="DemiBold" Height="100" VerticalAlignment="Bottom" HorizontalAlignment="left" Width="233" Visibility="Hidden" Margin="35,0,0,363">
-            <Button.Style>
-                <Style/>
-            </Button.Style>
-        </Button>
-    </Grid>
 </Window>
