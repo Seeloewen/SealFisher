@@ -30,26 +30,26 @@
 
         public Color(int r, int g, int b, int a)
         {
-            this.r = r / 255; 
-            this.g = g / 255; 
-            this.b = b / 255; 
-            this.a = a / 255;
+            this.r = r / 255f; 
+            this.g = g / 255f; 
+            this.b = b / 255f; 
+            this.a = a / 255f;
         }
 
         public Color(int i)
         {
-            r = i / 255;
-            g = i / 255;
-            b = i / 255;
-            a = 255;
+            r = i / 255f;
+            g = i / 255f;
+            b = i / 255f;
+            a = 1f;
         }
 
         public Color(int r, int g, int b)
         {
-            this.r = r / 255;
-            this.g = g / 255;
-            this.b = b / 255;
-            a = 255;
+            this.r = r / 255f;
+            this.g = g / 255f;
+            this.b = b / 255f;
+            a = 1f;
         }
     }
 }

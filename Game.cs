@@ -29,7 +29,7 @@ namespace SealFisher
 
             Test1(); //Only for debugging
 
-            while (!Renderer.glfw.WindowShouldClose(wndMain.instance))
+            while (wndMain.isVisible)
             {
                 Update();
 
@@ -39,12 +39,11 @@ namespace SealFisher
                 Renderer.Render();
 
                 //Check for each window if it should be closed
-                foreach (Window wnd in Renderer.wnds.ToList())
+                foreach (Window wnd in Renderer.wnds)
                 {
-                    if (wnd.instance != null && Renderer.glfw.WindowShouldClose(wnd.instance))
+                    if (wnd.isVisible && Renderer.glfw.WindowShouldClose(wnd.instance))
                     {
-                        Renderer.glfw.DestroyWindow(wnd.instance);
-                        Renderer.wnds.Remove(wnd);
+                        wnd.Hide();
                     }
                 }
             }
@@ -71,9 +70,9 @@ namespace SealFisher
 
         private static void Test2()
         {
-            wndMain.primitiveBuffer.Put(0f, 0.8f, 0f, 1f, 0f, 0.5f);
-            wndMain.primitiveBuffer.Put(0.8f, -0.8f, 1f, 0f, 0f, 0.5f);
-            wndMain.primitiveBuffer.Put(-0.8f, -0.8f, 0f, 0f, 1f, 0.5f);
+            wndMain.primitiveBuffer.Put(0f, 0.8f, 0f, 1f, 0f, 1f);
+            wndMain.primitiveBuffer.Put(0.8f, -0.8f, 1f, 0f, 0f, 1f);
+            wndMain.primitiveBuffer.Put(-0.8f, -0.8f, 0f, 0f, 1f, 1f);
 
             //TextureRenderer.Draw(wndSecond, new Rect(wndSecond.resolution, 0, 0, 720, 480), "background_2_idle");
 

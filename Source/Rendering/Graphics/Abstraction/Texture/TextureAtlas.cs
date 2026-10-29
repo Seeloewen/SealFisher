@@ -20,6 +20,9 @@ namespace SealFisher.Rendering.Graphics.Abstraction.Texture
         private static Image<Rgba32> mapImage;
         public static ComPtr<ID3D11ShaderResourceView> mapResource;
 
+        private static int atlasWidth;
+        private static int atlasHeight;
+
         public static void LoadMappings(string fileName)
         {
             JObject obj = JObject.Parse(FileUtil.StrFromResource("texture_map.json"));
@@ -69,12 +72,19 @@ namespace SealFisher.Rendering.Graphics.Abstraction.Texture
 
                 boundsMap.Add(img.Key, new Rect2(r.x, r.y, w - 2, h - 2));
             }
+
+            //Only make the atlas as big as we need
+            foreach (Rect2 b in boundsMap.Values)
+            {
+                atlasWidth = Math.Max(atlasWidth, b.x + b.w + 2);
+                atlasHeight = Math.Max(atlasHeight, b.y + b.h + 2);
+            }
         }
 
         public static void Create()
         {
-            Image<Rgba32> mapImg = new Image<Rgba32>(10000, 10000);
-            foreach(var img in imageMap)
+            Image<Rgba32> mapImg = new Image<Rgba32>(atlasWidth, atlasHeight);
+            foreach (var img in imageMap)
             {
                 Rect2 rect = boundsMap[img.Key];
                 mapImg.Mutate(o => o.DrawImage(img.Value, new Point(rect.x, rect.y), 1f));
@@ -83,6 +93,10 @@ namespace SealFisher.Rendering.Graphics.Abstraction.Texture
             mapImage = mapImg;
 
             BuildTexture();
+
+            foreach (var img in imageMap.Values) img.Dispose();
+            imageMap.Clear();
+            mapImage.Dispose();
         }
 
         private unsafe static void BuildTexture()
@@ -128,10 +142,10 @@ namespace SealFisher.Rendering.Graphics.Abstraction.Texture
 
             Rect2 mapBounds = boundsMap[textureId];
 
-            return new Rect(mapBounds.x / 10000f,
-                            mapBounds.y / 10000f,
-                            (mapBounds.x + mapBounds.w) / 10000f,
-                            (mapBounds.y + mapBounds.h) / 10000f);
+            return new Rect(mapBounds.x / (float)atlasWidth,
+                            mapBounds.y / (float)atlasHeight,
+                            (mapBounds.x + mapBounds.w) / (float)atlasWidth,
+                            (mapBounds.y + mapBounds.h) / (float)atlasHeight);
         }
     }
 }

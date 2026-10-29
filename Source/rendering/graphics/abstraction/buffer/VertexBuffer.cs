@@ -1,5 +1,6 @@
 ﻿using Silk.NET.Core.Native;
 using Silk.NET.Direct3D11;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -9,14 +10,20 @@ namespace SealFisher.Rendering.Graphics.Abstraction.Buffer
     {
         public ComPtr<ID3D11Buffer> buffer = default;
         private InputLayout inputlayout;
-        private List<float> vertices;
+        private Action onFull; //Draws the buffer when it's full, provided by the renderer that owns it
+        private List<float> vertices = new();
         private uint vertexAmount;
-        const uint bytes = 1024;
+        private uint maxVertices;
+        const uint bytes = 64 * 1024;
 
-        public VertexBuffer(InputLayout layout)
+        public VertexBuffer(InputLayout layout, Action onFull)
         {
             inputlayout = layout;
-            vertices = new();
+            this.onFull = onFull;
+
+            //Round down to whole triangles, so a flush never splits a triangle
+            maxVertices = bytes / layout.GetSize();
+            maxVertices -= maxVertices % 3;
 
             BufferDesc bufferDesc = new BufferDesc()
             {
@@ -29,14 +36,15 @@ namespace SealFisher.Rendering.Graphics.Abstraction.Buffer
             Renderer.device.CreateBuffer(ref bufferDesc, ref SilkMarshal.NullRef<SubresourceData>(), ref buffer);
         }
 
+        private void EnsureSpace()
+        {
+            //Draw everything collected so far if the buffer is full
+            if (vertexAmount >= maxVertices) onFull();
+        }
+
         public void Put(float x, float y, float r, float g, float b, float a)
         {
-            //Check if the current amount of vertices in the buffer plus one more vertice would exceed the buffer length
-            if (vertices.Count * sizeof(float) + 7 * sizeof(float) > bytes)
-            {
-                vertexAmount = 0;
-                Flush(); //This might not be right, but I dont care enough to check it (famous last words)
-            }
+            EnsureSpace();
 
             vertices.Add(x);
             vertices.Add(y);
@@ -51,12 +59,7 @@ namespace SealFisher.Rendering.Graphics.Abstraction.Buffer
 
         public void Put(float x, float y, float u, float v)
         {
-            //Check if the current amount of vertices in the buffer plus one more vertice would exceed the buffer length
-            if (vertices.Count * sizeof(float) + 5 * sizeof(float) > bytes)
-            {
-                vertexAmount = 0;
-                Flush(); //This might not be right, but I dont care enough to check it (famous last words)
-            }
+            EnsureSpace();
 
             vertices.Add(x);
             vertices.Add(y);
@@ -69,30 +72,28 @@ namespace SealFisher.Rendering.Graphics.Abstraction.Buffer
 
         public unsafe void Use()
         {
-            MappedSubresource mappedSubresource = default;
-            Renderer.deviceContext.Map(buffer, 0, Map.WriteDiscard, 0, ref mappedSubresource);
-            Marshal.Copy(vertices.ToArray(), 0, (nint)mappedSubresource.PData, vertices.Count);
-            Renderer.deviceContext.Unmap(buffer, 0);
+            if (vertices.Count > 0)
+            {
+                MappedSubresource mappedSubresource = default;
+                Renderer.deviceContext.Map(buffer, 0, Map.WriteDiscard, 0, ref mappedSubresource);
+                Marshal.Copy(vertices.ToArray(), 0, (nint)mappedSubresource.PData, vertices.Count);
+                Renderer.deviceContext.Unmap(buffer, 0);
+            }
 
             uint stride = inputlayout.GetSize();
             uint offset = 0;
             Renderer.deviceContext.IASetInputLayout(inputlayout.instance);
             Renderer.deviceContext.IASetVertexBuffers(0, 1, ref buffer, ref stride, ref offset);
-
         }
 
         public void Flush()
         {
             //Draw the vertices currently in the buffer and clear the buffer
-            uint i = GetVertexCount();
-            Renderer.deviceContext.Draw(i, 0);
+            if (vertexAmount > 0) Renderer.deviceContext.Draw(vertexAmount, 0);
             vertices.Clear();
             vertexAmount = 0;
         }
 
-        public uint GetVertexCount()
-        {
-            return vertexAmount;
-        }
+        public uint GetVertexCount() => vertexAmount;
     }
 }

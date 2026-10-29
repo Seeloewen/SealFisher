@@ -16,6 +16,8 @@ using WinRT;
 
 namespace SealFisher.Rendering.Graphics
 {
+    public enum Batch { None, Primitive, Texture }
+
     public static class Renderer
     {
         public static Glfw glfw;
@@ -28,6 +30,10 @@ namespace SealFisher.Rendering.Graphics
         public static ComPtr<IDXGIFactory2> factory;
         public static RasterizerState defaultState;
         public static RasterizerState scissorState;
+
+        public static ComPtr<ID3D11BlendState> blendState;
+
+        private static Batch currentBatch = Batch.None;
 
         public static List<Window> wnds = new List<Window>();
 
@@ -59,6 +65,22 @@ namespace SealFisher.Rendering.Graphics
             scissorState = new RasterizerState(true);
 
             defaultState.Use();
+
+            //Enable alpha blending, so transparent pixels and colors work
+            BlendDesc blendDesc = new BlendDesc();
+            blendDesc.RenderTarget[0] = new RenderTargetBlendDesc
+            {
+                BlendEnable = true,
+                SrcBlend = Blend.SrcAlpha,
+                DestBlend = Blend.InvSrcAlpha,
+                BlendOp = BlendOp.Add,
+                SrcBlendAlpha = Blend.One,
+                DestBlendAlpha = Blend.InvSrcAlpha,
+                BlendOpAlpha = BlendOp.Add,
+                RenderTargetWriteMask = (byte)ColorWriteEnable.All
+            };
+            device.CreateBlendState(ref blendDesc, ref blendState);
+            deviceContext.OMSetBlendState(blendState, null, 0xFFFFFFFF);
         }
 
 
@@ -77,16 +99,14 @@ namespace SealFisher.Rendering.Graphics
 
                 wnd.GetChildren().ForEach(c => c.Render()); //Render all children of the window
 
-                PrimitiveRenderer.Render(wnd); //Draw primitives in the buffer
-                TextureRenderer.Render(wnd);
+                FlushBatch(wnd);
                 wnd.swapChain.Present(0, 0);
             }
         }
 
         public static void SetScissor(Window wnd, Rect2 r)
         {
-            PrimitiveRenderer.Render(wnd);
-            TextureRenderer.Render(wnd);
+            FlushBatch(wnd);
 
             Box2D<int> box = new Box2D<int>(r.x, r.y, r.x + r.w, r.y + r.h);
             scissorState.Use();
@@ -95,12 +115,22 @@ namespace SealFisher.Rendering.Graphics
 
         public static void RemoveScissor(Window wnd)
         {
+            FlushBatch(wnd);
+            defaultState.Use();
+        }
+
+        public static void SwitchBatch(Window wnd, Batch batch)
+        {
+            if (currentBatch == batch) return;
+            FlushBatch(wnd);
+            currentBatch = batch;
+        }
+
+        public static void FlushBatch(Window wnd)
+        {
             PrimitiveRenderer.Render(wnd);
             TextureRenderer.Render(wnd);
-
-            Box2D<int> box = new Box2D<int>(0,0,wnd.GetWidth(),wnd.GetHeight());
-            deviceContext.RSSetScissorRects(1, ref box);
-            defaultState.Use();
+            currentBatch = Batch.None;
         }
     }
 }

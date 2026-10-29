@@ -28,8 +28,6 @@ namespace SealFisher.Source.Rendering.Graphics
 
         private static ComPtr<ID3D11SamplerState> sampler;
 
-        private static Texture tempTexture; //Only used while debugging, needs to be replaced with texture atlas
-
         public static void Init()
         {
             vertexShader = new VertexShader();
@@ -46,9 +44,9 @@ namespace SealFisher.Source.Rendering.Graphics
             SamplerDesc sampDesc = new SamplerDesc
             {
                 Filter = Filter.MinMagMipLinear,
-                AddressU = TextureAddressMode.Wrap,
-                AddressV = TextureAddressMode.Wrap,
-                AddressW = TextureAddressMode.Wrap,
+                AddressU = TextureAddressMode.Clamp,
+                AddressV = TextureAddressMode.Clamp,
+                AddressW = TextureAddressMode.Clamp,
                 MinLOD = 0,
                 MaxLOD = float.MaxValue
             };
@@ -60,6 +58,8 @@ namespace SealFisher.Source.Rendering.Graphics
 
         public static void Draw(Window wnd, Rect rect, string textureId)
         {
+            Renderer.SwitchBatch(wnd, Batch.Texture);
+
             Rect textureBounds = TextureAtlas.GetTextureBounds(textureId);
 
             wnd.textureBuffer.Put(rect.x1, rect.y1, textureBounds.x1, textureBounds.y1);
@@ -73,6 +73,8 @@ namespace SealFisher.Source.Rendering.Graphics
 
         public static void Render(Window wnd)
         {
+            if (wnd.textureBuffer.GetVertexCount() == 0) return;
+
             wnd.textureBuffer.Use();
             vertexShader.Use();
             pixelShader.Use();

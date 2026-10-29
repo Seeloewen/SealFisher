@@ -30,6 +30,8 @@ namespace SealFisher.Rendering.Graphics
 
         public static void Render(Window wnd)
         {
+            if (wnd.primitiveBuffer.GetVertexCount() == 0) return;
+
             wnd.primitiveBuffer.Use();
             vertexShader.Use();
             pixelShader.Use();
@@ -38,6 +40,8 @@ namespace SealFisher.Rendering.Graphics
 
         public static void DrawRect(Window wnd, Rect rect, Color c)
         {
+            Renderer.SwitchBatch(wnd, Batch.Primitive);
+
             wnd.primitiveBuffer.Put(rect.x1, rect.y1, c.r, c.g, c.b, c.a);
             wnd.primitiveBuffer.Put(rect.x2, rect.y2, c.r, c.g, c.b, c.a);
             wnd.primitiveBuffer.Put(rect.x1, rect.y2, c.r, c.g, c.b, c.a);
@@ -48,6 +52,8 @@ namespace SealFisher.Rendering.Graphics
 
         public static void DrawTriangle(Window wnd, Triangle triangle, Color c)
         {
+            Renderer.SwitchBatch(wnd, Batch.Primitive);
+
             wnd.primitiveBuffer.Put(triangle.x1, triangle.y1, c.r, c.g, c.b, c.a);
             wnd.primitiveBuffer.Put(triangle.x2, triangle.y2, c.r, c.g, c.b, c.a);
             wnd.primitiveBuffer.Put(triangle.x3, triangle.y3, c.r, c.g, c.b, c.a);
@@ -55,6 +61,8 @@ namespace SealFisher.Rendering.Graphics
 
         public static void DrawQuad(Window wnd, Quad quad, Color c)
         {
+            Renderer.SwitchBatch(wnd, Batch.Primitive);
+
             wnd.primitiveBuffer.Put(quad.x1, quad.y1, c.r, c.g, c.b, c.a);
             wnd.primitiveBuffer.Put(quad.x3, quad.y3, c.r, c.g, c.b, c.a);
             wnd.primitiveBuffer.Put(quad.x4, quad.y4, c.r, c.g, c.b, c.a);

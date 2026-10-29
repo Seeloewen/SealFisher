@@ -41,10 +41,11 @@ namespace SealFisher.Rendering.Windowing
             this.title = title;
 
             Renderer.glfw.WindowHint(WindowHintClientApi.ClientApi, ClientApi.NoApi); //NoApi means DX Context can be used
+            Renderer.glfw.WindowHint(WindowHintBool.Resizable, false);
 
             viewport = new Viewport() { Width = width, Height = height };
-            primitiveBuffer = new VertexBuffer(PrimitiveRenderer.layout);
-            textureBuffer = new VertexBuffer(TextureRenderer.layout);
+            primitiveBuffer = new VertexBuffer(PrimitiveRenderer.layout, () => PrimitiveRenderer.Render(this));
+            textureBuffer = new VertexBuffer(TextureRenderer.layout, () => TextureRenderer.Render(this));
             scrollCallback = ScrollCallback;
 
             Renderer.wnds.Add(this);
@@ -91,8 +92,14 @@ namespace SealFisher.Rendering.Windowing
         {
             if (!isVisible) return;
 
+            renderTarget.Dispose();
+            swapChain.Dispose();
+            renderTarget = default;
+            swapChain = default;
+
             Renderer.glfw.DestroyWindow(instance);
             isVisible = false;
+            instance = null;
         }
 
         public void AddChild(GuiComponent gui)
@@ -124,6 +131,7 @@ namespace SealFisher.Rendering.Windowing
             //Set Backbuffer as RTV
             ComPtr<ID3D11Texture2D> backBuffer = swapChain.GetBuffer<ID3D11Texture2D>(0);
             Renderer.device.CreateRenderTargetView(backBuffer, null, ref renderTarget);
+            backBuffer.Dispose();
         }
 
         public void SetPos(int x, int y)
