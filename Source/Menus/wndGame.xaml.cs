@@ -102,6 +102,9 @@ namespace SealFisher
         {
             InitializeComponent();
 
+            Game.Init();
+            Game.Run();
+
             //Setup timers
             fishTimer.Tick += new EventHandler(fishTimer_Tick);
             fishWarningDisappearTimer.Tick += new EventHandler(fishWarningDisappearTimer_Tick);
@@ -614,6 +617,13 @@ namespace SealFisher
                 Player.Ach9 = true;
                 Player.CalculateArchiveSlots(9);
             }
+            if (Player.FishStat >= 1) Player.Ach1 = true;
+            if (Player.SealStat >= 1) Player.Ach3 = true;
+            if (Player.FishStat >= 100) Player.Ach4 = true;
+            if (Player.FishStat >= 1000) Player.Ach5 = true;
+            if (Player.FishStat >= 10000) Player.Ach6 = true;
+            if (Player.FishStat >= 100000) Player.Ach7 = true;
+            if (Player.SealStat >= 100) Player.Ach9 = true;
         }
         public Rarity GetRarityFromString(string rarity)
         {
@@ -710,15 +720,15 @@ namespace SealFisher
                 //Rod is not thrown out
                 btnCast.Content = "Cast rod";
                 rodState = RodState.idle;
-                if(location == Location.Location1)
+                if (location == Location.Location1)
                 {
                     Background = new ImageBrush() { ImageSource = GetImageSource(uriBackgroundIdle) };
                 }
-                else if(location == Location.Location2)
+                else if (location == Location.Location2)
                 {
                     Background = new ImageBrush() { ImageSource = GetImageSource(uriBackground2Idle) };
                 }
-                
+
             }
             else if (state == RodState.catchable)
             {
@@ -727,9 +737,9 @@ namespace SealFisher
                 rodState = RodState.catchable;
                 if (location == Location.Location1)
                 {
-                   Background = new ImageBrush() { ImageSource = GetImageSource(uriBackgroundCasted) };
+                    Background = new ImageBrush() { ImageSource = GetImageSource(uriBackgroundCasted) };
                 }
-                else if(location == Location.Location2)
+                else if (location == Location.Location2)
                 {
                     Background = new ImageBrush() { ImageSource = GetImageSource(uriBackground2Casted) };
                 }
@@ -873,7 +883,7 @@ namespace SealFisher
                     fishNum = random.Next(1, 6);
                     Player.RareFishStat++;
 
-                    switch(fishNum)
+                    switch (fishNum)
                     {
                         case 1:
                             fishName = "Coelacanth";
@@ -901,7 +911,7 @@ namespace SealFisher
                     fishNum = random.Next(1, 6);
                     Player.SuperRareFishStat++;
 
-                    switch(fishNum)
+                    switch (fishNum)
                     {
                         case 1:
                             fishName = "Blacksnake cusk-eel";
@@ -929,7 +939,7 @@ namespace SealFisher
                     fishNum = random.Next(1, 6);
                     Player.LegendaryFishStat++;
 
-                    switch(fishNum)
+                    switch (fishNum)
                     {
                         case 1:
                             fishName = "Salamanderfish";
@@ -957,7 +967,7 @@ namespace SealFisher
                     fishNum = random.Next(1, 6);
                     Player.SpecialFishStat++;
 
-                    switch(fishNum)
+                    switch (fishNum)
                     {
                         case 1:
                             fishName = "Anchor";
@@ -1005,7 +1015,7 @@ namespace SealFisher
         public void GenerateFishigTime()
         {
             int BaseValue = 13;
-            fishCatchTime = BaseValue / Player.baitPower * Locationmultiplier + random.Next(0,4);    
+            fishCatchTime = BaseValue / Player.baitPower * Locationmultiplier + random.Next(0, 4);
         }
 
         private void btnSwitchLocationForward_Click(object sender, RoutedEventArgs e)
@@ -1020,7 +1030,7 @@ namespace SealFisher
                 Background = new ImageBrush() { ImageSource = GetImageSource(uriBackground1Boat2) };
                 buildingProgress = BuildingProgress.middle;
             }
-            else if(buildingProgress == BuildingProgress.middle)
+            else if (buildingProgress == BuildingProgress.middle)
             {
                 Background = new ImageBrush() { ImageSource = GetImageSource(uriBackground1BoatFinished) };
                 buildingProgress = BuildingProgress.Finished;
@@ -1031,7 +1041,7 @@ namespace SealFisher
                     Player.CalculateArchiveSlots(8);
                 }
             }
-            else if(buildingProgress == BuildingProgress.Finished && location == Location.Location1)
+            else if (buildingProgress == BuildingProgress.Finished && location == Location.Location1)
             {
                 Background = new ImageBrush() { ImageSource = GetImageSource(uriBackground2Idle) };
                 location = Location.Location2;
@@ -1047,7 +1057,7 @@ namespace SealFisher
 
         private void btnSwitchLocationBackward_Click(object sender, RoutedEventArgs e)
         {
-            if(location == Location.Location2) 
+            if (location == Location.Location2)
             {
                 Background = new ImageBrush() { ImageSource = GetImageSource(uriBackgroundIdle) };
                 location = Location.Location1;
@@ -1068,14 +1078,14 @@ namespace SealFisher
         }
         public void Buildable()
         {
-            if(Player.Location == 2 && (buildingProgress == BuildingProgress.none || buildingProgress == BuildingProgress.start || buildingProgress == BuildingProgress.middle))
+            if (Player.Location == 2 && (buildingProgress == BuildingProgress.none || buildingProgress == BuildingProgress.start || buildingProgress == BuildingProgress.middle))
             {
                 btnCast.Visibility = Visibility.Hidden;
             }
         }
         public void SetLocationMultiplier()
         {
-            if(location == Location.Location1)
+            if (location == Location.Location1)
             {
                 Locationmultiplier = 1;
             }

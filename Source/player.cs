@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace SealFisher
 {
-	public static class Player
-	{
+    public static class Player
+    {
         //Player stats
         public static List<Fish> inventory = new List<Fish>();
         public static List<Fish> archive = new List<Fish>();

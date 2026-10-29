@@ -1,0 +1,10 @@
+{
+  "background_1": "imgBackground.png",
+  "background_2_idle": "Background 2 idle.png",
+  "background_2_casted": "Background 2 rodcasted.png",
+  "background_1_boat_finished": "background1 boat Finish.png",
+  "background_1_boat": "background1 boat.png",
+  "background_1_boat_2": "background1 boat2.png",
+  "background_1_casted": "imgBackgroundCasted.png",
+  "background_1_idle":  "imgBackgroundIdle.png"
+}
