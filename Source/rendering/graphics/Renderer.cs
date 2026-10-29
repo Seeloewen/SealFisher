@@ -1,4 +1,6 @@
-﻿using SealFisher.Rendering.Gui.Components;
+﻿using SealFisher.Rendering.Graphics.Abstraction;
+using SealFisher.Rendering.Graphics.Abstraction.Geometry;
+using SealFisher.Rendering.Gui.Components;
 using SealFisher.Rendering.Windowing;
 using SealFisher.Source.Rendering.Graphics;
 using Silk.NET.Core.Native;
@@ -6,6 +8,7 @@ using Silk.NET.Direct3D.Compilers;
 using Silk.NET.Direct3D11;
 using Silk.NET.DXGI;
 using Silk.NET.GLFW;
+using Silk.NET.Maths;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -23,6 +26,8 @@ namespace SealFisher.Rendering.Graphics
         public static ComPtr<ID3D11Device> device;
         public static ComPtr<ID3D11DeviceContext> deviceContext;
         public static ComPtr<IDXGIFactory2> factory;
+        public static RasterizerState defaultState;
+        public static RasterizerState scissorState;
 
         public static List<Window> wnds = new List<Window>();
 
@@ -48,9 +53,13 @@ namespace SealFisher.Rendering.Graphics
             }
 
             PrimitiveRenderer.Init();
-            TextureRenderer.Init(); 
-        }
+            TextureRenderer.Init();
 
+            defaultState = new RasterizerState(false);
+            scissorState = new RasterizerState(true);
+
+            defaultState.Use();
+        }
 
 
         public static void Render()
@@ -72,6 +81,26 @@ namespace SealFisher.Rendering.Graphics
                 TextureRenderer.Render(wnd);
                 wnd.swapChain.Present(0, 0);
             }
+        }
+
+        public static void SetScissor(Window wnd, Rect2 r)
+        {
+            PrimitiveRenderer.Render(wnd);
+            TextureRenderer.Render(wnd);
+
+            Box2D<int> box = new Box2D<int>(r.x, r.y, r.x + r.w, r.y + r.h);
+            scissorState.Use();
+            deviceContext.RSSetScissorRects(1, ref box);
+        }
+
+        public static void RemoveScissor(Window wnd)
+        {
+            PrimitiveRenderer.Render(wnd);
+            TextureRenderer.Render(wnd);
+
+            Box2D<int> box = new Box2D<int>(0,0,wnd.GetWidth(),wnd.GetHeight());
+            deviceContext.RSSetScissorRects(1, ref box);
+            defaultState.Use();
         }
     }
 }

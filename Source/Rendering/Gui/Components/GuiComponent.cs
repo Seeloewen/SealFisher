@@ -9,7 +9,6 @@ namespace SealFisher.Rendering.Gui.Components
     public abstract class GuiComponent
     {
         protected Window parentWindow;
-        protected Rect parentBounds;
         protected GuiComponent parent;
         protected List<GuiComponent> children = new List<GuiComponent>();
 
@@ -31,11 +30,9 @@ namespace SealFisher.Rendering.Gui.Components
             this.posY = posY;
             this.width = width;
             this.height = height;
-
-            parentBounds = new Rect(new Resolution(0,0), 0, 0, 0, 0);
         }
 
-        public void Render()
+        public virtual void Render()
         {
             if (!isVisible) return;
 
@@ -101,8 +98,7 @@ namespace SealFisher.Rendering.Gui.Components
             //Update the parent window related properties if it's already in a window
             if(parentWindow!= null)
             {
-                comp.parentWindow = parentWindow;
-                comp.parentBounds = GetRelativeBounds();
+                comp.SetParentWindow(parentWindow);
             }
 
             children.Add(comp);
@@ -116,26 +112,8 @@ namespace SealFisher.Rendering.Gui.Components
             foreach(GuiComponent comp in children) //Don't forget to also update the parent window for the children
             {
                 comp.SetParentWindow(wnd);
-                comp.parentBounds = GetRelativeBounds();
             }
         }
-
-        public Rect GetRelativeBounds()
-        {
-            int relativeX = Screen.xToInt(parentWindow.resolution, parentBounds.x1) +posX;
-            int relativeY = Screen.yToInt(parentWindow.resolution, parentBounds.y1) +posY;
-
-            //Returns a rectangle relative to the parent's bounds
-            return new Rect(parentWindow.resolution, relativeX, relativeY, relativeX + width, relativeY + height);
-        }
-
-        public void SetParentBounds(Rect r) => parentBounds = r;
-
-        public Rect GetParentBounds() => parentBounds;
-
-        public int GetParentX() => Screen.xToInt(parentWindow.resolution, parentBounds.x1);
-
-        public int GetParentY() => Screen.yToInt(parentWindow.resolution, parentBounds.y1);
 
         public void SetPosX(int x) => posX = x;
 
@@ -156,5 +134,11 @@ namespace SealFisher.Rendering.Gui.Components
         public void Show() => isVisible = true;
 
         public void Hide() => isVisible = false;
+
+        public int GetAbsX() => (parent != null ? parent.GetAbsX() : 0) + posX;
+
+        public int GetAbsY() => (parent != null ? parent.GetAbsY() + parent.GetChildOffset() : 0) + posY;
+
+        protected virtual int GetChildOffset() => 0;
     }
 }

@@ -1,4 +1,7 @@
-﻿using SealFisher.Rendering.Gui.Components;
+﻿using SealFisher.Rendering.Graphics;
+using SealFisher.Rendering.Graphics.Abstraction.Geometry;
+using SealFisher.Rendering.Gui.Components;
+using SealFisher.Rendering.Gui.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +12,31 @@ namespace SealFisher.Rendering.Gui.Components
 {
     public class ScrollViewer : GuiComponent
     {
-        public float yOffset;
+        public int yOffset;
         public int contentHeight;
+        public int scrollSpeed = 20;
 
         public ScrollViewer(int x, int y, int width, int height) : base(x, y, width, height)
         {
-
+            hasScrollEvent = true;
         }
 
-        protected override void OnRender()
+        public override void Render()
         {
+            if (!isVisible) return;
 
+            //Render this component and all its children
+            Renderer.SetScissor(parentWindow, new Rect2(GetAbsX(), GetAbsY(), width, height));
+            foreach (GuiComponent comp in children)
+            {
+                comp.Render();
+            }
+            Renderer.RemoveScissor(parentWindow);
         }
+
+        protected override void OnRender() { }
+
+        protected override int GetChildOffset() => -yOffset;
 
         public override void AddChild(GuiComponent comp)
         {
@@ -31,13 +47,18 @@ namespace SealFisher.Rendering.Gui.Components
 
         public void UpdateContentHeight()
         {
-            int h = 0;
+            contentHeight = 0;
             foreach(GuiComponent c in children)
             {
-                h += c.height;
+                //Only update content height when the child would be out of bounds
+                contentHeight = Math.Max(contentHeight, c.posY + c.height);
             }
         }
 
-        public override void OnScroll(Scroll)
+        protected override void OnScroll(ScrollEvent ev)
+        {
+            int maxOffset = Math.Max(0, contentHeight - height);
+            yOffset = Math.Clamp(yOffset - ev.offset * scrollSpeed, 0, maxOffset);
+        }
     }
 }

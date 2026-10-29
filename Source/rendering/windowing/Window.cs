@@ -2,6 +2,7 @@
 using SealFisher.Rendering.Graphics.Abstraction.Buffer;
 using SealFisher.Rendering.Graphics.Abstraction.Geometry;
 using SealFisher.Rendering.Gui.Components;
+using SealFisher.Rendering.Gui.Events;
 using SealFisher.Source.Rendering.Graphics;
 using Silk.NET.Core.Native;
 using Silk.NET.Direct3D11;
@@ -9,7 +10,9 @@ using Silk.NET.DXGI;
 using Silk.NET.GLFW;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using static Silk.NET.GLFW.GlfwCallbacks;
 
 namespace SealFisher.Rendering.Windowing
 {
@@ -26,6 +29,9 @@ namespace SealFisher.Rendering.Windowing
         public VertexBuffer primitiveBuffer;
         public VertexBuffer textureBuffer;
 
+        //Holds the delegate so the callback isn't consumed by gargabe collection
+        private ScrollCallback scrollCallback;
+
         public bool isVisible = false;
         private List<GuiComponent> children = new List<GuiComponent>();
 
@@ -39,8 +45,35 @@ namespace SealFisher.Rendering.Windowing
             viewport = new Viewport() { Width = width, Height = height };
             primitiveBuffer = new VertexBuffer(PrimitiveRenderer.layout);
             textureBuffer = new VertexBuffer(TextureRenderer.layout);
+            scrollCallback = ScrollCallback;
 
             Renderer.wnds.Add(this);
+        }
+
+        private void ScrollCallback(WindowHandle* window, double xOffset, double yOffset)
+        {
+            Debug.WriteLine($"Scroll: {yOffset}");
+            ScrollEvent ev = new ScrollEvent((int)yOffset);
+            Scroll(ev);
+            
+        }
+
+        public void Scroll(ScrollEvent ev)
+        {
+            foreach(GuiComponent c in children)
+            {
+                c.Scroll(ev);
+                if (ev.consumed) break;
+            }
+        }
+
+        public void Click(ClickEvent ev)
+        {
+            foreach (GuiComponent c in children)
+            {
+                c.Click(ev);
+                if (ev.consumed) break;
+            }
         }
 
         public void Show()
@@ -50,6 +83,7 @@ namespace SealFisher.Rendering.Windowing
             instance = Renderer.glfw.CreateWindow(GetWidth(), GetHeight(), title, null, null);
             InitSwapChain();
             InitRenderTargetView(); //Create RTV (basically a reference to the buffer, making it accessible for drawing)
+            Renderer.glfw.SetScrollCallback(instance, scrollCallback);
             isVisible = true;
         }
 
@@ -63,7 +97,6 @@ namespace SealFisher.Rendering.Windowing
 
         public void AddChild(GuiComponent gui)
         {
-            gui.SetParentBounds(new Rect(resolution, 0, 0, GetWidth(), GetHeight()));
             gui.SetParentWindow(this);
             children.Add(gui);
         }

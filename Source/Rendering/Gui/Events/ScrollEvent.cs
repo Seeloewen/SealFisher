@@ -9,5 +9,10 @@ namespace SealFisher.Rendering.Gui.Events
     public class ScrollEvent : GuiEvent
     {
         public readonly int offset;
+
+        public ScrollEvent(int offset)
+        {
+            this.offset = offset; 
+        }
     }
 }

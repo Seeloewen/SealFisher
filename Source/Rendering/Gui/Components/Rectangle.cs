@@ -14,8 +14,8 @@ namespace SealFisher.Rendering.Gui.Components
 
         protected override void OnRender()
         {
-            int relativeX = GetParentX() + posX;
-            int relativeY = GetParentY() + posY;
+            int relativeX = GetAbsX();
+            int relativeY = GetAbsY();
             PrimitiveRenderer.DrawRect(parentWindow, new Rect(parentWindow.resolution, relativeX, relativeY, relativeX + width, relativeY + height), color);
         }
 
